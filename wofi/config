@@ -1,0 +1,12 @@
+width=55%
+height=50%
+location=center
+prompt=Найти
+matching=fuzzy
+insensitive=true
+gtk_dark=true
+sort_order=default
+show=drun
+lines=15
+columns=1
+

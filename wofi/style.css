@@ -1,0 +1,121 @@
+/* ~/.config/wofi/style.css */
+
+window {
+    background: rgba(30, 30, 35, 0.92);    /* Чуть светлее, как у Rofi */
+    border-radius: 16px;
+    border: 1px solid rgba(70, 70, 80, 0.5);
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+    font-size: 14px;
+}
+
+#input {
+    margin: 16px 16px 6px 16px;
+    padding: 12px 14px;
+    background: rgba(50, 50, 56, 0.7);     /* Полупрозрачный серый */
+    border-radius: 12px;
+    border: 1px solid rgba(70, 70, 80, 0.3);
+    color: #e0e0e0;
+}
+
+#input:focus {
+    border: 1px solid rgba(80, 80, 90, 0.6);
+    background: rgba(50, 50, 56, 0.8);
+}
+
+#inner-box {
+    margin: 6px 12px 12px 12px;
+    padding: 4px;
+}
+
+#scroll {
+    margin: 4px;
+    padding: 4px;
+}
+
+/* --- Обычный элемент (серый) --- */
+#entry {
+    padding: 10px 14px;
+    margin: 3px 0;
+    border-radius: 10px;                  /* Скругление элементов */
+    background: rgba(45, 45, 50, 0.5);     /* Полупрозрачный серый фон */
+    color: #cfcfcf;
+}
+
+/* --- Выделенный элемент (более светлый серый) --- */
+#entry:selected {
+    background: rgba(70, 70, 80, 0.7);     /* Как в Rofi, заметный контраст */
+    color: #ffffff;
+    border-left: 3px solid rgba(100, 100, 110, 0.6); /* Серый акцент */
+}
+
+#entry:focus {
+    background: rgba(50, 50, 56, 0.6);
+}
+
+#text {
+    margin: 0 10px;
+}
+
+#img {
+    margin-right: 12px;
+}/* ~/.config/wofi/style.css */
+
+window {
+    background: rgba(30, 30, 35, 0.92);    /* Чуть светлее, как у Rofi */
+    border-radius: 16px;
+    border: 1px solid rgba(70, 70, 80, 0.5);
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+    font-size: 14px;
+}
+
+#input {
+    margin: 16px 16px 6px 16px;
+    padding: 12px 14px;
+    background: rgba(50, 50, 56, 0.7);     /* Полупрозрачный серый */
+    border-radius: 12px;
+    border: 1px solid rgba(70, 70, 80, 0.3);
+    color: #e0e0e0;
+}
+
+#input:focus {
+    border: 1px solid rgba(80, 80, 90, 0.6);
+    background: rgba(50, 50, 56, 0.8);
+}
+
+#inner-box {
+    margin: 6px 12px 12px 12px;
+    padding: 4px;
+}
+
+#scroll {
+    margin: 4px;
+    padding: 4px;
+}
+
+/* --- Обычный элемент (серый) --- */
+#entry {
+    padding: 10px 14px;
+    margin: 3px 0;
+    border-radius: 10px;                  /* Скругление элементов */
+    background: rgba(45, 45, 50, 0.5);     /* Полупрозрачный серый фон */
+    color: #cfcfcf;
+}
+
+/* --- Выделенный элемент (более светлый серый) --- */
+#entry:selected {
+    background: rgba(70, 70, 80, 0.7);     /* Как в Rofi, заметный контраст */
+    color: #ffffff;
+    border-left: 3px solid rgba(100, 100, 110, 0.6); /* Серый акцент */
+}
+
+#entry:focus {
+    background: rgba(50, 50, 56, 0.6);
+}
+
+#text {
+    margin: 0 10px;
+}
+
+#img {
+    margin-right: 12px;
+}
