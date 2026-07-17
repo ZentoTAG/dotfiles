@@ -1,4 +1,19 @@
 {
-	"colorscheme": "mytransparent",
-	"font": "monospace 14"
+    "colorscheme": "mytransparent",
+    "font": "monospace 14",
+    "tabstospaces": true,
+    "tabsize": 4,
+    "syntax": true,
+    "ruler": true,
+    "cursorline": true,
+    "autosave": 3,
+    "saveundo": true,
+    "softwrap": false,
+    "statusline": true,
+    "diffgutter": true,
+    "relativeruler": false,
+    "autoindent": true,
+    "autoclose": true,
+    "ignorecase": true,
+    "smartcase": true
 }
