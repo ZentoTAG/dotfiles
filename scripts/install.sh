@@ -24,4 +24,7 @@ for dir in "$DOTFILES_DIR/config/"*/; do
     fi
 done
 
+hyprctl reload
+
 echo "Готово!"
+
