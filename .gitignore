@@ -102,3 +102,7 @@ scripts/config/
 *.tmp
 *.old
 *.orig
+assets/backgrounds/*.png
+assets/backgrounds/*.jpg
+assets/backgrounds/*.jpeg
+assets/backgrounds/video/*.mp4

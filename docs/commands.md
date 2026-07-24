@@ -65,4 +65,15 @@ echo $XDG_SESSION_TYPE            # узнать, Wayland или X11
 ps aux | grep "название"          # найти запущенный процесс
 htop                              # диспетчер задач
 neofetch                          # информация о системе
-uname -r                          # версия ядра
+uname -r
+
+## конвертация всех mp4 в webp и в 1080p в папке, нужен ffmpeg                          # версия ядра
+for file in *.mp4; do
+    ffmpeg -i "$file" -vf scale=1920:1080 -c:v libvpx-vp9 -crf 30 -b:v 0 -c:a libopus "${file%.mp4}.webm"
+done
+
+cd ~/data/dotfiles/assets/backgrounds
+
+for file in *.jpg *.jpeg; do
+    ffmpeg -i "$file" -c:v libwebp -quality 85 "${file%.*}.webp"
+done
