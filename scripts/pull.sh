@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDERS="cava dunst fish hypr kitty micro nvim waybar rofi"
+FOLDERS="cava dunst fish hypr kitty micro nvim waybar rofi waypaper"
 
 DOTFILES_DIR="$HOME/data/dotfiles"
 CONFIG_DIR="$HOME/.config"
