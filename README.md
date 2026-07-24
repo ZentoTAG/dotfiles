@@ -8,45 +8,40 @@ Hyprland · Waybar · Kitty · Fish · Neovim
 |-----------|----------|
 | Hyprland | Wayland-композитор |
 | Waybar | Панель |
-| Wofi | Лаунчер |
+| Rofi | Лаунчер |
 | Kitty | Терминал |
 | Dunst | Уведомления |
 | Cava | Аудиовизуализатор |
 | Fish | Оболочка |
-| Micro | Редактор |
-| Neovim | Редактор (NvChad) |
+| Micro / Neovim | Редакторы |
 
 ## Установка
 
+```bash
 git clone git@github.com:ZentoTAG/dotfiles.git ~/data/dotfiles
 cd ~/data/dotfiles
-./install.sh
-
-## Структура
-
-~/.config/
-├── cava/
-├── dunst/
-├── fish/
-├── hypr/
-├── kitty/
-├── micro/
-├── nvim/
-├── waybar/
-└── wofi/
+./scripts/setup.sh
+./scripts/install.sh
 
 ## Обновление
-
 cd ~/data/dotfiles
+./scripts/pull.sh
 git add .
 git commit -m "update"
 git push
 
-## Система
+## Структура
+~/data/dotfiles/
+├── assets/backgrounds/   # обои
+├── config/               # конфиги (~/.config/)
+├── docs/                 # шпаргалка
+└── scripts/              # install.sh, pull.sh, setup.sh
 
-- OS: CachyOS (Arch)
-- WM: Hyprland
-- GPU: NVIDIA GTX 1660 Ti
-- CPU: Xeon E5-2640 v0
+## Система
+OS: CachyOS (Arch)
+WM: Hyprland
+GPU: NVIDIA GTX 1660 Ti
+CPU: Xeon E5-2640 v0
 
 ZentoTAG · 2026
+---
