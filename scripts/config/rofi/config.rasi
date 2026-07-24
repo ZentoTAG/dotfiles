@@ -1,0 +1,96 @@
+configuration {
+    scroll-method: 1;
+    scrollbar: true;
+    show-icons: true;
+    display-run: "Run ";
+    display-drun: "Open ";
+    display-emoji: "Emoji ";
+    drun-display-format: "{icon} {name}";
+    modi: "run,drun,emoji";
+}
+
+* {
+    font: "JetBrainsMono Nerd Font 14";
+    background: #1a1a1e;
+    foreground: #c8c8d0;
+    select: #2a2a30;
+}
+
+window {
+    background-color: #1a1a1e;
+    border: 1px;
+    border-radius: 10px;
+    border-color: #2a2a30;
+    padding: 16px;
+    width: 560px;
+}
+
+listview {
+    lines: 6;
+    fixed-height: false;
+    border: 0px;
+    spacing: 4px;
+    padding: 4px 0px 0px;
+}
+
+element {
+    border: 0;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+element normal normal {
+    background-color: transparent;
+    text-color: #c8c8d0;
+}
+
+element alternate normal {
+    background-color: transparent;
+    text-color: #c8c8d0;
+}
+
+element selected normal {
+    background-color: #2a2a30;
+    text-color: #ffffff;
+}
+
+element-text, element-icon {
+    size: 14px;
+    background-color: inherit;
+    text-color: inherit;
+}
+
+scrollbar {
+    width: 4px;
+    border: 0;
+    handle-width: 8px;
+    padding: 0;
+    handle-color: #2a2a30;
+}
+
+inputbar {
+    children: [ prompt, textbox-prompt-colon, entry ];
+    spacing: 0;
+    padding: 10px 14px;
+    border: 1px;
+    border-radius: 8px;
+    border-color: #2a2a30;
+    background-color: #24242a;
+}
+
+prompt {
+    spacing: 0;
+    text-color: #c8c8d0;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: ">";
+    margin: 0px 0.3em 0em 0em;
+    text-color: #c8c8d0;
+}
+
+entry {
+    spacing: 0;
+    text-color: #c8c8d0;
+}
