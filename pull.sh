@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Список папок, которые нужно синхронизировать
-FOLDERS="cava dunst fish hypr kitty micro nvim waybar wofi"
+FOLDERS="cava dunst fish hypr kitty micro nvim waybar rofi"
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$HOME/.config"

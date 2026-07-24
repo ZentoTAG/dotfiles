@@ -15,7 +15,7 @@ window#waybar {
     background-color: @dark-9;
     color: white;
     padding: 3px 0;
-    margin: 0 16px 0 16px;        /* отступ только по бокам, сверху — 0 */
+    margin: 0 16px 0 16px;
     border-radius: 0px;
 }
 
@@ -34,11 +34,59 @@ window#waybar {
     font-weight: 700;
 }
 
-#submap,
-#network,
+#workspaces button.urgent {
+    background: rgba(227, 81, 73, 1);
+    color: black;
+}
+
+/* ===== ЛЕВАЯ И ЦЕНТРАЛЬНАЯ ЧАСТЬ — БЕЗ ОБВОДОК ===== */
+#custom-launcher,
+#media,
+#custom-media-animation,
+#custom-media-now-playing,
+#clock {
+    background: transparent;
+    padding: 0 4px;
+    margin: 0;
+    font-size: 16px;
+    border-radius: 0;
+}
+
+#custom-launcher {
+    font-size: 16px;
+}
+
+#media {
+    color: #ffffff;
+    margin: 0px 0px 0px 0px;
+    font-size: 16px;
+}
+
+#custom-media-animation {
+    font-size: 11px;
+    margin-right: 5px;
+}
+
+#custom-media-now-playing {
+    font-size: 13px;
+    margin-right: 5px;
+}
+
+#clock {
+    font-size: 14px;
+    padding: 0 8px;
+}
+
+/* ===== ПРАВАЯ ЧАСТЬ — С ОБВОДКАМИ (КРОМЕ ЗВУКА) ===== */
 #cpu,
 #memory,
-#volume {
+#tray,
+#submap,
+#network,
+#volume,
+#custom-layout,
+#custom-temperature,
+#custom-brightness {
     border-radius: 5px;
     padding: 2px 8px;
     background: @dark-8;
@@ -46,9 +94,13 @@ window#waybar {
     font-size: 13px;
 }
 
-#workspaces button.urgent {
-    background: rgba(227, 81, 73, 1);
-    color: black;
+/* Убираем обводку для звука */
+#pulseaudio {
+    background: transparent;
+    padding: 0 4px;
+    margin: 0;
+    font-size: 16px;
+    border-radius: 0;
 }
 
 #pulseaudio-slider {
@@ -80,30 +132,19 @@ window#waybar {
     background: @highlight;
 }
 
-#media {
-    color: #ffffff;  /* ← белый цвет */
-    margin: 3px 0px 3px 25px;
-    font-size: 16px;
+/* ===== ТРЕЙ ===== */
+#tray .passive {
+    opacity: 0.5;
 }
 
-#custom-media-animation {
-    font-size: 11px;
-    margin-right: 5px;
+#tray .needs-attention {
+    animation: blink 1s infinite;
 }
 
-#custom-media-now-playing {
-    margin-right: 5px;
-    font-size: 13px;
-}
-
-#custom-media-time {
-    color: @dark-5;
-    font-size: 12px;
-}
-
-#clock {
-    font-size: 14px;
-    padding: 0 8px;
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.2; }
+    100% { opacity: 1; }
 }
 
 tooltip {

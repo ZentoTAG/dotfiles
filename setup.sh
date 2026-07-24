@@ -11,7 +11,7 @@ echo "Установка базовых пакетов..."
 sudo pacman -S --noconfirm \
     waybar \
     hyprland \
-    wofi \
+    rofi \
     kitty \
     dunst \
     cava \
@@ -63,7 +63,8 @@ sudo npm install -g pyright
 echo "📦 Установка пакетов из AUR..."
 yay -S --noconfirm \
     sddm \
-    zen-browser-bin
+    zen-browser-bin \ 
+    cmatrix-git
 
 # ============================================
 #  НАСТРОЙКА ТЕМ И ШРИФТОВ

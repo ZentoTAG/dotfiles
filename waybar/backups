@@ -1,32 +1,11 @@
 {
     "layer": "top",
-    "modules-left": ["custom/launcher", "hyprland/workspaces", "group/media"],
+    "modules-left": ["hyprland/workspaces", "group/media"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "hyprland/submap", "group/volume",  "custom/temperature", "cpu", "memory", "custom/brightness"],
+    "modules-right": ["tray", "group/volume",  "hyprland/submap", "cpu", "memory"],
 
     "hyprland/window": {
         "max-length": 50
-    },
-
-    "custom/launcher": {
-        "format": "",
-        "on-click": "wofi --show drun",
-        "tooltip": false
-    },
-
-    "custom/temperature": {
-        "exec": "sensors | grep 'Package id 0' | awk '{print $4}' | cut -c2- | cut -d'.' -f1",
-        "interval": 5,
-        "format": " {}°C",
-        "on-click": "kitty --title btop -e btop"
-    },
-
-    "custom/brightness": {
-        "exec": "brightnessctl | grep 'Current' | awk '{print $4}' | tr -d '()%'",
-        "interval": 5,
-        "format": " {}%",
-        "on-click": "brightnessctl s 10%+",
-        "on-click-right": "brightnessctl s 10%-"
     },
 
     "cpu": {
@@ -44,6 +23,19 @@
         "on-click": "exec kitty --title htop -e htop"
     },
 
+    // "network": {
+    //     "format": "",
+    //     "format-wifi": "",
+    //     "format-ethernet": "",
+    //     "format-disconnected": "󰤭",
+    //     "tooltip-format": "{ifname} via {gwaddr} 󰊗",
+    //     "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+    //     "tooltip-format-ethernet": "{ifname} ",
+    //     "tooltip-format-disconnected": "󰖪",
+    //     "max-length": 50,
+    //     "on-click": "exec kitty -e nmtui"
+    // },
+    
     "clock": {
         "format": "{:%a, %d.%m.%Y %H:%M}",
         "locale": "ru_RU.UTF-8",
