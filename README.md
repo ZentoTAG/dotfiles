@@ -11,7 +11,8 @@ Hyprland · Waybar · Kitty · Fish · Neovim
 | Rofi | Лаунчер |
 | Kitty | Терминал |
 | Dunst | Уведомления |
-| Cava | Аудиовизуализатор |
+| hyprlock | Экран блокировки |
+| waypaper | Управление обоями |
 | Fish | Оболочка |
 | Micro / Neovim | Редакторы |
 
