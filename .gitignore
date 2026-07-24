@@ -74,3 +74,31 @@ cmake-build-*/
 .vscode/
 .idea/
 1
+
+# Dotfiles специфичное
+nohup.out
+*.log
+
+# Micro (уже есть, но уточним)
+**/micro/backups/
+**/micro/buffers/
+**/micro/*.log
+
+# Бэкапы конфигов (уже есть)
+*.backup
+*.bak
+
+# Временные файлы редакторов
+*.swp
+*.swo
+*~
+.*.swp
+
+# Лишние папки в dotfiles
+backups/
+scripts/config/
+
+# Логи и временные файлы
+*.tmp
+*.old
+*.orig
