@@ -1,16 +1,42 @@
 #!/bin/bash
 
-# ============================================
-#  УСТАНОВКА ПАКЕТОВ ДЛЯ CACHYOS
-# ============================================
+set -e
 
+echo "=========================================="
+echo "      CachyOS Setup Script"
+echo "=========================================="
+
+echo
 echo "Обновление системы..."
 sudo pacman -Syu --noconfirm
 
-echo "Установка базовых пакетов..."
-sudo pacman -S --noconfirm \
-    waybar \
+echo
+echo "Проверка yay..."
+
+if ! command -v yay >/dev/null 2>&1; then
+    echo "yay не найден. Устанавливаю..."
+
+    sudo pacman -S --needed --noconfirm git base-devel
+
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay
+
+    makepkg -si --noconfirm
+
+    cd -
+    rm -rf /tmp/yay
+else
+    echo "yay уже установлен."
+fi
+
+echo
+echo "Установка официальных пакетов..."
+
+sudo pacman -S --needed --noconfirm \
     hyprland \
+    hyprlock \
+    hypridle \
+    waybar \
     rofi \
     kitty \
     dunst \
@@ -22,9 +48,10 @@ sudo pacman -S --noconfirm \
     telegram-desktop \
     playerctl \
     pavucontrol \
-    pulseaudio \
     pipewire \
+    pipewire-pulse \
     wireplumber \
+    networkmanager \
     network-manager-applet \
     nm-connection-editor \
     wlogout \
@@ -41,43 +68,34 @@ sudo pacman -S --noconfirm \
     tar \
     gzip \
     xz \
-    base-devel \
-    yay \
     jq \
-    ripgrep
-
-# ============================================
-#  УСТАНОВКА NPM И PYRIGHT
-# ============================================
-
-echo "📦 Установка npm..."
-sudo pacman -S --noconfirm npm
-
-echo "📦 Установка pyright через npm..."
-sudo npm install -g pyright
-
-# ============================================
-#  УСТАНОВКА ИЗ AUR
-# ============================================
-
-echo "📦 Установка пакетов из AUR..."
-yay -S --noconfirm \
-    sddm \
-    zen-browser-bin \ 
-    cmatrix-git
-
-# ============================================
-#  НАСТРОЙКА ТЕМ И ШРИФТОВ
-# ============================================
-
-echo "🎨 Установка тем и шрифтов..."
-sudo pacman -S --noconfirm \
+    ripgrep \
+    npm \
     ttf-jetbrains-mono-nerd \
     ttf-font-awesome \
     adwaita-icon-theme
 
-# ============================================
-#  ЗАВЕРШЕНИЕ
-# ============================================
+echo
+echo "Установка pyright..."
 
-echo "✅ Готово! Теперь запусти install.sh для разворачивания конфигов."
+sudo npm install -g pyright
+
+echo
+echo "Установка пакетов из AUR..."
+
+yay -S --needed --noconfirm \
+    zen-browser-bin \
+    cmatrix-git
+
+echo
+echo "Включение сервисов..."
+
+sudo systemctl enable NetworkManager
+
+echo
+echo "=========================================="
+echo "Установка завершена!"
+echo
+echo "Теперь выполни:"
+echo "./install.sh"
+echo "=========================================="

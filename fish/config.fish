@@ -22,6 +22,7 @@ alias kl "killall"
 alias yt1080 "yt-dlp -f 'bestvideo[height<=1080]+bestaudio/best'"
 alias cmatrix "cmatrix -C white"
 alias v2rayn "~/.data/programs/v2rayN-linux-64/v2rayN"
+alias hypr "micro ~/.config/hypr/hyprland.conf"
 
 alias gh "xdg-open https://github.com"
 alias yt "xdg-open https://youtube.com"
