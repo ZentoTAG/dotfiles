@@ -77,3 +77,5 @@ cd ~/data/dotfiles/assets/backgrounds
 for file in *.jpg *.jpeg; do
     ffmpeg -i "$file" -c:v libwebp -quality 85 "${file%.*}.webp"
 done
+
+❯ kitten themes --reload-in=all Aquarium\ Dark
