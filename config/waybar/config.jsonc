@@ -2,7 +2,7 @@
     "layer": "top",
     "modules-left": ["custom/launcher", "hyprland/workspaces", "group/media"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "hyprland/submap", "group/volume",  "custom/temperature", "cpu", "memory", "custom/brightness"],
+    "modules-right": ["tray", "custom/swaync", "hyprland/submap", "group/volume",  "custom/temperature", "cpu", "memory", "custom/brightness"],
 
     "hyprland/window": {
         "max-length": 50
@@ -108,5 +108,11 @@
         "spacing": 8,
         "show-passive": false,
         "show-hidden": false
+    },
+
+    "custom/swaync": {
+        "format": "",
+        "on-click": "swaync-client -t",
+        "tooltip": false
     }
 }

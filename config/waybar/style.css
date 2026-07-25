@@ -156,3 +156,15 @@ tooltip label {
     color: white;
     font-size: 13px;
 }
+
+#custom-swaync {
+    border-radius: 5px;
+    padding: 2px 8px;
+    background: @dark-8;
+    margin: 3px 5px 3px 0px;
+    font-size: 13px;
+}
+
+#custom-swaync.have-notifications {
+    color: #f7768e;  /* красный, если есть уведомления */
+}
