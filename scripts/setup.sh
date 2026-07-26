@@ -78,6 +78,8 @@ sudo pacman -S --needed --noconfirm \
     qt5ct \
     kvantum \
     gwenview \
+    haruna \
+    gwenview \
     ark \
     kcalc
 
