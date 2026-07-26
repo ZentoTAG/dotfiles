@@ -22,5 +22,9 @@
     "example-script": {
       "exec": "echo 'hello world'"
     }
-  }
+  },
+  "fit-to-screen": true,
+  "keyboard-shortcuts": true,
+  "image-visibility": "when-available",
+  "relative-timestamps": true
 }

@@ -1,72 +1,143 @@
+/* ============================================================
+ * SwayNC Style
+ * ============================================================ */
+
 * {
-  font-family: "JetBrainsMono Nerd Font Propo";
+    font-family: "JetBrainsMono Nerd Font Propo";
+    font-size: 13px;
 }
+
+/* ============================================================
+ * Notification rows
+ * ============================================================ */
 
 .notification-row {
-  outline: none;
-  margin: 6px 8px 0 0;
-  padding: 0;
+    outline: none;
+    margin: 8px 10px 0 0;
+    padding: 0;
+    background: transparent
 }
+
+/* ============================================================
+ * Notification card
+ * ============================================================ */
 
 .notification {
-  background: rgba(24, 24, 27, 0.92);
-  border-radius: 10px;
-  border: 1px solid rgba(63, 63, 70, 0.6);
-  padding: 8px 10px;
-}
+    background: rgba(24, 24, 27, 0.84);
+    border: 1px solid rgba(63, 63, 70, 0.55);
+    /* border-left: 3px solid #8ab4f8; */
+    border-radius: 12px;
+    padding: 10px;
 
-.notification-content {
-  color: #d3d3d3;
-  font-size: 13px;
-}
+    box-shadow:
+        0 6px 22px rgba(0, 0, 0, .35);
 
-.notification-default-action {
-  margin: 0;
-  padding: 0;
-}
-
-.close-button {
-  background: #2a2a30;
-  color: #d3d3d3;
-  border-radius: 6px;
-  padding: 2px 6px;
-}
-
-.control-center {
-  background: rgba(24, 24, 27, 0.95);
-  border-radius: 12px;
-  border: 1px solid rgba(63, 63, 70, 0.6);
-  padding: 8px;
-}
-
-.control-center-list {
-  background: transparent;
-}
-
-.notification-actions {
-  margin-top: 4px;
-}
-
-/* Красная точка, если есть уведомления */
-#custom-swaync.have-notifications {
-    color: #f7768e;
+    animation: popup 220ms ease-out;
+    /* transition: all 150ms ease; */
 }
 
 .notification:hover {
-    background: rgba(40, 40, 45, 0.95);
+    background: rgba(40, 40, 45, .92);
 }
 
-.notification-image {
-    border-radius: 8px;
+.control-center-list {
+    background: transparent;
 }
 
-.notification-row {
-    margin: 8px 10px 0 0;
+.notification-group {
+    background: transparent;
 }
+
+.notification-group-headers {
+    background: transparent;
+}
+
+/* ============================================================
+ * Priority colors
+ * ============================================================ */
+
+/* .notification.low { */
+/*     border-left-color: #8ad4d4; */
+/* } */
+/*  */
+/* .notification.normal { */
+/*     border-left-color: #8ab4f8; */
+/* } */
+/*  */
+/* .notification.critical { */
+/*     border-left-color: #f7768e; */
+/* } */
+
+/* ============================================================
+ * Animation
+ * ============================================================ */
+
+@keyframes popup {
+    from {
+        opacity: 0;
+        transform: translateX(12px) scale(.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* ============================================================
+ * Text
+ * ============================================================ */
+
+.summary {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.body,
+.notification-content {
+    color: #d3d3d3;
+    font-size: 13px;
+}
+
+/* ============================================================
+ * Icons / Images
+ * ============================================================ */
+
+.notification-image,
+.image {
+    border-radius: 10px;
+}
+
+/* ============================================================
+ * Default action
+ * ============================================================ */
+
+.notification-default-action {
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================================
+ * Actions
+ * ============================================================ */
+
+.notification-actions {
+    margin-top: 8px;
+}
+
+/* ============================================================
+ * Buttons
+ * ============================================================ */
 
 .close-button,
 .clear-all-button,
 .dnd-button {
+    background: rgba(63, 63, 70, .45);
+    color: #d3d3d3;
+
+    border-radius: 8px;
+    padding: 5px 10px;
+
     transition: all 150ms ease;
 }
 
@@ -74,7 +145,106 @@
     background: #3a3a42;
 }
 
-.dnd-button:hover {
-    background: rgba(90, 90, 100, 0.5);
+.clear-all-button:hover {
+    background: rgba(247, 118, 142, .7);
+    color: white;
 }
 
+.dnd-button:hover {
+    background: rgba(90, 90, 100, .55);
+}
+
+.dnd-button.active {
+    background: rgba(138, 180, 248, .18);
+    color: #8ab4f8;
+}
+
+/* ============================================================
+ * Progress bars
+ * ============================================================ */
+
+.progress {
+    min-height: 6px;
+    border-radius: 999px;
+}
+
+.progress trough {
+    background: rgba(255,255,255,.08);
+    border-radius: 999px;
+}
+
+.progress progress {
+    background: #8ab4f8;
+    border-radius: 999px;
+}
+
+/* ============================================================
+ * Control Center
+ * ============================================================ */
+
+.control-center {
+    background: rgba(24, 24, 27, .90);
+
+    border: 1px solid rgba(63, 63, 70, .55);
+    border-radius: 14px;
+
+    padding: 10px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.40);
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+/* ============================================================
+ * Scrollbar
+ * ============================================================ */
+
+scrollbar {
+    background: transparent;
+}
+
+scrollbar slider {
+    background: rgba(138,180,248,.35);
+    border-radius: 999px;
+    min-width: 6px;
+}
+
+scrollbar slider:hover {
+    background: rgba(138,180,248,.6);
+}
+
+/* ============================================================
+ * Time
+ * ============================================================ */
+
+.time {
+    color: #8d8d97;
+    font-size: 11px;
+}
+
+/* ============================================================
+ * Separator
+ * ============================================================ */
+
+.notification-row:not(:last-child) {
+    padding-bottom: 4px;
+}
+
+/* ============================================================
+ * Do Not Disturb
+ * ============================================================ */
+
+.dnd {
+    color: #8ab4f8;
+}
+
+/* ============================================================
+ * Selection
+ * ============================================================ */
+
+selection {
+    background: rgba(138,180,248,.25);
+}
