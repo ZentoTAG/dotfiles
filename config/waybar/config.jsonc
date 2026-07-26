@@ -111,10 +111,17 @@
     },
 
     "custom/swaync": {
-        "format": " {count}",
+        "exec": "swaync-client -swb",
+        "return-type": "json",
+        "format": "{icon}",
+        "format-icons": {
+            "none": "󰂚",
+            "notification": "󰂛",
+            "dnd-none": "󰪑",
+            "dnd-notification": "󰂛"
+        },
         "on-click": "swaync-client -t",
-        "exec": "swaync-client -c",
-        "interval": 1,
-        "tooltip": false
+        "on-click-right": "swaync-client -d",
+        "escape": true
     }
 }
