@@ -11,6 +11,12 @@ if [ ! -d "$DOTFILES_DIR/config" ]; then
     exit 1
 fi
 
+# Копируем mimeapps.list
+if [ -f "$DOTFILES_DIR/config/mimeapps.list" ]; then
+    echo "  Копирую mimeapps.list"
+    cp "$DOTFILES_DIR/config/mimeapps.list" "$CONFIG_DIR/"
+fi
+
 for dir in "$DOTFILES_DIR/config/"*/; do
     [ -d "$dir" ] || continue
     dir_name=$(basename "$dir")

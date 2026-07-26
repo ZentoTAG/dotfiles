@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDERS="cava swaync fish hypr kitty micro nvim waybar rofi waypaper"
+FOLDERS="cava swaync dunst fish hypr kitty micro nvim waybar rofi waypaper"
 
 DOTFILES_DIR="$HOME/data/dotfiles"
 CONFIG_DIR="$HOME/.config"
@@ -16,5 +16,11 @@ for folder in $FOLDERS; do
         echo "  ⚠️ $folder не найден в ~/.config/"
     fi
 done
+
+# Копируем mimeapps.list
+if [ -f "$CONFIG_DIR/mimeapps.list" ]; then
+    echo "  Копирую mimeapps.list"
+    cp "$CONFIG_DIR/mimeapps.list" "$DOTFILES_DIR/config/"
+fi
 
 echo "Готово!"

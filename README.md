@@ -10,7 +10,7 @@ Hyprland · Waybar · Kitty · Fish · Neovim
 | Waybar | Панель |
 | Rofi | Лаунчер |
 | Kitty | Терминал |
-| Dunst | Уведомления |
+| Swaync | Уведомления |
 | hyprlock | Экран блокировки |
 | waypaper | Управление обоями |
 | Fish | Оболочка |

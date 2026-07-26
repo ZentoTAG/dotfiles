@@ -111,8 +111,10 @@
     },
 
     "custom/swaync": {
-        "format": "",
+        "format": " {count}",
         "on-click": "swaync-client -t",
+        "exec": "swaync-client -c",
+        "interval": 1,
         "tooltip": false
     }
 }

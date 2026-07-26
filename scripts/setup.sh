@@ -40,6 +40,7 @@ sudo pacman -S --needed --noconfirm \
     rofi \
     kitty \
     dunst \
+    swaync \
     cava \
     fish \
     micro \
@@ -73,7 +74,12 @@ sudo pacman -S --needed --noconfirm \
     npm \
     ttf-jetbrains-mono-nerd \
     ttf-font-awesome \
-    adwaita-icon-theme
+    adwaita-icon-theme \
+    qt5ct \
+    kvantum \
+    gwenview \
+    ark \
+    kcalc
 
 echo
 echo "Установка pyright..."
