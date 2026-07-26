@@ -113,7 +113,7 @@
     "custom/swaync": {
         "exec": "swaync-client -swb",
         "return-type": "json",
-        "format": "{icon}",
+        "format": "{text} {icon}",
         "format-icons": {
             "none": "󰂚",
             "notification": "󰂛",
@@ -121,7 +121,6 @@
             "dnd-notification": "󰂛"
         },
         "on-click": "swaync-client -t",
-        "on-click-right": "swaync-client -d",
-        "escape": true
+        "on-click-right": "swaync-client -d"
     }
 }

@@ -168,3 +168,16 @@ tooltip label {
 #custom-swaync.have-notifications {
     color: #f7768e;  /* красный, если есть уведомления */
 }
+
+#custom-swaync.none {
+    color: #d3d3d3;
+}
+
+#custom-swaync.notification {
+    color: #f7768e;
+}
+
+#custom-swaync.dnd-none,
+#custom-swaync.dnd-notification {
+    color: #808080;
+}
