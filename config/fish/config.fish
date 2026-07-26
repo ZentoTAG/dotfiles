@@ -44,7 +44,7 @@ alias syslog "sudo dmesg --level=err,warn"
 # ============================================
 # УТИЛИТЫ
 # ============================================
-alias waybar "pkill waybar && nohup waybar > /dev/null 2>&1 &"
+alias rw "pkill waybar && nohup waybar > /dev/null 2>&1 &"
 alias yt1080 "yt-dlp -f 'bestvideo[height<=1080]+bestaudio/best'"
 alias cmatrix "cmatrix -C white"
 alias v2rayn "~/.data/programs/v2rayN-linux-64/v2rayN"
