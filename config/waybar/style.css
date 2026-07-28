@@ -181,3 +181,11 @@ tooltip label {
 #custom-swaync.dnd-notification {
     color: #808080;
 }
+
+#language {
+    border-radius: 5px;
+    padding: 2px 8px;
+    background: @dark-8;
+    margin: 3px 5px 3px 0px;
+    font-size: 13px;  
+}

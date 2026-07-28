@@ -2,8 +2,8 @@
     "layer": "top",
     "modules-left": ["custom/launcher", "hyprland/workspaces", "group/media"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "custom/swaync", "hyprland/submap", "group/volume",  "custom/temperature", "cpu", "memory", "custom/brightness"],
-
+    "modules-right": ["hyprland/language", "tray", "custom/swaync", "hyprland/submap", "group/volume",  "custom/temperature", "cpu", "memory"], 
+    // "custom/brightness"
     "hyprland/window": {
         "max-length": 50
     },
@@ -14,6 +14,12 @@
         "tooltip": false
     },
 
+    "hyprland/language": {
+      "format-en": "EN",
+      "format-ru": "RU",
+      "min-length": 5
+    },
+    
     "custom/temperature": {
         "exec": "sensors | grep 'Package id 0' | awk '{print $4}' | cut -c2- | cut -d'.' -f1",
         "interval": 5,

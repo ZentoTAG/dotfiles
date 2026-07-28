@@ -36,6 +36,7 @@ sudo pacman -S --needed --noconfirm \
     hyprland \
     hyprlock \
     hypridle \
+    hyprpaper \
     waybar \
     rofi \
     kitty \
