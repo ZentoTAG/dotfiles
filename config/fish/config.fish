@@ -9,6 +9,16 @@ function copy
     wl-copy
 end
 
+function showall
+    # Если передан аргумент — используем его, иначе текущую папку
+    set target $argv[1]
+    if test -z "$target"
+        set target .
+    end
+    
+    find $target -type f -exec echo "=== {} ===" \; -exec cat {} \;
+end
+
 # ============================================
 # РЕДАКТОРЫ И РАЗРАБОТКА
 # ============================================
