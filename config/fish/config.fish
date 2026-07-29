@@ -79,6 +79,9 @@ alias kl "killall"
 alias vacuum "journalctl --vacuum-size=100M"
 alias syslog_emerg "sudo dmesg --level=emerg,alert,crit"
 alias syslog "sudo dmesg --level=err,warn"
+alias du-sort "du -sh * | sort -h"
+alias foldersize "du -sh"
+alias sz "du -sh"
 
 # ============================================
 # УТИЛИТЫ
