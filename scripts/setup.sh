@@ -35,6 +35,7 @@ echo "Установка официальных пакетов..."
 sudo pacman -S --needed --noconfirm \
     hyprland \
     hyprlock \
+    hyprpolkitagent \
     hypridle \
     hyprpaper \
     waybar \
@@ -77,12 +78,13 @@ sudo pacman -S --needed --noconfirm \
     ttf-font-awesome \
     adwaita-icon-theme \
     qt5ct \
-    kvantum \
     gwenview \
     haruna \
     gwenview \
     ark \
-    kcalc
+    kcalc \
+    breeze \ 
+    qt6ct
 
 echo
 echo "Установка pyright..."
