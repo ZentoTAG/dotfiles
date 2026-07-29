@@ -10,13 +10,42 @@ function copy
 end
 
 function showall
-    # Если передан аргумент — используем его, иначе текущую папку
     set target $argv[1]
     if test -z "$target"
         set target .
     end
     
-    find $target -type f -exec echo "=== {} ===" \; -exec cat {} \;
+    # Исключаем бинарные файлы
+    find $target -type f \
+        ! -name "*.png" \
+        ! -name "*.jpg" \
+        ! -name "*.jpeg" \
+        ! -name "*.gif" \
+        ! -name "*.webp" \
+        ! -name "*.ico" \
+        ! -name "*.svg" \
+        ! -name "*.ttf" \
+        ! -name "*.otf" \
+        ! -name "*.woff" \
+        ! -name "*.woff2" \
+        ! -name "*.mp3" \
+        ! -name "*.mp4" \
+        ! -name "*.webm" \
+        ! -name "*.avi" \
+        ! -name "*.mkv" \
+        ! -name "*.pdf" \
+        ! -name "*.zip" \
+        ! -name "*.gz" \
+        ! -name "*.tar" \
+        ! -name "*.xz" \
+        ! -name "*.db" \
+        ! -name "*.sqlite" \
+        ! -name "*.so" \
+        ! -name "*.dll" \
+        ! -name "*.o" \
+        ! -name "*.exe" \
+        ! -name "*.bin" \
+        -exec echo "=== {} ===" \; -exec cat {} \;
 end
 
 # ============================================
