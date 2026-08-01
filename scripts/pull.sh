@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDERS="fastfetch cava swaync dunst fish hypr kitty micro nvim waybar rofi waypaper qt6ct"
+FOLDERS="yazi btop gtk-3.0 gtk-4.0 Thunar fastfetch cava swaync dunst fish hypr kitty micro nvim waybar rofi waypaper qt6ct"
 
 DOTFILES_DIR="$HOME/data/dotfiles"
 CONFIG_DIR="$HOME/.config"

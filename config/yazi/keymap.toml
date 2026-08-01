@@ -1,0 +1,19 @@
+[manager]
+prepend_keymap = [
+    { on = "h", run = "leave" },           # h → назад
+    { on = "l", run = "enter" },           # l → войти
+    { on = "j", run = "arrow down" },      # j → вниз
+    { on = "k", run = "arrow up" },        # k → вверх
+    { on = "H", run = "parent" },          # H → родительская папка (как в Vim)
+    { on = "L", run = "enter" },           # L → войти (как в Vim)
+    { on = "q", run = "quit" },            # q → выход
+    { on = "gg", run = "arrow top" },      # gg → в начало
+    { on = "G", run = "arrow bottom" },    # G → в конец
+    { on = "d", run = "trash" },           # d → в корзину
+    { on = "D", run = "remove" },          # D → удалить безвозвратно
+    { on = "r", run = "rename" },          # r → переименовать
+    { on = "c", run = "create" },          # c → создать файл/папку
+    { on = "~", run = "cd ~" },            # ~ → домашняя папка
+    { on = "<C-h>", run = "cd ~" },        # Ctrl+h → домашняя (альтернатива)
+    { on = "<C-l>", run = "linemode" },    # Ctrl+l → переключить linemode
+]

@@ -1,0 +1,43 @@
+[manager]
+show_hidden = true
+sort_by = "natural"
+sort_reverse = false
+
+[opener]
+edit = [
+	{ run = 'micro "$@"', block = true, for = "unix" },
+]
+open = [
+	{ run = 'xdg-open "$@"', desc = "Open", for = "unix" },
+]
+play = [
+	{ run = 'haruna "$@"', orphan = true, for = "unix" },
+]
+
+[open]
+rules = [
+	{ mime = "text/*", use = [ "edit" ] },
+	{ mime = "image/*", use = [ "open" ] },
+	{ mime = "video/*", use = [ "play" ] },
+	{ mime = "audio/*", use = [ "play" ] },
+	{ mime = "application/zip", use = [ "open" ] },
+	{ mime = "application/x-tar", use = [ "open" ] },
+	{ mime = "application/gzip", use = [ "open" ] },
+	{ url = "*/", use = [ "open" ] },
+]
+# [open]
+# rules = [
+# 	{ mime = "text/*", use = [ "edit" ] },
+# 	{ mime = "image/*", use = [ "open" ] },
+# 	{ mime = "video/*", use = [ "play" ] },
+# 	{ mime = "audio/*", use = [ "play" ] },
+# 	{ url = "*.json", use = [ "edit" ] },
+# 	{ url = "*.toml", use = [ "edit" ] },
+# 	{ url = "*.yaml", use = [ "edit" ] },
+# 	{ url = "*.yml", use = [ "edit" ] },
+# 	{ url = "*.conf", use = [ "edit" ] },
+# 	{ url = "*.sh", use = [ "edit" ] },
+# 	{ url = "*.py", use = [ "edit" ] },
+# 	{ url = "*.rs", use = [ "edit" ] },
+# 	{ url = "*/", use = [ "open" ] },
+# ]

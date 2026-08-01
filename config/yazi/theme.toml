@@ -1,0 +1,9 @@
+[filetype]
+rules = [
+	{ mime = "image/*", fg = "#7AD9E5" },
+	{ mime = "video/*", fg = "#F3D398" },
+]
+
+[status]
+progress_label = { bold = true }
+progress_normal = { fg = "blue", bg = "black" }
