@@ -9,6 +9,15 @@ function copy
     wl-copy
 end
 
+function discord-proxy
+    # Запускаем SpoofDPI в фоне
+    spoofdpi &
+    # Ждём секунду, чтобы он успел подняться
+    sleep 1
+    # Запускаем Discord
+    discord
+end
+
 function showall
     set target $argv[1]
     if test -z "$target"
@@ -59,6 +68,7 @@ alias ga "git add"
 alias gc "git commit -m"
 alias gpush "git push"
 alias gpull "git pull"
+alias yz "yazi"
 
 # ============================================
 # ПРОЕКТЫ И КОНФИГИ
@@ -68,7 +78,7 @@ alias dots "cd ~/data/dotfiles"
 alias com "micro ~/data/dotfiles/docs/commands.md"
 alias combat "bat ~/data/dotfiles/docs/commands.md"
 alias comcat "cat ~/data/dotfiles/docs/commands.md"
-alias hypr "micro ~/.config/hypr/hyprland.conf"
+alias hypr "cd ~/.config/hypr/"
 alias config "cd ~/.config/"
 
 # ============================================
