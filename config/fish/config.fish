@@ -9,7 +9,7 @@ function copy
     wl-copy
 end
 
-# Показать содержимое всех файлов с указанным расширением
+# Показать содержимое всех файлов с указанным расширением (исключая бинарные папки)
 function show
     set ext $argv[1]
     set target $argv[2]
@@ -23,8 +23,10 @@ function show
         set target .
     end
     
-    # Исключаем бинарные файлы
+    # Ищем файлы, исключая папки micro/buffers и micro/backups
     find $target -type f -name "*.$ext" \
+        ! -path "*/micro/buffers/*" \
+        ! -path "*/micro/backups/*" \
         ! -name "*.db" \
         ! -name "*.sqlite" \
         ! -name "*.bin" \
