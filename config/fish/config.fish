@@ -9,6 +9,32 @@ function copy
     wl-copy
 end
 
+# Показать содержимое всех файлов с указанным расширением
+function show
+    set ext $argv[1]
+    set target $argv[2]
+    
+    if test -z "$ext"
+        echo "❌ Укажи расширение, например: show txt"
+        return 1
+    end
+    
+    if test -z "$target"
+        set target .
+    end
+    
+    # Исключаем бинарные файлы
+    find $target -type f -name "*.$ext" \
+        ! -name "*.db" \
+        ! -name "*.sqlite" \
+        ! -name "*.bin" \
+        ! -name "*.so" \
+        ! -name "*.dll" \
+        ! -name "*.o" \
+        ! -name "*.exe" \
+        -exec echo "=== {} ===" \; -exec cat {} \;
+end
+
 function discord-proxy
     # Запускаем SpoofDPI в фоне
     spoofdpi &
