@@ -126,7 +126,7 @@ alias sz "du -sh"
 # ============================================
 alias yt1080 "yt-dlp -f 'bestvideo[height<=1080]+bestaudio/best'"
 alias cmatrix "cmatrix -C white"
-alias v2rayn "~/.data/programs/v2rayN-linux-64/v2rayN"
+alias v2rayn "nohup /home/zento/data/tools/v2rayN-linux-64/v2rayN > /dev/null 2>&1 &"
 
 # ============================================
 # САЙТЫ

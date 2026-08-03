@@ -34,6 +34,7 @@ text/x-csrc=micro.desktop;nvim.desktop;
 application/octet-stream=org.kde.filelight.desktop;
 application/x-zerosize=micro.desktop;userapp-kitty -e micro %f-VJ3DT3.desktop;
 text/css=micro-kitty.desktop;userapp-kitty -e micro %f-VJ3DT3.desktop;
+text/x-shellscript=userapp-kitty -e micro %f-VJ3DT3.desktop;
 
 [Default Applications]
 application/json=micro.desktop;
