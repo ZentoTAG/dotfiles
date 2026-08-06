@@ -46,6 +46,10 @@ function discord-proxy
     discord
 end
 
+function v2rayN
+    nohup /home/zento/data/tools/v2rayN-linux-64/v2rayN $argv > /dev/null 2>&1 &
+end
+
 function showall
     set target $argv[1]
     if test -z "$target"
@@ -126,7 +130,6 @@ alias sz "du -sh"
 # ============================================
 alias yt1080 "yt-dlp -f 'bestvideo[height<=1080]+bestaudio/best'"
 alias cmatrix "cmatrix -C white"
-alias v2rayn "nohup /home/zento/data/tools/v2rayN-linux-64/v2rayN > /dev/null 2>&1 &"
 
 # ============================================
 # САЙТЫ

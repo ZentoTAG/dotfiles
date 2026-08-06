@@ -79,3 +79,6 @@ for file in *.jpg *.jpeg; do
 done
 
 ❯ kitten themes --reload-in=all Aquarium\ Dark
+
+
+~/.local/share/applications 
