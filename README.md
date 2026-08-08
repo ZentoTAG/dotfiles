@@ -1,4 +1,4 @@
-# Dotfiles
+c# Dotfiles
 
 Hyprland · Waybar · Kitty · Fish · Neovim
 

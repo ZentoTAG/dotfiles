@@ -2,8 +2,8 @@
     "layer": "top",
     "modules-left": ["custom/launcher", "hyprland/workspaces", "group/media"],
     "modules-center": ["clock"],
-    "modules-right": ["hyprland/language", "tray", "custom/swaync", "hyprland/submap", "group/volume",  "custom/temperature", "cpu", "memory"], 
-    // "custom/brightness"
+    "modules-right": ["hyprland/language", "tray", "custom/swaync", "hyprland/submap", "group/volume",  "custom/temperature", "custom/gpu-temp", "cpu", "memory"], 
+     // "custom/brightness"
     "hyprland/window": {
         "max-length": 50
     },
@@ -27,6 +27,13 @@
         "on-click": "kitty --title btop -e btop"
     },
 
+    "custom/gpu-temp": {
+        "exec": "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits | head -1",
+        "interval": 5,
+        "format": "󰾱 {}°C",
+        "on-click": "kitty --title nvidia-smi -e nvidia-smi"
+    },
+    
     "custom/brightness": {
         "exec": "brightnessctl | grep 'Current' | awk '{print $4}' | tr -d '()%'",
         "interval": 5,

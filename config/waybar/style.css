@@ -189,3 +189,11 @@ tooltip label {
     margin: 3px 5px 3px 0px;
     font-size: 13px;  
 }
+
+#custom-gpu-temp {   /* <-- добавить сюда */
+    border-radius: 5px;
+    padding: 2px 8px;
+    background: @dark-8;
+    margin: 3px 5px 3px 0px;
+    font-size: 13px;
+}

@@ -84,7 +84,8 @@ sudo pacman -S --needed --noconfirm \
     ark \
     kcalc \
     breeze \ 
-    qt6ct
+    qt6ct \
+    breeze-gtk
 
 echo
 echo "Установка pyright..."
