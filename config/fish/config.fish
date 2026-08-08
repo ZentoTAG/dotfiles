@@ -169,3 +169,6 @@ set --export PATH $BUN_INSTALL/bin $PATH
 if status is-login && test -z "$WAYLAND_DISPLAY" && test (tty) = /dev/tty1
     exec start-hyprland
 end
+
+# Starship — красивый промпт
+starship init fish | source
