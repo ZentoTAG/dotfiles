@@ -1,0 +1,30 @@
+{
+  "$schema": "/etc/xdg/swaync/config.json",
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "overlay",
+  "layer-shell": true,
+  "cssPriority": "user",
+  "notification-window-width": 300,
+  "control-center-width": 320,
+  "control-center-height": 500,
+  "notification-icon-size": 48,
+  "timeout": 10,
+  "timeout-low": 5,
+  "timeout-critical": 0,
+  "notification-2fa-action": true,
+  "notification-inline-replies": true,
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "script-fail-notify": true,
+  "scripts": {
+    "example-script": {
+      "exec": "echo 'hello world'"
+    }
+  },
+  "fit-to-screen": true,
+  "keyboard-shortcuts": true,
+  "image-visibility": "when-available",
+  "relative-timestamps": true
+}

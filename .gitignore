@@ -1,0 +1,108 @@
+# Backups
+*.backup
+*.bak
+*.swp
+*.swo
+*~
+
+# Micro
+micro/backups/
+micro/buffers/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.env
+venv/
+.venv/
+
+# C++
+# C++
+*.o
+*.so
+*.a
+*.exe
+*.out
+*.app
+*.dll
+*.lib
+*.obj
+*.pdb
+*.idb
+*.ilk
+*.exp
+*.map
+*.pch
+*.manifest
+*.res
+*.tlb
+*.tlh
+*.tmp
+*.prf
+*.vcxproj.filters
+*.vcxproj.user
+*.sln.docstates
+*.suo
+*.user
+*.ncb
+*.opt
+*.plg
+*.sdf
+*.opensdf
+*.ipch
+Debug/
+Release/
+x64/
+x86/
+build/
+cmake-build-*/
+.vs/
+.vscode/
+.idea/
+1
+
+# Dotfiles специфичное
+nohup.out
+*.log
+
+# Micro (уже есть, но уточним)
+**/micro/backups/
+**/micro/buffers/
+**/micro/*.log
+
+# Бэкапы конфигов (уже есть)
+*.backup
+*.bak
+
+# Временные файлы редакторов
+*.swp
+*.swo
+*~
+.*.swp
+
+# Лишние папки в dotfiles
+backups/
+scripts/config/
+
+# Логи и временные файлы
+*.tmp
+*.old
+*.orig
+assets/backgrounds/*.png
+assets/backgrounds/*.jpg
+assets/backgrounds/*.jpeg
+assets/backgrounds/video/*.mp4

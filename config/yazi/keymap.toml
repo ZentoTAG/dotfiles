@@ -1,0 +1,24 @@
+[manager]
+prepend_keymap = [
+    { on = "h", run = "leave" },
+    { on = "j", run = "arrow down" },
+    { on = "k", run = "arrow up" },
+    { on = "l", run = "enter" },
+    { on = "H", run = "parent" },
+    { on = "L", run = "enter" },
+    { on = "q", run = "quit" },
+    { on = "r", run = "rename" },
+    { on = "d", run = "remove" },
+    { on = "y", run = "copy" },
+    { on = "p", run = "paste" },
+    { on = "v", run = "select_all" },          # выделить всё (как в Vim)
+    { on = "Ctrl+a", run = "clear_select" },   # снять выделение
+    { on = "/", run = "search" },
+    { on = "Ctrl+r", run = "refresh" },
+]
+
+[input]
+prepend_keymap = [
+    { on = "j", run = "arrow down" },
+    { on = "k", run = "arrow up" },
+]
