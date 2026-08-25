@@ -310,6 +310,7 @@ alias hani "xdg-open https://www.hanime1.nl/enter"
 alias r34 "xdg-open https://rule34hub.com/"
 alias translate "xdg-open https://translate.yandex.ru/"
 alias gpt "xdg-open https://chatgpt.com/"
+alias pstu "xdg-open https://pstu.ru/"
 
 # ============================================
 # ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ
