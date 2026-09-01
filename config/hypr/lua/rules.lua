@@ -43,3 +43,9 @@ hl.window_rule({
     float = true,
     center = true,
 })
+
+-- Правило для слоя выделения (отключает анимации)
+hl.layer_rule({
+    match = { namespace = "selection" },
+    no_anim = true,
+})
