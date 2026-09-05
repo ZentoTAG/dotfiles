@@ -11,7 +11,8 @@ prepend_keymap = [
     { on = "d", run = "remove" },
     { on = "y", run = "copy" },
     { on = "p", run = "paste" },
-    { on = "v", run = "select_all" },          # выделить всё (как в Vim)
+    { on = "v", run = "select_all" },          # выделить всё
+    { on = "V", run = "select" },              # визуальное выделение (переключение)
     { on = "Ctrl+a", run = "clear_select" },   # снять выделение
     { on = "/", run = "search" },
     { on = "Ctrl+r", run = "refresh" },

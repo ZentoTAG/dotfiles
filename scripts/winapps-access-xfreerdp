@@ -1,0 +1,4 @@
+#!/bin/fish
+
+# Запуск Access через xfreerdp с фиксированным разрешением
+xfreerdp3 /u:"ZentoWindows" /p:"1380" /v:127.0.0.1:3389 /app:"C:\Program Files\Microsoft Office\root\Office16\MSACCESS.EXE" /w:1920 /h:1080 /cert:tofu /sound /microphone +home-drive /floatbar

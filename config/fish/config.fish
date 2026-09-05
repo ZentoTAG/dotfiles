@@ -49,6 +49,56 @@ function show
 end
 
 # ============================================================
+# WinApps / Docker Aliases
+# ============================================================
+
+# Запустить Access с автозапуском Docker
+function access
+    docker compose --file ~/data/tools/winapps/compose.yaml up -d
+    sleep 3
+    winapps access
+end
+
+# Запустить полный рабочий стол Windows (стабильнее)
+function windows
+    docker compose --file ~/data/tools/winapps/compose.yaml up -d
+    sleep 3
+    winapps windows
+end
+
+# Остановить контейнер
+function winstop
+    docker compose --file ~/data/tools/winapps/compose.yaml stop
+end
+
+# Запустить контейнер
+function winstart
+    docker compose --file ~/data/tools/winapps/compose.yaml start
+end
+
+# Проверить статус контейнера
+function winstatus
+    docker compose --file ~/data/tools/winapps/compose.yaml ps
+end
+
+# Быстро открыть папку с compose.yaml
+function windir
+    cd ~/data/tools/winapps
+end
+
+# ============================================================
+# WinApps / Windows aliases
+# ============================================================
+
+# ============================================================
+# Windows RDP (X11)
+# ============================================================
+
+function win
+    xfreerdp3 /u:"ZentoWindows" /p:"1380" /v:127.0.0.1:3389 /w:1920 /h:1080 /cert:tofu /sound /microphone +home-drive /floatbar
+end
+
+# ============================================================
 # КОНВЕРТАЦИЯ ФАЙЛОВ (heavy по умолчанию) — БЫСТРАЯ
 # ============================================================
 

@@ -49,3 +49,46 @@ hl.layer_rule({
     match = { namespace = "selection" },
     no_anim = true,
 })
+
+-- ============================================================
+-- WINAPPS FIX (чтобы окна не прыгали и не телепортировались)
+-- ============================================================
+-- 
+-- hl.window_rule({
+--     name = "winapps-access",
+--     match = { class = "Microsoft Access" },
+--     float = true,
+--     center = true,
+-- })
+-- 
+-- hl.window_rule({
+--     name = "winapps-generic",
+--     match = { class = ".*Microsoft.*" },
+--     float = true,
+-- })
+-- 
+-- -- Добавь это правило к остальным для WinApps
+-- hl.window_rule({
+--     name = "winapps-suppress-maximize",
+--     match = { class = ".*Microsoft.*" },
+--     suppress_event = "maximize",  -- Отключает полный экран при наведении
+-- })
+
+-- Microsoft Access / WinApps
+hl.window_rule({
+    name = "winapps-microsoft",
+    match = {
+        class = ".*Microsoft.*",
+    },
+    float = true,
+    no_anim = true,
+})
+
+-- Игнорировать maximize-запросы RemoteApp
+hl.window_rule({
+    name = "winapps-suppress-maximize",
+    match = {
+        class = ".*Microsoft.*",
+    },
+    suppress_event = "maximize",
+})
