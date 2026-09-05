@@ -25,6 +25,25 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
+-- ПРОЗРАЧНОСТЬ ФОНА
+vim.opt.termguicolors = true
+
+-- Убираем фон у всех элементов
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
+vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "none" })
+vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "none" })
+vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
+vim.api.nvim_set_hl(0, "PmenuSel", { bg = "none" })
+vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
+vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none" })
+vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
+vim.api.nvim_set_hl(0, "TabLineFill", { bg = "none" })
+vim.api.nvim_set_hl(0, "TabLineSel", { bg = "none" })
+
 -- СИСТЕМНЫЙ БУФЕР ОБМЕНА (чтобы работал с браузером)
 vim.opt.clipboard = "unnamedplus"
 
@@ -108,11 +127,22 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 
     -- ========== ТЕМА ==========
+    -- {
+    --     "catppuccin/nvim",
+    --     name = "catppuccin",
+    --     priority = 1000,
+    --     config = function()
+    --         vim.cmd.colorscheme("catppuccin")
+    --     end
+    -- },
     {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
         config = function()
+            require("catppuccin").setup({
+                transparent_background = true,
+            })
             vim.cmd.colorscheme("catppuccin")
         end
     },
