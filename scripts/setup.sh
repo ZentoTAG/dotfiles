@@ -42,7 +42,6 @@ sudo pacman -S --needed --noconfirm \
     hyprpolkitagent \
     hypridle \
     hyprpaper \
-    waybar \
     rofi \
     kitty \
     dunst \
@@ -99,7 +98,8 @@ echo "Установка пакетов из AUR..."
 
 yay -S --needed --noconfirm \
     zen-browser-bin \
-    cmatrix-git
+    cmatrix-git \
+    waybar-git
 
 echo
 echo "Включение сервисов..."

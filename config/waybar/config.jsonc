@@ -8,6 +8,15 @@
         "max-length": 50
     },
 
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "all-outputs": true,
+        // Используем raw-вызов диспетчера старого синтаксиса для клика левой кнопкой мыши
+        "on-click-left": "hyprctl dispatch 'hl.dsp.exec_raw(\"workspace {id}\")'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+
     "custom/launcher": {
         "format": "",
         "on-click": "wlogout",
@@ -140,9 +149,13 @@
     "custom/workspaces": {
         "exec": "/home/zento/.config/waybar/scripts/workspaces.sh",
         "interval": 1,
+        "return-type": "json",
         "format": "{}",
-        "on-click": "/home/zento/.config/waybar/scripts/workspace_click.sh {}",
+        // {} подставит значение "alt", то есть чистую цифру текущего/выбранного воркспейса
+        "on-click": "hyprctl dispatch 'hl.dsp.exec_raw(\"workspace {}\")'",
         "tooltip": false
     }
+
+
 
 }
