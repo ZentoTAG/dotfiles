@@ -313,6 +313,7 @@ alias gc "git commit -m"
 alias gpush "git push"
 alias gpull "git pull"
 alias yz "yazi"
+alias py "python3"
 
 # ============================================
 # ПРОЕКТЫ И КОНФИГИ

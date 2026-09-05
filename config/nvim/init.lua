@@ -55,9 +55,22 @@ vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>")
 vim.keymap.set("n", "<leader>f", "<cmd>Telescope find_files<CR>")
 vim.keymap.set("n", "<leader>g", "<cmd>Telescope live_grep<CR>")
 
+-- -- Терминал и запуск
+-- vim.keymap.set('n', '<leader>t', ':bo terminal<cr>a', {})
+-- vim.keymap.set("n", "<leader>r", ":!python3 %<CR>")
+
 -- Терминал и запуск
 vim.keymap.set('n', '<leader>t', ':bo terminal<cr>a', {})
+
+-- Запуск БЕЗ терминала (быстрый, но input() не работает)
 vim.keymap.set("n", "<leader>r", ":!python3 %<CR>")
+
+-- Запуск С терминалом (поддерживает input())
+vim.keymap.set("n", "<leader>R", function()
+    vim.cmd("bo terminal")
+    vim.cmd("startinsert")
+    vim.api.nvim_feedkeys("python3 " .. vim.fn.expand("%") .. "\n", "n", false)
+end)
 
 -- Буфер обмена
 vim.keymap.set({"n", "v"}, "<leader>y", '"+y')
