@@ -1,0 +1,104 @@
+{
+    "layer": "top",
+    "modules-left": ["hyprland/workspaces", "group/media"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "group/volume",  "hyprland/submap", "cpu", "memory"],
+
+    "hyprland/window": {
+        "max-length": 50
+    },
+
+    "cpu": {
+        "interval": 10,
+        "format": "{usage}% ",
+        "format-alt": "{avg}% ",
+        "max-length": 10,
+        "on-click": "exec kitty --title btop -e btop"
+    },
+
+    "memory": {
+        "interval": 10,
+        "format": " {percentage}%",
+        "tooltip-format": "{used:0.1f}G/{total:0.1f}G used",
+        "on-click": "exec kitty --title htop -e htop"
+    },
+
+    // "network": {
+    //     "format": "",
+    //     "format-wifi": "",
+    //     "format-ethernet": "",
+    //     "format-disconnected": "󰤭",
+    //     "tooltip-format": "{ifname} via {gwaddr} 󰊗",
+    //     "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+    //     "tooltip-format-ethernet": "{ifname} ",
+    //     "tooltip-format-disconnected": "󰖪",
+    //     "max-length": 50,
+    //     "on-click": "exec kitty -e nmtui"
+    // },
+    
+    "clock": {
+        "format": "{:%a, %d.%m.%Y %H:%M}",
+        "locale": "ru_RU.UTF-8",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "format": {
+                "today": "<span color='#b0b0b0'><b>{}</b></span>"
+            }
+        },
+        "on-click": "exec firefox --new-window https://calendar.google.com"
+    },
+
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": {
+            "default": ["", ""]
+        },
+        "scroll-step": 1,
+        "ignored-sinks": ["Easy Effects Sink"],
+        "on-click": "pavucontrol"
+    },
+
+    "pulseaudio/slider": {
+        "min": 0,
+        "max": 100,
+        "orientation": "horizontal"
+    },
+
+    "group/volume": {
+        "orientation": "horizontal",
+        "modules": [
+            "pulseaudio",
+            "pulseaudio/slider"
+        ]
+    },
+
+    "group/media": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/media-animation",
+            "custom/media-now-playing"
+        ]
+    },
+
+    "custom/media-now-playing": {
+        "exec": "/home/zento/.config/waybar/custom_modules/media/media-now-playing.sh",
+        "escape": true,
+        "tooltip": false,
+        "on-click": "playerctl play-pause",
+        "on-click-middle": "playerctl previous",
+        "on-click-right": "playerctl next"
+    },
+
+    "custom/media-animation": {
+        "exec": "/home/zento/.config/waybar/custom_modules/media/media-animation.sh",
+        "tooltip": false
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+        "show-passive": false,
+        "show-hidden": false
+    }
+}

@@ -1,0 +1,256 @@
+configuration {
+    font: "JetBrainsMono Nerd Font 14";
+    show-icons: true;
+    scroll-method: 1;
+    scrollbar: true;
+
+    display-drun: "Apps ";
+    display-run: "Run ";
+    display-emoji: "Emoji ";
+    display-settings: "Settings ";
+
+    drun-display-format: "{icon} {name}";
+    modi: "drun,run,emoji,settings";
+}
+
+* {
+    background-color: #1a1a1e;
+    text-color: #c8c8d0;
+}
+
+window {
+    background-color: #1a1a1e;
+
+    border: 1px;
+    border-color: #2a2a30;
+    border-radius: 10px;
+
+    padding: 0px;
+
+    width: 750px;
+    height: 400px;
+
+    location: center;
+    anchor: center;
+}
+
+mainbox {
+    background-color: #1a1a1e;
+
+    children: [
+        sidebar,
+        content-box
+    ];
+
+    orientation: horizontal;
+    spacing: 0px;
+
+    padding: 0px;
+}
+
+sidebar {
+    background-color: #1a1a1e;
+
+    width: 200px;
+    height: 100%;
+
+    padding: 20px 12px;
+
+    children: [
+        sidebar-image,
+        sidebar-spacer,
+        sidebar-text
+    ];
+
+    orientation: vertical;
+    spacing: 12px;
+}
+
+sidebar-image {
+    background-color: #1a1a1e;
+
+    content: "~/.config/rofi/rofi-icon.png";
+    content-width: 120px;
+    content-height: 120px;
+
+    border-radius: 60px;
+
+    expand: false;
+}
+
+sidebar-spacer {
+    background-color: #1a1a1e;
+
+    expand: true;
+}
+
+sidebar-text {
+    background-color: #1a1a1e;
+    text-color: #8e8e98;
+
+    font: "JetBrainsMono Nerd Font 11";
+
+    content: "Настройки";
+
+    expand: false;
+
+    horizontal-align: 0.5;
+}
+
+content-box {
+    background-color: #1a1a1e;
+
+    width: 100%;
+    height: 100%;
+
+    children: [
+        inputbar,
+        listview,
+        mode-switcher
+    ];
+
+    orientation: vertical;
+    spacing: 10px;
+
+    padding: 20px 20px 16px 16px;
+}
+
+inputbar {
+    background-color: #24242a;
+
+    border: 1px;
+    border-color: #2a2a30;
+    border-radius: 8px;
+
+    padding: 10px 14px;
+
+    children: [
+        prompt,
+        textbox-prompt-colon,
+        entry
+    ];
+
+    spacing: 0px;
+}
+
+prompt {
+    background-color: #24242a;
+    text-color: #c8c8d0;
+}
+
+textbox-prompt-colon {
+    background-color: #24242a;
+    text-color: #8e8e98;
+
+    expand: false;
+
+    str: ">";
+
+    margin: 0px 0.3em 0px 0px;
+}
+
+entry {
+    background-color: #24242a;
+    text-color: #c8c8d0;
+
+    placeholder: "Search...";
+    placeholder-color: #8e8e98;
+}
+
+listview {
+    background-color: #1a1a1e;
+
+    border: 0px;
+
+    padding: 4px 0px 0px;
+
+    spacing: 4px;
+
+    lines: 8;
+
+    fixed-height: false;
+
+    scrollbar: true;
+
+    width: 100%;
+}
+
+element {
+    background-color: #1a1a1e;
+
+    border: 0px;
+    border-radius: 6px;
+
+    padding: 7px 10px;
+
+    expand: false;
+}
+
+element normal.normal {
+    background-color: #1a1a1e;
+    text-color: #c8c8d0;
+}
+
+element alternate.normal {
+    background-color: #1a1a1e;
+    text-color: #c8c8d0;
+}
+
+element selected.normal {
+    background-color: #2a2a30;
+    text-color: #ffffff;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+
+    font: "JetBrainsMono Nerd Font 14";
+}
+
+element-icon {
+    background-color: inherit;
+
+    size: 20px;
+}
+
+scrollbar {
+    background-color: #1a1a1e;
+
+    border: 0px;
+
+    width: 4px;
+
+    handle-width: 4px;
+    handle-color: #2a2a30;
+}
+
+mode-switcher {
+    background-color: #1a1a1e;
+
+    spacing: 6px;
+
+    expand: false;
+
+    padding: 4px 0px 0px;
+}
+
+button {
+    background-color: #24242a;
+
+    border: 1px;
+    border-color: #2a2a30;
+    border-radius: 7px;
+
+    padding: 7px 12px;
+
+    text-color: #8e8e98;
+}
+
+button selected {
+    background-color: #2a2a30;
+
+    text-color: #ffffff;
+
+    border-color: #35353d;
+}
