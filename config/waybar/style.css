@@ -12,11 +12,14 @@
 }
 
 window#waybar {
-    background-color: @dark-9;
+    background-color: rgba(24, 24, 27, 0.8);
     color: white;
     padding: 3px 0;
-    margin: 0 16px 0 16px;
-    border-radius: 0px;
+    
+    /* Отступы: 10px сверху, 15px справа, 0px снизу, 15px слева */
+    margin: 10px 15px 0px 15px; 
+    
+    border-radius: 10px;
 }
 
 #workspaces button {
@@ -77,7 +80,7 @@ window#waybar {
     padding: 0 8px;
 }
 
-/* ===== ПРАВАЯ ЧАСТЬ — С ОБВОДКАМИ (КРОМЕ ЗВУКА) ===== */
+/* ===== ПРАВАЯ ЧАСТЬ — БЕЗ ОБВОДОК ===== */
 #cpu,
 #memory,
 #tray,
@@ -86,10 +89,14 @@ window#waybar {
 #volume,
 #custom-layout,
 #custom-temperature,
-#custom-brightness {
+#custom-brightness,
+#custom-gpu-temp,
+#battery,
+#language,
+#custom-swaync {
     border-radius: 5px;
     padding: 2px 8px;
-    background: @dark-8;
+    background: transparent;
     margin: 3px 5px 3px 0px;
     font-size: 13px;
 }
@@ -157,16 +164,9 @@ tooltip label {
     font-size: 13px;
 }
 
-#custom-swaync {
-    border-radius: 5px;
-    padding: 2px 8px;
-    background: @dark-8;
-    margin: 3px 5px 3px 0px;
-    font-size: 13px;
-}
-
+/* ===== ЦВЕТА ДЛЯ СОСТОЯНИЙ ===== */
 #custom-swaync.have-notifications {
-    color: #f7768e;  /* красный, если есть уведомления */
+    color: #f7768e;
 }
 
 #custom-swaync.none {
@@ -180,30 +180,6 @@ tooltip label {
 #custom-swaync.dnd-none,
 #custom-swaync.dnd-notification {
     color: #808080;
-}
-
-#language {
-    border-radius: 5px;
-    padding: 2px 8px;
-    background: @dark-8;
-    margin: 3px 5px 3px 0px;
-    font-size: 13px;  
-}
-
-#custom-gpu-temp {   /* <-- добавить сюда */
-    border-radius: 5px;
-    padding: 2px 8px;
-    background: @dark-8;
-    margin: 3px 5px 3px 0px;
-    font-size: 13px;
-}
-
-#battery {
-    border-radius: 5px;
-    padding: 2px 8px;
-    background: @dark-8;
-    margin: 3px 5px 3px 0px;
-    font-size: 13px;
 }
 
 #battery.warning {

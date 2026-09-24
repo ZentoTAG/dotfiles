@@ -425,3 +425,4 @@ end
 
 # Starship — красивый промпт
 # starship init fish | source
+

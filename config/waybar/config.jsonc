@@ -1,8 +1,14 @@
 {
     "layer": "top",
-    "modules-left": ["custom/launcher", "hyprland/workspaces", "group/media"],
+    "margin-top": 10,
+    "margin-left": 15,
+    "margin-right": 15,
+    "margin-bottom": 0,
+    "modules-left": ["custom/launcher", "hyprland/workspaces"],
+    // "group/media"
     "modules-center": ["clock"],
-    "modules-right": ["hyprland/language", "tray", "custom/swaync", "hyprland/submap", "group/volume",  "custom/temperature", "custom/gpu-temp", "battery", "cpu", "memory"], 
+    "modules-right": ["custom/swaync", "tray", "hyprland/submap", "group/volume",  "custom/temperature", "custom/gpu-temp", "battery", "cpu", "memory"], 
+    //"hyprland/language"
      // "custom/brightness"
     "hyprland/window": {
         "max-length": 50
