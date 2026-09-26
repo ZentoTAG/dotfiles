@@ -1,0 +1,100 @@
+# ============================================================
+#  ALACRITTY CONFIG — перевод из Kitty
+# ============================================================
+
+[font]
+size = 14.0
+
+[font.normal]
+family = "JetBrains Mono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "JetBrains Mono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "JetBrains Mono Nerd Font"
+style = "Italic"
+
+[font.bold_italic]
+family = "JetBrains Mono Nerd Font"
+style = "Bold Italic"
+
+# ----- Окно -----
+[window]
+opacity = 0.82
+dynamic_title = true
+# initial_window_width/height не поддерживаются, размером управляет Hyprland
+
+# ----- Цвета -----
+[colors.primary]
+background = "#1e1e1e"
+foreground = "#d3d3d3"
+
+[colors.cursor]
+text = "#1e1e1e"
+cursor = "#d3d3d3"
+
+[colors.selection]
+text = "#ffffff"
+background = "#3a3a3a"
+
+[colors.normal]
+black   = "#2e2e2e"
+red     = "#d4878a"
+green   = "#a8c88a"
+yellow  = "#d9b86b"
+blue    = "#8ab4f8"
+magenta = "#b592d4"
+cyan    = "#8ad4d4"
+white   = "#d3d3d3"
+
+[colors.bright]
+black   = "#4a4a4a"
+red     = "#f07178"
+green   = "#c3e88d"
+yellow  = "#ffcb6b"
+blue    = "#9ccbff"
+magenta = "#c792ea"
+cyan    = "#89ddff"
+white   = "#ffffff"
+
+# ----- Курсор -----
+[cursor]
+style = { shape = "Block", blinking = "Never" }
+blink_interval = 0
+blink_timeout = 0
+
+# ----- Скроллинг -----
+[scrolling]
+history = 10000
+multiplier = 5
+
+# ----- Выделение -----
+[selection]
+save_to_clipboard = true
+
+# ----- Мышь -----
+[mouse]
+hide_when_typing = true
+
+# ----- Горячие клавиши -----
+[keyboard]
+bindings = [
+  # Копировать/вставить
+  { key = "C", mods = "Control|Shift", action = "Copy" },
+  { key = "V", mods = "Control|Shift", action = "Paste" },
+
+  # Поиск
+  { key = "F", mods = "Control|Shift", action = "SearchForward" },
+  { key = "B", mods = "Control|Shift", action = "SearchBackward" },
+
+  # Размер шрифта (используйте сам символ = и -)
+  { key = "=", mods = "Control|Shift", action = "IncreaseFontSize" },
+  { key = "-", mods = "Control|Shift", action = "DecreaseFontSize" },
+  { key = "Backspace", mods = "Control|Shift", action = "ResetFontSize" },
+
+  # Vi-режим (Space поддерживается)
+  { key = "Space", mods = "Control|Shift", action = "ToggleViMode" },
+]

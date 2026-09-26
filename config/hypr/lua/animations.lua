@@ -18,5 +18,5 @@ hl.animation({ leaf = "windowsMove", enabled = true, speed = 4, bezier = "easeOu
 
 hl.config({
     misc = { animate_manual_resizes = true },
-    dwindle = { preserve_split = true, force_split = 2 },
+    dwindle = { preserve_split = true },
 })

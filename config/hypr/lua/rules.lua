@@ -10,6 +10,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    match = { class = "^(kitty)$" },
+    tile = true,
+    float = false
+})
+
+hl.window_rule({
     name = "steam-workspace",
     match = { class = ".*[sS]team.*" },
     workspace = 3,
