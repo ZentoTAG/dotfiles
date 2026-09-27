@@ -66,6 +66,9 @@ style = { shape = "Block", blinking = "Never" }
 blink_interval = 0
 blink_timeout = 0
 
+[colors]
+transparent_background_colors = true
+
 # ----- Скроллинг -----
 [scrolling]
 history = 10000

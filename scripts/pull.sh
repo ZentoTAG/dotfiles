@@ -23,7 +23,12 @@ if [ -f "$CONFIG_DIR/mimeapps.list" ]; then
     cp "$CONFIG_DIR/mimeapps.list" "$DOTFILES_DIR/config/"
 fi
 
-# После копирования hypr удали ненужную папку conf
+# Защита: убираем случайную вложенную config у hypr
+if [ -d "$DOTFILES_DIR/config/hypr/config" ]; then
+    rm -rf "$DOTFILES_DIR/config/hypr/config"
+fi
+
+# Убираем устаревшую conf у hypr (если была)
 if [ -d "$DOTFILES_DIR/config/hypr/conf" ]; then
     rm -rf "$DOTFILES_DIR/config/hypr/conf"
 fi
