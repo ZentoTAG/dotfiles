@@ -1,5 +1,5 @@
 local mainMod = "SUPER"
-local terminal = "alacritty"
+local terminal = "kitty"
 local fileManager = "thunar"
 local menu = "rofi -show drun -modi \"drun,run,emoji,settings:~/.config/rofi/settings-mode.sh\" -theme ~/.config/rofi/theme.rasi"
 
