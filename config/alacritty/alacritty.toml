@@ -23,7 +23,8 @@ style = "Bold Italic"
 
 # ----- Окно -----
 [window]
-opacity = 0.82
+# opacity = 0.82
+opacity = 0.83
 dynamic_title = true
 # initial_window_width/height не поддерживаются, размером управляет Hyprland
 
