@@ -1,7 +1,7 @@
 hl.on("hyprland.start", function()
     hl.exec_cmd("hyprlock")
     hl.exec_cmd("hypridle")
-    hl.exec_cmd("hyprpaper")
+    -- hl.exec_cmd("hyprpaper")
     hl.exec_cmd("awww-daemon &")
     hl.exec_cmd("sleep 2 && /home/zento/data/dotfiles/scripts/apply_wallpaper.sh")
     hl.exec_cmd("[workspace 9 silent] /home/zento/data/tools/v2rayN-linux-64/v2rayN")
