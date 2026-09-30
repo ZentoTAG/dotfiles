@@ -8,7 +8,7 @@ hl.on("hyprland.start", function()
     -- hl.exec_cmd("justrayd")                    -- <-- заменил v2rayN на демон JustRay
     hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
     hl.exec_cmd("swaync")
-    hl.exec_cmd("[workspace 9 silent] alacritty --class jray -e jray")
+    -- hl.exec_cmd("[workspace 9 silent] alacritty --class jray -e jray")
     hl.exec_cmd("waybar")
     hl.exec_cmd("udiskie")
     hl.exec_cmd("[workspace 1 silent] sleep 2 && zen-browser")
