@@ -15,7 +15,7 @@ WALLPAPER=$(grep -m 1 "^wallpaper " ~/.config/waypaper/config.ini | cut -d "=" -
 if [ -n "$WALLPAPER" ] && [ -f "$WALLPAPER" ]; then
     # Запоминаем последние обои
     echo "$WALLPAPER" > "$LAST_WALLPAPER_FILE"
-    awww img "$WALLPAPER" --transition-type center --transition-duration 0.5 --transition-fps 255
+    # awww img "$WALLPAPER" --transition-type center --transition-duration 0.5 --transition-fps 255
 else
     # Если в конфиге нет — пытаемся взять последние
     if [ -f "$LAST_WALLPAPER_FILE" ]; then
