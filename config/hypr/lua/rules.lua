@@ -126,3 +126,15 @@ hl.window_rule({
     rounding = 0,
     fullscreen = true,
 })
+
+hl.window_rule({
+    match = { 
+        class = "zoom", 
+        initial_title = "annotate_toolbar" 
+    },
+    float = true,
+    no_focus = true,
+    no_anim = true,
+    no_blur = true,
+    move = "100%-20 100%-20"  -- сдвигает окно за пределы экрана
+})

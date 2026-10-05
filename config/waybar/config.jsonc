@@ -7,7 +7,7 @@
     "modules-left": ["custom/launcher", "hyprland/workspaces"],
     // "group/media"
     "modules-center": ["clock"],
-    "modules-right": ["custom/swaync", "tray", "hyprland/submap", "group/volume",  "custom/temperature", "custom/gpu-temp", "battery", "cpu", "memory"], 
+    "modules-right": ["network", "custom/swaync", "tray", "hyprland/submap", "group/volume",  "custom/temperature", "custom/gpu-temp", "battery", "cpu", "memory"], 
     //"hyprland/language"
      // "custom/brightness"
     "hyprland/window": {
@@ -22,7 +22,22 @@
         "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
         "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
     },
-
+            
+    "network": {
+        "format-wifi": "{icon} {essid}",
+        "format-ethernet": "{icon} LAN",
+        "format-disconnected": "{icon}",
+        "format-icons": {
+            "wifi": "󰤨",
+            "ethernet": "󰈀",
+            "disconnected": "󰖪"
+        },
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "Проводное: {ifname}",
+        "tooltip-format-disconnected": "Нет сети",
+        "on-click": "alacritty -e nmtui"
+    },
+    
     "battery": {
         "interval": 10,
         "states": {

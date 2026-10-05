@@ -22,6 +22,10 @@ window#waybar {
     border-radius: 10px;
 }
 
+#network.wifi { color: #a8c88a; }
+#network.ethernet { color: #8ab4f8; }
+#network.disconnected { color: #f07178; }
+
 #workspaces button {
     padding: 1px 5px;
     margin: 2px 2px 2px 5px;
@@ -190,3 +194,27 @@ tooltip label {
     color: #ff5555;
     animation: blink 1s infinite;
 }
+
+#custom-network {
+    padding: 4px 6px;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-width: 34px;
+    min-height: 20px;
+}
+
+#custom-network {
+    padding: 4px 6px;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-width: 34px;
+    min-height: 20px;
+}
+
+#custom-network.wifi { background-image: url("/home/zento/.local/share/nw-manager-tui/assets/wifi.svg"); }
+#custom-network.wifi-off { background-image: url("/home/zento/.local/share/nw-manager-tui/assets/wifi-off.svg"); }
+#custom-network.ethernet { background-image: url("/home/zento/.local/share/nw-manager-tui/assets/ethernet.svg"); }
+#custom-network.ethernet-off { background-image: url("/home/zento/.local/share/nw-manager-tui/assets/ethernet-off.svg"); }
+#custom-network.disconnected { background-image: url("/home/zento/.local/share/nw-manager-tui/assets/no-connection.svg"); }
