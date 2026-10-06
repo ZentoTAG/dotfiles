@@ -4,11 +4,26 @@
     "margin-left": 15,
     "margin-right": 15,
     "margin-bottom": 0,
+    // "modules-left": ["custom/launcher", "hyprland/workspaces"],
+    // // "group/media"
+    // "modules-center": ["clock"],
+    // "modules-right": ["network", "custom/swaync", "tray", "hyprland/submap", "group/volume",  "custom/temperature", "custom/gpu-temp", "battery", "cpu", "memory"], 
     "modules-left": ["custom/launcher", "hyprland/workspaces"],
-    // "group/media"
     "modules-center": ["clock"],
-    "modules-right": ["network", "custom/swaync", "tray", "hyprland/submap", "group/volume",  "custom/temperature", "custom/gpu-temp", "battery", "cpu", "memory"], 
-    //"hyprland/language"
+    "modules-right": [
+        "network",
+        "custom/swaync",
+        "tray",
+        "group/volume",
+        "battery",
+        "temperature",
+        "gpu-temp",
+        "cpu",
+        "memory",
+        "submap"
+    ],
+    
+    // //"hyprland/language"
      // "custom/brightness"
     "hyprland/window": {
         "max-length": 50
