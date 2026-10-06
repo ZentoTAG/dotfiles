@@ -24,17 +24,9 @@ hl.gesture({
     action = "workspace"
 })
 
-touchpad = {
-    natural_scroll = true,        -- естественная прокрутка
-    disable_while_typing = true,  -- отключать тачпад при печати
-    clickfinger_behavior = true,  -- 2 пальца = ПКМ, 3 = СКМ
-    scroll_factor = 0.5,          -- скорость прокрутки
-}
-
 hl.device({
-    name = "synps/2-synaptics-touchpad",
-    sensitivity = 0.5, -- от -1.0 до 1.0 (0.0 — по умолчанию)
-    -- другие настройки тачпада можно перенести сюда:
+    name = "pnp0c50:00-0911:5288-1",
+    sensitivity = 1.0,           -- попробуй 0.3–0.7 для начала
     natural_scroll = true,
     disable_while_typing = true,
     clickfinger_behavior = true,
