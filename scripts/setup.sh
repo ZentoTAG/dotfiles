@@ -74,7 +74,6 @@ sudo pacman -S --needed --noconfirm \
     hyprshot \
     udiskie \
     zen-browser \
-    polkit-kde-agent \
     btop \
     htop \
     git \
@@ -88,6 +87,7 @@ sudo pacman -S --needed --noconfirm \
     jq \
     ripgrep \
     npm \
+    rust \
     ttf-jetbrains-mono-nerd \
     ttf-font-awesome \
     adwaita-icon-theme \
@@ -110,6 +110,27 @@ echo "Установка пакетов из AUR..."
 yay -S --needed --noconfirm \
     cmatrix-git \
     waybar-git
+
+echo
+echo "Установка nw-manager-tui..."
+
+if ! command -v cargo &>/dev/null; then
+    echo "📦 Устанавливаю Rust..."
+    sudo pacman -S --noconfirm rust
+fi
+
+if ! command -v nw-manager-tui &>/dev/null; then
+    echo "📦 Устанавливаю nw-manager-tui..."
+    cargo install nw-manager-tui
+
+    echo "📁 Копирую иконки..."
+    mkdir -p ~/.local/share/nw-manager-tui
+    git clone --depth 1 https://github.com/z4nder/nw-manager-tui /tmp/nw-manager-tui 2>/dev/null
+    cp -r /tmp/nw-manager-tui/assets ~/.local/share/nw-manager-tui/
+    rm -rf /tmp/nw-manager-tui
+else
+    echo "✅ nw-manager-tui уже установлен"
+fi
 
 echo
 echo "Включение сервисов..."
