@@ -29,6 +29,6 @@ hl.device({
     sensitivity = 1.0,           -- попробуй 0.3–0.7 для начала
     natural_scroll = true,
     disable_while_typing = true,
-    clickfinger_behavior = true,
+    clickfinger_behavior = false,
     scroll_factor = 0.5,
 })
