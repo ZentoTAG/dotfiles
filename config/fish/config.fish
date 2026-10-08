@@ -40,6 +40,14 @@ function swap
     echo "✅ Свапнуто: $file1 ↔ $file2"
 end
 
+function mv_safe
+    set src $argv[1]
+    set dst $argv[2]
+    mkdir -p (dirname $dst)
+    rsync -aP --remove-source-files $src $dst/
+    find $src -type d -empty -delete 2>/dev/null
+end
+
 # Удалить всё, что содержит слово (поиск в ~/.config, ~/.cache, ~/.local/share)
 function del
     set word $argv[1]

@@ -34,6 +34,7 @@ echo "Установка официальных пакетов..."
 
 sudo pacman -S --needed --noconfirm \
     rofi-emoji \
+    fd \
     powertop \
     tumbler \
     ffmpegthumbnailer \
