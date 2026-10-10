@@ -27,7 +27,7 @@ hl.gesture({
 hl.device({
     name = "pnp0c50:00-0911:5288-1",
     sensitivity = 1.0,           -- попробуй 0.3–0.7 для начала
-    natural_scroll = true,
+    natural_scroll = false,
     disable_while_typing = true,
     clickfinger_behavior = false,
     scroll_factor = 0.5,
