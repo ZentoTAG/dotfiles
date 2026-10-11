@@ -7,33 +7,31 @@
 
 * {
     font-family: JetBrainsMono Nerd Font Propo;
-    font-size: 20px;
+    font-size: 18px;
     min-height: 0;
 }
 
 window#waybar {
     background-color: rgba(24, 24, 27, 0.8);
-    /* background-color: rgba(0, 0, 0, 0); */
     color: white;
     padding: 3px 0;
-    
-    /* Отступы: 10px сверху, 15px справа, 0px снизу, 15px слева */
-    margin: 10px 15px 0px 15px; 
-    
+    margin: 10px 15px 0px 15px;
     border-radius: 10px;
 }
 
+/* ===== СЕТЬ (состояния) ===== */
 #network.wifi { color: #a8c88a; }
 #network.ethernet { color: #8ab4f8; }
 #network.disconnected { color: #f07178; }
 
+/* ===== WORKSPACES ===== */
 #workspaces button {
     padding: 1px 5px;
     margin: 2px 2px 2px 5px;
     background: transparent;
     border-radius: 2px;
     color: white;
-    font-size: 13px;
+    font-size: 16px;
 }
 
 #workspaces button.active {
@@ -47,7 +45,7 @@ window#waybar {
     color: black;
 }
 
-/* ===== ЛЕВАЯ И ЦЕНТРАЛЬНАЯ ЧАСТЬ — БЕЗ ОБВОДОК ===== */
+/* ===== ЛЕВАЯ И ЦЕНТРАЛЬНАЯ ЧАСТЬ ===== */
 #custom-launcher,
 #media,
 #custom-media-animation,
@@ -56,36 +54,35 @@ window#waybar {
     background: transparent;
     padding: 0 4px;
     margin: 0;
-    font-size: 16px;
+    font-size: 20px;
     border-radius: 0;
 }
 
 #custom-launcher {
-    font-size: 16px;
+    font-size: 20px;
 }
 
 #media {
     color: #ffffff;
-    margin: 0px 0px 0px 0px;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 #custom-media-animation {
-    font-size: 11px;
+    font-size: 14px;
     margin-right: 5px;
 }
 
 #custom-media-now-playing {
-    font-size: 13px;
+    font-size: 16px;
     margin-right: 5px;
 }
 
 #clock {
-    font-size: 14px;
+    font-size: 20px;
     padding: 0 8px;
 }
 
-/* ===== ПРАВАЯ ЧАСТЬ — БЕЗ ОБВОДОК ===== */
+/* ===== ПРАВАЯ ЧАСТЬ — ЕДИНЫЙ РАЗМЕР ===== */
 #cpu,
 #memory,
 #tray,
@@ -98,20 +95,19 @@ window#waybar {
 #custom-gpu-temp,
 #battery,
 #language,
-#custom-swaync {
+#custom-swaync,
+#pulseaudio {
     border-radius: 5px;
     padding: 2px 8px;
     background: transparent;
     margin: 3px 5px 3px 0px;
-    font-size: 13px;
+    font-size: 16px;
 }
 
-/* Убираем обводку для звука */
+/* ===== ЗВУК ===== */
 #pulseaudio {
-    background: transparent;
     padding: 0 4px;
     margin: 0;
-    font-size: 16px;
     border-radius: 0;
 }
 
@@ -132,14 +128,14 @@ window#waybar {
 }
 
 #pulseaudio-slider trough {
-    min-height: 5px;
-    min-width: 50px;
+    min-height: 6px;
+    min-width: 60px;
     border-radius: 3px;
     background: @dark-7;
 }
 
 #pulseaudio-slider highlight {
-    min-width: 5px;
+    min-width: 6px;
     border-radius: 3px;
     background: @highlight;
 }
@@ -166,7 +162,7 @@ tooltip {
 
 tooltip label {
     color: white;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 /* ===== ЦВЕТА ДЛЯ СОСТОЯНИЙ ===== */
@@ -196,22 +192,14 @@ tooltip label {
     animation: blink 1s infinite;
 }
 
+/* ===== КАСТОМНАЯ СЕТЬ (иконки) ===== */
 #custom-network {
     padding: 4px 6px;
-    background-size: 18px 18px;
+    background-size: 20px 20px;
     background-repeat: no-repeat;
     background-position: center;
-    min-width: 34px;
-    min-height: 20px;
-}
-
-#custom-network {
-    padding: 4px 6px;
-    background-size: 18px 18px;
-    background-repeat: no-repeat;
-    background-position: center;
-    min-width: 34px;
-    min-height: 20px;
+    min-width: 38px;
+    min-height: 22px;
 }
 
 #custom-network.wifi { background-image: url("/home/zento/.local/share/nw-manager-tui/assets/wifi.svg"); }
