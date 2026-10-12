@@ -41,6 +41,7 @@ x-scheme-handler/superproductivity=superproductivity.desktop;
 application/vnd.openxmlformats-officedocument.presentationml.presentation=libreoffice-impress.desktop;
 application/x-desktop=micro-alacritty.desktop;
 application/zip=libreoffice-startcenter.desktop;
+text/x-python=kitty-micro.desktop;
 
 [Default Applications]
 application/json=micro.desktop

@@ -9,10 +9,10 @@ hl.config({
         shadow = { enabled = false },
     },
     general = {
-        border_size = 2,                            -- толщина
-        col = {
-            active_border = "rgba(255, 255, 255, 1.0)",    -- белая (активное)
-            inactive_border = "rgba(100, 100, 100, 0.8)",   -- серая (неактивное)
-        },
+        border_size = 1,                            -- толщина
+        -- col = {
+        --     active_border = "rgba(255, 255, 255, 1.0)",    -- белая (активное)
+        --     inactive_border = "rgba(100, 100, 100, 0.8)",   -- серая (неактивное)
+        -- },
     },
 })

@@ -40,6 +40,24 @@ hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" 
 hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
 
+-- ============================================================
+-- SCROLLING LAYOUT
+-- ============================================================
+
+-- Прокрутка по колонкам
+hl.bind(mainMod .. " + period", hl.dsp.layout("move +col"))
+hl.bind(mainMod .. " + comma", hl.dsp.layout("move -col"))
+
+-- Смена колонок местами
+hl.bind(mainMod .. " + SHIFT + period", hl.dsp.layout("swapcol r"))
+hl.bind(mainMod .. " + SHIFT + comma", hl.dsp.layout("swapcol l"))
+
+-- Изменение ширины колонки
+hl.bind(mainMod .. " + equal", hl.dsp.layout("colresize +0.05"))
+hl.bind(mainMod .. " + minus", hl.dsp.layout("colresize -0.05"))
+
+hl.bind(mainMod .. " + Space", hl.dsp.layout("fit active"))
+hl.bind(mainMod .. " + SHIFT + Space", hl.dsp.layout("colresize 0.5"))
 -- Изменение размера
 hl.bind(mainMod .. " + CTRL + left",  hl.dsp.window.resize({ x = -100, y = 0, relative = true }))
 hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x = 100, y = 0, relative = true }))
@@ -48,8 +66,8 @@ hl.bind(mainMod .. " + CTRL + down",  hl.dsp.window.resize({ x = 0, y = 100, rel
 
 -- Макеты
 hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))
-hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("hyprctl keyword general:layout dwindle"))
-hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("hyprctl keyword general:layout master"))
+hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("hyprctl eval 'hl.config({ general = { layout = \"dwindle\" } })'"))
+hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("hyprctl eval 'hl.config({ general = { layout = \"master\" } })'"))
 
 -- Рабочие столы
 for i = 1, 9 do

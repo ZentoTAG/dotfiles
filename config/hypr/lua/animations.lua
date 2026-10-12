@@ -16,7 +16,22 @@ hl.animation({ leaf = "layers", enabled = true, speed = 1, bezier = "fast", styl
 hl.animation({ leaf = "workspaces", enabled = true, speed = 2, bezier = "wind", style = "slide" })
 hl.animation({ leaf = "windowsMove", enabled = true, speed = 4, bezier = "easeOutQuart" })
 
+-- hl.config({
+--     misc = { animate_manual_resizes = true },
+--     dwindle = { preserve_split = true },
+-- })
+
 hl.config({
+    general = {
+        layout = "scrolling",
+    },
     misc = { animate_manual_resizes = true },
     dwindle = { preserve_split = true },
+    scrolling = {
+        column_width = 0.5,              -- ширина колонки (0.5 = половина экрана)
+        fullscreen_on_one_column = true, -- не разворачивать одно окно на весь экран
+        focus_fit_method = 1,            -- 1 = вписывать активное окно в экран
+        follow_focus = true,
+        direction = "right"             -- прокручивать ленту при смене фокуса
+    },
 })
