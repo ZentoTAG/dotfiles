@@ -40,6 +40,7 @@ application/vnd.sqlite3=micro.desktop;
 x-scheme-handler/superproductivity=superproductivity.desktop;
 application/vnd.openxmlformats-officedocument.presentationml.presentation=libreoffice-impress.desktop;
 application/x-desktop=micro-alacritty.desktop;
+application/zip=libreoffice-startcenter.desktop;
 
 [Default Applications]
 application/json=micro.desktop
