@@ -39,7 +39,7 @@ application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-ca
 application/vnd.sqlite3=micro.desktop;
 x-scheme-handler/superproductivity=superproductivity.desktop;
 application/vnd.openxmlformats-officedocument.presentationml.presentation=libreoffice-impress.desktop;
-application/x-desktop=micro-alacritty.desktop;
+application/x-desktop=kitty-micro.desktop;micro-alacritty.desktop;
 application/zip=libreoffice-startcenter.desktop;
 text/x-python=kitty-micro.desktop;
 

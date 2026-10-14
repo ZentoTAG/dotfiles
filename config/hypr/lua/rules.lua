@@ -138,3 +138,19 @@ hl.window_rule({
     no_blur = true,
     move = "100%-20 100%-20"  -- сдвигает окно за пределы экрана
 })
+
+-- PrismLauncher на workspace 3
+hl.window_rule({
+    name = "prismlauncher-workspace",
+    match = { class = "org\\.prismlauncher\\.PrismLauncher" },
+    workspace = 3,
+    no_initial_focus = true,
+})
+
+-- Minecraft на workspace 3
+hl.window_rule({
+    name = "minecraft-workspace",
+    match = { class = "com\\.mojang\\.minecraft" },
+    workspace = 3,
+    no_initial_focus = true,
+})
