@@ -1,0 +1,38 @@
+[manager]
+show_hidden = true
+sort_by = "natural"
+sort_reverse = false
+
+[opener]
+edit = [
+    { run = 'micro %s', block = true, for = "unix" },
+]
+open = [
+    { run = 'xdg-open %s', desc = "Open", for = "unix" },
+]
+play = [
+    { run = 'mpv %s', orphan = true, for = "unix" },
+]
+
+[open]
+rules = [
+    { mime = "text/*", use = "edit" },
+    { mime = "image/*", use = "open" },
+    { mime = "video/*", use = "play" },
+    { mime = "audio/*", use = "play" },
+    { url = "*.json", use = "edit" },
+    { url = "*.toml", use = "edit" },
+    { url = "*.yaml", use = "edit" },
+    { url = "*.yml", use = "edit" },
+    { url = "*.conf", use = "edit" },
+    { url = "*.sh", use = "edit" },
+    { url = "*.py", use = "edit" },
+    { url = "*.rs", use = "edit" },
+    { url = "*.css", use = "edit" },
+    { url = "*.html", use = "edit" },
+    { url = "*.xml", use = "edit" },
+    { url = "*.md", use = "edit" },
+    { url = "*.txt", use = "edit" },
+    { url = "*.csv", use = "edit" },
+    { url = "*/", use = "open" },
+]

@@ -1,0 +1,34 @@
+#!/usr/bin/env fish
+
+set -l rdp_user "ZentoWindows"
+set -l rdp_host "127.0.0.1:3389"
+set -l rdp_password $RDP_PASSWORD
+
+if test -z "$rdp_password"; and command -q secret-tool
+    set rdp_password (secret-tool lookup service win-rdp user $rdp_user)
+end
+
+if test -z "$rdp_password"
+    read -s -P "RDP password for $rdp_user: " rdp_password
+end
+
+if test -z "$rdp_password"
+    echo "Пароль RDP не задан. Используй RDP_PASSWORD, secret-tool или введи его при запуске." >&2
+    exit 1
+end
+
+if not command -q xfreerdp3
+    echo "xfreerdp3 не установлен (пакет freerdp)." >&2
+    exit 1
+end
+
+set -l pwfile (mktemp)
+chmod 600 "$pwfile"
+printf '%s' "$rdp_password" > "$pwfile"
+
+xfreerdp3 /u:"$rdp_user" /pf:"$pwfile" /v:"$rdp_host" \
+    /app:"C:\Program Files\Microsoft Office\root\Office16\MSACCESS.EXE" \
+    /w:1920 /h:1080 /cert:tofu /sound /microphone +home-drive /floatbar
+set -l rdp_status $status
+rm -f "$pwfile"
+exit $rdp_status
