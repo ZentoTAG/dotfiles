@@ -21,3 +21,4 @@ source ~/.config/fish/functions/copy.fish
 # который перекрывает нашу функцию cleanup. Удаляем алиас и загружаем функцию.
 functions -e cleanup 2>/dev/null
 source ~/.config/fish/functions/cleanup.fish
+zoxide init fish | source

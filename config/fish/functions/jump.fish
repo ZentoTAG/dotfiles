@@ -25,3 +25,5 @@ function jump --description "Перейти к сохранённому пути
         return 1
     end
 end
+
+complete -c jump -f -a "(cut -d' ' -f1 ~/.config/fish/marks 2>/dev/null)"

@@ -137,9 +137,14 @@ hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 -- ALT+TAB — переключение окон
 -- ============================================================
 
--- ALT+TAB — переключение окон (через Noctalia)
-hl.bind("ALT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher hold"))
-hl.bind("ALT + SHIFT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher hold"))
+-- -- ALT+TAB — переключение окон (через Noctalia)
+-- hl.bind("ALT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher hold"))
+-- hl.bind("ALT + SHIFT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher hold"))
+-- ALT+TAB — вызов оверлея Noctalia (без hold, чтобы открывался сразу)
+hl.bind("ALT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher"))
+
+-- ALT+SHIFT+TAB — назад (Noctalia сам понимает Shift внутри оверлея)
+hl.bind("ALT + SHIFT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher"))
 -- ============================================================
 -- ВЫХОД
 -- ============================================================
