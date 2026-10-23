@@ -28,6 +28,7 @@ echo
 echo "Установка официальных пакетов..."
 sudo pacman -S --needed --noconfirm \
     hyprland \
+    rsync \
     zoxide \
     gum \
     hyprland-guiutils \
