@@ -59,4 +59,17 @@ if [[ -f "$CONFIG_DIR/mimeapps.list" ]]; then
     cp -a "$CONFIG_DIR/mimeapps.list" "$DOTFILES_DIR/config/mimeapps.list"
 fi
 
+if [[ -f "$CONFIG_DIR/user-dirs.dirs" ]]; then
+    echo "  Копирую user-dirs.dirs"
+    cp -a "$CONFIG_DIR/user-dirs.dirs" "$DOTFILES_DIR/config/user-dirs.dirs"
+fi
+
+# Стягиваем кастомные ярлыки
+if [[ -d "$HOME/.local/share/applications" ]]; then
+    echo "  Копирую applications"
+    mkdir -p "$DOTFILES_DIR/config/applications"
+    rsync -a --delete --include='zapret-*.desktop' --include='flclash-*.desktop' --include='kitty-micro.desktop' --exclude='*' \
+        "$HOME/.local/share/applications/" "$DOTFILES_DIR/config/applications/"
+fi
+
 echo "Готово!"

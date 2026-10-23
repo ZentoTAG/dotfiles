@@ -51,6 +51,9 @@ x-scheme-handler/portproton=ru.linux_gaming.PortProton.desktop
 x-scheme-handler/tg=com.ayugram.desktop.desktop
 x-scheme-handler/tonsite=com.ayugram.desktop.desktop
 x-scheme-handler/unknown=zen.desktop
+x-scheme-handler/clash=flclash-url-handler.desktop
+x-scheme-handler/clashmeta=flclash-url-handler.desktop
+x-scheme-handler/flclash=flclash-url-handler.desktop
 
 [Added Associations]
 application/json=micro.desktop
@@ -101,3 +104,4 @@ x-scheme-handler/http=zen.desktop
 x-scheme-handler/https=zen.desktop
 x-scheme-handler/tg=com.ayugram.desktop.desktop;
 x-scheme-handler/tonsite=com.ayugram.desktop.desktop
+application/toml=kitty-micro.desktop;

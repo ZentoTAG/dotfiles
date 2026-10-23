@@ -29,6 +29,7 @@ echo "Установка официальных пакетов..."
 sudo pacman -S --needed --noconfirm \
     hyprland \
     zoxide \
+    gum \
     hyprland-guiutils \
     hyprshot \
     grim \
