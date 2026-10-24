@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Zapret (Интерактивный)
+Comment=Запуск zapret с выбором настроек
+Exec=kitty --title "Zapret Setup" -e /usr/bin/bash -c "cd /home/zento/data/tools/zapret-discord-youtube-linux && sudo ./service.sh"
+Icon=network-wired
+Terminal=false
+Categories=Network;

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Zapret (Стоп)
+Comment=Остановить zapret и очистить правила файрвола
+Exec=kitty --title "Zapret Stop" -e /usr/bin/bash -c "cd /home/zento/data/tools/zapret-discord-youtube-linux && sudo ./service.sh stop; echo 'Zapret остановлен. Нажми Enter для выхода.'; read"
+Icon=process-stop
+Terminal=false
+Categories=Network;
