@@ -43,6 +43,33 @@ hl.window_rule({
     no_initial_focus = true,
 })
 
+-- ============================================================
+-- ПРИЛОЖЕНИЯ ПО РАБОЧИМ СТОЛАМ (ручной запуск)
+-- ============================================================
+
+-- Браузер — рабочий стол 1
+hl.window_rule({
+    name = "zen-workspace",
+    match = { class = "^(zen)$" },
+    workspace = 1,
+})
+
+-- Telegram / AyuGram — рабочий стол 2, полноразмерная колонка
+hl.window_rule({
+    name = "telegram-workspace",
+    match = { class = "^(com\\.ayugram\\.desktop|AyuGram|org\\.telegram\\.desktop)$" },
+    workspace = 2,
+    scrolling_width = 1.0,
+})
+
+-- Discord — рабочий стол 2, полноразмерная колонка справа от Telegram
+hl.window_rule({
+    name = "discord-workspace",
+    match = { class = "^(discord|vesktop|com\\.discordapp\\.Discord)$" },
+    workspace = 2,
+    scrolling_width = 1.0,
+})
+
 -- Правило для слоя выделения (отключает анимации)
 hl.layer_rule({
     match = { namespace = "selection" },
