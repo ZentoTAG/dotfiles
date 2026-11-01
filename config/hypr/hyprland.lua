@@ -4,7 +4,7 @@ require("lua.input")
 require("lua.autostart")
 require("lua.binds")
 require("lua.rules")
-require("lua.overview")
+-- require("lua.overview")
 require("lua.decoration")
 require("lua.animations")
 
