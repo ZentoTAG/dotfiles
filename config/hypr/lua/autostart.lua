@@ -1,4 +1,6 @@
 hl.on("hyprland.start", function()
+    hl.exec_cmd("hyprctl plugin load /home/zento/.local/lib/hyprland/Hyprspace.so")
+
     -- hl.exec_cmd("hyprlock")           -- Noctalia имеет свой локскрин
     -- hl.exec_cmd("hypridle")           -- у Noctalia свой idle-сервис
     -- hl.exec_cmd("awww-daemon &")      -- Noctalia сама управляет обоями
