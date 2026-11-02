@@ -57,6 +57,13 @@ for dir in "$DOTFILES_DIR/config/"*/; do
     rsync -a "${RSYNC_EXCLUDES[@]}" "$dir" "$CONFIG_DIR/$name/"
 done
 
+# Восстанавливаем конфиги оболочек
+for shell_file in .bashrc .bash_profile .zshrc .zprofile; do
+    if [[ -f "$DOTFILES_DIR/config/$shell_file" ]]; then
+        echo "  Восстанавливаю $shell_file"
+        cp -a "$DOTFILES_DIR/config/$shell_file" "$HOME/$shell_file"
+    fi
+done
 
 # Копирование кастомных .desktop ярлыков
 if [[ -d "$DOTFILES_DIR/config/applications" ]]; then

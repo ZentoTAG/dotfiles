@@ -72,4 +72,12 @@ if [[ -d "$HOME/.local/share/applications" ]]; then
         "$HOME/.local/share/applications/" "$DOTFILES_DIR/config/applications/"
 fi
 
+# Стягиваем конфиги оболочек (bash, zsh)
+for shell_file in .bashrc .bash_profile .zshrc .zprofile; do
+    if [[ -f "$HOME/$shell_file" ]]; then
+        echo "  Копирую $shell_file"
+        cp -a "$HOME/$shell_file" "$DOTFILES_DIR/config/$shell_file"
+    fi
+done
+
 echo "Готово!"
