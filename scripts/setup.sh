@@ -4,7 +4,7 @@ set -euo pipefail
 sudo -v
 
 echo "=========================================="
-echo "      CachyOS / Hyprland setup"
+echo "   CachyOS / Hyprland / Noctalia setup"
 echo "=========================================="
 
 echo
@@ -26,88 +26,95 @@ fi
 
 echo
 echo "Установка официальных пакетов..."
-sudo pacman -S --needed --noconfirm \
-    hyprland \
-    rsync \
-    zoxide \
-    gum \
-    hyprland-guiutils \
-    hyprshot \
-    grim \
-    slurp \
-    wl-clipboard \
-    cliphist \
-    quickshell \
-    discord \
-    kitty \
-    fish \
-    micro \
-    neovim \
-    thunar \
-    thunar-archive-plugin \
-    tumbler \
-    ffmpegthumbnailer \
-    ark \
-    gwenview \
-    kcalc \
-    mpv \
-    cava \
-    btop \
-    htop \
-    fastfetch \
-    yazi \
-    udiskie \
-    nwg-look \
-    qt5ct \
-    qt6ct \
-    breeze \
-    breeze5 \
-    breeze-icons \
-    adwaita-icon-theme \
-    ttf-jetbrains-mono-nerd \
-    ttf-font-awesome \
-    noto-fonts \
-    noto-fonts-cjk \
-    noto-fonts-emoji \
-    pipewire \
-    pipewire-pulse \
-    pipewire-alsa \
-    wireplumber \
-    playerctl \
-    pavucontrol \
-    networkmanager \
-    network-manager-applet \
-    nm-connection-editor \
-    polkit-kde-agent \
-    power-profiles-daemon \
-    upower \
-    xdg-desktop-portal \
-    xdg-desktop-portal-hyprland \
-    xdg-desktop-portal-gtk \
-    rsync \
-    expac \
-    libsecret \
-    freerdp \
-    git \
-    curl \
-    wget \
-    unzip \
-    zip \
-    tar \
-    gzip \
-    xz \
-    jq \
-    ripgrep \
-    fd \
-    npm
+# Устаревшие пакеты (до Noctalia) закомментированы, но оставлены для истории.
+PACMAN_PACKAGES=(
+    hyprland
+    rsync
+    zoxide
+    gum                     # нужен для powermode.sh, netmode и ytdl
+    hyprland-guiutils
+    hyprshot
+    grim
+    slurp
+    wl-clipboard
+    # cliphist              — заменён буфером обмена Noctalia
+    # quickshell            — старый Quickshell-конфиг (anicute); Noctalia 5 не требует
+    discord
+    ayugram-desktop         # Telegram-клиент (репозиторий CachyOS)
+    kitty
+    fish
+    micro
+    neovim
+    thunar
+    thunar-archive-plugin
+    tumbler
+    ffmpegthumbnailer
+    ark
+    gwenview                # просмотр изображений (прописан в mimeapps.list)
+    # kcalc                 — не используется
+    mpv
+    cava
+    btop
+    htop
+    fastfetch
+    yazi
+    udiskie
+    nwg-look
+    qt5ct
+    qt6ct
+    breeze
+    breeze5
+    breeze-icons
+    adwaita-icon-theme
+    ttf-jetbrains-mono-nerd
+    # ttf-font-awesome      — пакет переименован в woff2-font-awesome
+    woff2-font-awesome
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    pipewire
+    pipewire-pulse
+    pipewire-alsa
+    wireplumber
+    playerctl
+    pavucontrol
+    networkmanager
+    # network-manager-applet — трей заменён панелью Noctalia
+    nm-connection-editor
+    polkit-kde-agent
+    power-profiles-daemon
+    upower
+    xdg-desktop-portal
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gtk
+    # rsync                 — дубликат, уже указан выше
+    expac                   # нужен для cleanup_packages.sh
+    libsecret
+    # freerdp               — RDP не используется
+    git
+    curl
+    wget
+    unzip
+    zip
+    tar
+    gzip
+    xz
+    jq
+    ripgrep
+    fd
+    # npm                   — Node.js/npm не используются
+)
+sudo pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
 echo
 echo "Установка Noctalia..."
 sudo pacman -S --needed --noconfirm noctalia noctalia-greeter greetd
 
 echo
-echo "Установка AUR-пакетов..."
-yay -S --needed --noconfirm zen-browser-bin justray-bin
+echo "Установка пакетов через yay..."
+# justray-bin — старый трей, заменён треем Noctalia (см. autostart.lua)
+# yay -S --needed --noconfirm justray-bin
+yay -S --needed --noconfirm zen-browser-bin
 
 echo
 echo "Включение NetworkManager..."
