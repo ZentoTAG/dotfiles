@@ -2,6 +2,15 @@
 -- WINDOW RULES
 -- ============================================================
 
+-- Blobdrop — плавающее окно
+hl.window_rule({
+    name = "blobdrop-float",
+    match = { class = "^(blobdrop)$" }, -- или title = "^(Blobdrop)$"
+    float = true,
+    center = true,
+    size = "400 300", -- размер окошка (подгони под себя)
+})
+
 hl.window_rule({
     name = "v2rayN-workspace",
     match = { class = ".*v2rayN.*" },
