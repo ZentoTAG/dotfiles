@@ -50,7 +50,8 @@ PACMAN_PACKAGES=(
     tumbler
     ffmpegthumbnailer
     ark
-    gwenview                # просмотр изображений (прописан в mimeapps.list)
+    swayimg                 # лёгкий Wayland-просмотрщик (прописан в mimeapps.list)
+    # gwenview              — заменён на swayimg, оставлен для истории
     # kcalc                 — не используется
     mpv
     cava

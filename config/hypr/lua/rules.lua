@@ -18,6 +18,15 @@ hl.window_rule({
     no_initial_focus = true,
 })
 
+-- Swayimg — плавающее окно по центру, как отдельный просмотрщик
+hl.window_rule({
+    name = "swayimg-float",
+    match = { class = "^(swayimg)$" },
+    float = true,
+    center = true,
+    size = "1200 800",
+})
+
 hl.window_rule({
     match = { class = "^(kitty)$" },
     tile = true,

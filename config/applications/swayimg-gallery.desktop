@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Swayimg Gallery
+GenericName=Галерея изображений
+Comment=Открыть папку с изображениями в виде сетки
+Icon=swayimg
+Exec=swayimg -g %F
+Terminal=false
+Categories=Graphics;Viewer;
+Keywords=gallery;image;viewer;photo;галерея;картинки;
+StartupNotify=false
+MimeType=inode/directory;

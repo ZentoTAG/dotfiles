@@ -15,6 +15,7 @@ FOLDERS=(
     kitty
     micro
     mpv
+    swayimg
     nvim
     nwg-look
     qt5ct
