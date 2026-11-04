@@ -127,10 +127,21 @@ swayimg.slideshow.set_window_background("auto")
 -- ------------------------------------------------------------
 -- Удобные клавиши
 -- ------------------------------------------------------------
+swayimg.viewer.on_key("d", function() swayimg.viewer.open("next") end)
+swayimg.viewer.on_key("a", function() swayimg.viewer.open("prev") end)
 swayimg.viewer.on_key("n", function() swayimg.viewer.open("next") end)
 swayimg.viewer.on_key("p", function() swayimg.viewer.open("prev") end)
+swayimg.viewer.on_key("в", function() swayimg.viewer.open("next") end)
+swayimg.viewer.on_key("ф", function() swayimg.viewer.open("prev") end)
+swayimg.viewer.on_key("т", function() swayimg.viewer.open("next") end)
+swayimg.viewer.on_key("з", function() swayimg.viewer.open("prev") end)
 swayimg.viewer.on_key("home", function() swayimg.viewer.open("first") end)
 swayimg.viewer.on_key("end", function() swayimg.viewer.open("last") end)
 
 swayimg.slideshow.on_key("n", function() swayimg.viewer.open("next") end)
 swayimg.slideshow.on_key("p", function() swayimg.viewer.open("prev") end)
+
+swayimg.gallery.on_key("n", function() swayimg.gallery.open("next") end)
+swayimg.gallery.on_key("p", function() swayimg.gallery.open("prev") end)
+
+
