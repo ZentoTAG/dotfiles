@@ -11,6 +11,39 @@ hl.window_rule({
     size = "400 300", -- размер окошка (подгони под себя)
 })
 
+-- Окно прогресса копирования/перемещения в Thunar
+hl.window_rule({
+    name = "thunar-progress-no-focus",
+    match = {
+        class = "thunar",
+        -- Ловим именно окно прогресса, чтобы не задеть главное окно
+        initial_title = "^(File Operation Progress)$" 
+    },
+    -- Принудительно оставляем в тайлинге
+    tile = true,
+    -- Запрещаем окну забирать фокус при появлении
+    no_initial_focus = true, 
+})
+
+hl.config({
+    windowrulev2 = {
+        "float, title:^(Floating Thunar)$",
+        "size 900 600, title:^(Floating Thunar)$", -- Опционально: задает начальный размер окна
+    }
+})
+
+hl.window_rule({
+    name = "hyprwrc-float",
+    match = {
+        class = "^dev\\.hyprwrc\\.HyprWindowRuleCreator$",
+        title = "^Window Rule — kitty$",
+        initial_class = "^dev\\.hyprwrc\\.HyprWindowRuleCreator$",
+        float = true,
+    },
+    float = true,
+    center = true,
+})
+
 hl.window_rule({
     name = "v2rayN-workspace",
     match = { class = ".*v2rayN.*" },
@@ -77,7 +110,7 @@ hl.window_rule({
     name = "telegram-workspace",
     match = { class = "^(com\\.ayugram\\.desktop|AyuGram|org\\.telegram\\.desktop)$" },
     workspace = 2,
-    scrolling_width = 1.0,
+    -- scrolling_width = 1.0,
 })
 
 -- Discord — рабочий стол 2, полноразмерная колонка справа от Telegram
@@ -220,3 +253,4 @@ hl.window_rule({
     center = true,
     size = "800 600", -- размер окна (можно подогнать)
 })
+

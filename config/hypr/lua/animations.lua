@@ -29,7 +29,7 @@ hl.config({
     dwindle = { preserve_split = true },
     scrolling = {
         column_width = 0.5,              -- ширина колонки (0.5 = половина экрана)
-        fullscreen_on_one_column = true, -- не разворачивать одно окно на весь экран
+        fullscreen_on_one_column = false, -- не разворачивать одно окно на весь экран
         focus_fit_method = 1,            -- 1 = вписывать активное окно в экран
         follow_focus = true,
         direction = "right"             -- прокручивать ленту при смене фокуса

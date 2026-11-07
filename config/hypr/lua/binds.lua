@@ -1,6 +1,7 @@
 local mainMod = "SUPER"
 local terminal = "kitty"
 local fileManager = "thunar"
+local home = os.getenv("HOME")
 
 -- ============================================================
 -- ПРИЛОЖЕНИЯ
@@ -8,6 +9,18 @@ local fileManager = "thunar"
 -- Лаунчер (замена rofi)
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))
 
+-- hl.bind(mainMod .. " + ALT + I", hl.dsp.exec_cmd(
+--     [[hyprctl activewindow -j | jq -r '"hl.window_rule({\n    name = \"float-" + (.class|ascii_downcase) + "\",\n    match = { class = \"" + .class + "\" },\n    float = true,\n    center = true,\n})"' | wl-copy && notify-send "Hyprland" "Правило по class скопировано"]]
+-- ))
+
+hl.bind("ALT + 4", hl.dsp.exec_cmd("pkill -USR1 -f gpu-screen-recorder"))
+-- hl.bind(mainMod .. " + ALT + S", hl.dsp.exec_cmd("pkill -INT -f gpu-screen-recorder"))
+local winrule = home .. "/data/dotfiles/scripts/winrule.sh"
+-- hl.bind(mainMod .. " + ALT + O", hl.dsp.exec_cmd(winrule .. " stage title"))  -- правило по классу + заголовку
+hl.bind(mainMod .. " + ALT + W", hl.dsp.exec_cmd("hyprwrc"))
+hl.bind(mainMod .. " + ALT + I", hl.dsp.exec_cmd(winrule .. " stage class"))  -- правило по классу
+hl.bind(mainMod .. " + ALT + P", hl.dsp.exec_cmd(winrule .. " apply"))        -- дописать в rules.lua
+hl.bind(mainMod .. " + ALT + U", hl.dsp.exec_cmd(winrule .. " undo"))         -- убрать последнее
 -- Экран блокировки (замена hyprlock)
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"))
 
@@ -30,6 +43,9 @@ hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 -- hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd(fileManager .. " --title=\"Floating Thunar\""))
+
 hl.bind(mainMod .. " + b", hl.dsp.exec_cmd("kitty --title btop -e btop"))
 
 -- ============================================================
@@ -168,7 +184,7 @@ hl.bind("XF86AudioMute", hl.dsp.exec_cmd("noctalia msg volume-mute"), { locked =
 -- ============================================================
 
 -- Открыть расписание в LibreOffice
-hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("libreoffice /home/zento/data/docs/расписание.xlsx"))
+hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("libreoffice " .. home .. "/data/docs/расписание.xlsx"))
 
 -- Свободный (плавающий) терминал
 hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd("kitty --class kitty-float"))

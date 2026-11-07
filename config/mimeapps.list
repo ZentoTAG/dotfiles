@@ -60,6 +60,7 @@ x-scheme-handler/unknown=zen.desktop
 x-scheme-handler/clash=flclash-url-handler.desktop
 x-scheme-handler/clashmeta=flclash-url-handler.desktop
 x-scheme-handler/flclash=flclash-url-handler.desktop
+x-scheme-handler/discord-1216669957799018608=discord-1216669957799018608.desktop
 
 [Added Associations]
 application/json=micro.desktop
@@ -94,7 +95,7 @@ image/jxl=swayimg.desktop;org.kde.gwenview.desktop;
 image/png=swayimg.desktop;org.kde.gwenview.desktop;
 image/svg+xml=swayimg.desktop;org.kde.gwenview.desktop;
 image/tiff=swayimg.desktop;org.kde.gwenview.desktop;
-image/webp=swayimg.desktop;org.kde.gwenview.desktop;
+image/webp=dev.noctalia.Noctalia.Annotator.desktop;swayimg.desktop;org.kde.gwenview.desktop;
 inode/directory=thunar.desktop
 text/css=micro.desktop
 text/html=zen.desktop
@@ -104,7 +105,7 @@ text/x-cmake=micro.desktop
 text/x-csrc=micro.desktop
 text/x-c++src=kitty-micro.desktop;micro.desktop;
 text/x-python=kitty-micro.desktop;micro.desktop;
-text/x-shellscript=userapp-kitty micro -e-MTH8X3.desktop;micro.desktop;
+text/x-shellscript=kitty-open.desktop;userapp-kitty micro -e-MTH8X3.desktop;micro.desktop;
 video/mp4=swayimg.desktop;mpv.desktop;
 video/mpeg=mpv.desktop
 video/quicktime=mpv.desktop

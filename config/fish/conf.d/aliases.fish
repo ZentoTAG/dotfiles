@@ -25,6 +25,7 @@ alias syslog "sudo dmesg --level=err,warn"
 alias du-sort "du -sh * | sort -h"
 alias foldersize "du -sh"
 alias sz "du -sh"
+alias upd "sudo pacman -Syu"
 
 # ============================================
 # УТИЛИТЫ

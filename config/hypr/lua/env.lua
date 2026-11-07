@@ -1,14 +1,52 @@
+-- ============================================================
+-- ЛОКАЛЬ
+-- ============================================================
 hl.env("LC_TIME", "ru_RU.UTF-8")
-hl.env("GBM_BACKEND", "nvidia-drm")
-hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
-hl.env("LIBVA_DRIVER_NAME", "nvidia")
+
+-- ============================================================
+-- NVIDIA (только там, где загружен драйвер: ПК с GTX 1660 Ti)
+-- ============================================================
+local function has_nvidia()
+    local f = io.open("/proc/driver/nvidia/version", "r")
+    if f then
+        f:close()
+        return true
+    end
+    return false
+end
+
+if has_nvidia() then
+    hl.env("GBM_BACKEND", "nvidia-drm")
+    hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
+    hl.env("NVD_BACKEND", "direct")
+    hl.env("LIBVA_DRIVER_NAME", "nvidia") -- нужен пакет libva-nvidia-driver
+end
+
+-- ============================================================
+-- ПРИЛОЖЕНИЯ / ТЕМЫ
+-- ============================================================
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
--- hl.env("GTK_THEME", "Adwaita-dark")
-hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
-hl.env("XDG_SESSION_TYPE", "wayland")
-hl.env("XDG_SESSION_DESKTOP", "Hyprland")
+
+-- ============================================================
+-- ПРОКСИ (xraybox)
+-- ============================================================
 hl.env("http_proxy", "http://127.0.0.1:10808")
 hl.env("https_proxy", "http://127.0.0.1:10808")
 hl.env("all_proxy", "socks5://127.0.0.1:10808")
-hl.env("no_proxy", "localhost,127.0.0.1,::1")
+-- hl.env("no_proxy", "localhost,127.0.0.1,::1,.local,10.0.0.0/8,192.168.0.0/16")
+
+-- hl.env("LC_TIME", "ru_RU.UTF-8")
+-- hl.env("GBM_BACKEND", "nvidia-drm")
+-- hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
+-- hl.env("LIBVA_DRIVER_NAME", "nvidia")
+-- hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+-- hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
+-- -- hl.env("GTK_THEME", "Adwaita-dark")
+-- hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
+-- hl.env("XDG_SESSION_TYPE", "wayland")
+-- hl.env("XDG_SESSION_DESKTOP", "Hyprland")
+-- hl.env("http_proxy", "http://127.0.0.1:10808")
+-- hl.env("https_proxy", "http://127.0.0.1:10808")
+-- hl.env("all_proxy", "socks5://127.0.0.1:10808")
+-- hl.env("no_proxy", "localhost,127.0.0.1,::1")
