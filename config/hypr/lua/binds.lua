@@ -160,7 +160,7 @@ hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind("ALT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher"))
 
 -- ALT+SHIFT+TAB — назад (Noctalia сам понимает Shift внутри оверлея)
-hl.bind("ALT + SHIFT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher"))
+-- hl.bind("ALT + SHIFT + code:23", hl.dsp.exec_cmd("noctalia msg window-switcher"))
 -- ============================================================
 -- ВЫХОД
 -- ============================================================
