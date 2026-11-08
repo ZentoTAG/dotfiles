@@ -1,5 +1,5 @@
 local mainMod = "SUPER"
-local terminal = "kitty"
+local terminal = "kitty --directory " .. os.getenv("HOME")
 local fileManager = "thunar"
 local home = os.getenv("HOME")
 

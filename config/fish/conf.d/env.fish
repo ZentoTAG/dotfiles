@@ -8,3 +8,4 @@ set -gx BUN_INSTALL "$HOME/.bun"
 fish_add_path "$BUN_INSTALL/bin"
 fish_add_path ~/data/dotfiles/scripts
 fish_add_path ~/.local/bin
+fish_add_path ~/data/tools/xraybox/
