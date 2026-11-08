@@ -29,6 +29,7 @@ echo "Установка официальных пакетов..."
 # Устаревшие пакеты (до Noctalia) закомментированы, но оставлены для истории.
 PACMAN_PACKAGES=(
     hyprland
+    adw-gtk-theme
     rsync
     zoxide
     gum                     # нужен для powermode.sh, netmode и ytdl
