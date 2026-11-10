@@ -13,6 +13,21 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher")
 --     [[hyprctl activewindow -j | jq -r '"hl.window_rule({\n    name = \"float-" + (.class|ascii_downcase) + "\",\n    match = { class = \"" + .class + "\" },\n    float = true,\n    center = true,\n})"' | wl-copy && notify-send "Hyprland" "Правило по class скопировано"]]
 -- ))
 
+hl.bind(mainMod .. " + ALT + T", hl.dsp.exec_cmd("kitty --class kitty-float --directory " .. os.getenv("HOME") .. " -e /home/zento/data/dotfiles/scripts/timer.sh"))
+
+-- Путь к скрипту
+local timer = "/home/zento/data/dotfiles/scripts/timer.sh"
+
+-- Показать список активных таймеров (ждет нажатия клавиши перед закрытием)
+hl.bind(mainMod .. " + ALT + Y", hl.dsp.exec_cmd(
+    "kitty --class kitty-float -e sh -c '" .. timer .. " ls; echo; read -n 1 -s -r -p \"Нажми любую клавишу для выхода...\"'"
+))
+
+-- Отмена таймера на SUPER + ALT + C (Cancel)
+hl.bind(mainMod .. " + ALT + C", hl.dsp.exec_cmd(
+    "kitty --class kitty-float -e sh -c '" .. timer .. " cancel; echo; read -n 1 -s -r -p \"Нажми любую клавишу для выхода...\"'"
+))
+
 hl.bind("ALT + 4", hl.dsp.exec_cmd("pkill -USR1 -f gpu-screen-recorder"))
 -- hl.bind(mainMod .. " + ALT + S", hl.dsp.exec_cmd("pkill -INT -f gpu-screen-recorder"))
 local winrule = home .. "/data/dotfiles/scripts/winrule.sh"

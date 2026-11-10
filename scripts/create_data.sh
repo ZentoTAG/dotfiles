@@ -23,7 +23,7 @@ mkdir -p ~/data/external
 # ============================================================
 # ПОДПАПКИ ВНУТРИ dotfiles/config
 # ============================================================
-mkdir -p ~/data/dotfiles/config/{btop,cava,fastfetch,fish,gtk-3.0,gtk-4.0,hypr,kitty,micro,mpv,nvim,nwg-look,noctalia,qt5ct,qt6ct,Thunar,yazi}
+mkdir -p ~/data/dotfiles/config/{btop,cava,fastfetch,fish,gtk-3.0,gtk-4.0,hypr,niri,kitty,micro,mpv,nvim,nwg-look,noctalia,qt5ct,qt6ct,Thunar,yazi}
 
 # ============================================================
 # ПОДПАПКИ ВНУТРИ media

@@ -28,7 +28,12 @@ echo
 echo "Установка официальных пакетов..."
 # Устаревшие пакеты (до Noctalia) закомментированы, но оставлены для истории.
 PACMAN_PACKAGES=(
+    cmake
+    meson
+    cpio
+    pkgconf
     hyprland
+    niri
     adw-gtk-theme
     rsync
     zoxide
@@ -37,6 +42,8 @@ PACMAN_PACKAGES=(
     hyprshot
     grim
     slurp
+    wtype                   # отправка горячих клавиш в OBS (Alt+1/Alt+2)
+    xwayland-satellite      # XWayland для Steam/старых приложений под Niri
     wl-clipboard
     # cliphist              — заменён буфером обмена Noctalia
     # quickshell            — старый Quickshell-конфиг (anicute); Noctalia 5 не требует
@@ -88,6 +95,7 @@ PACMAN_PACKAGES=(
     upower
     xdg-desktop-portal
     xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gnome
     xdg-desktop-portal-gtk
     # rsync                 — дубликат, уже указан выше
     expac                   # нужен для cleanup_packages.sh

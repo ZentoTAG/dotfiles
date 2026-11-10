@@ -12,6 +12,7 @@ FOLDERS=(
     gtk-3.0
     gtk-4.0
     hypr
+    niri
     kitty
     micro
     mpv
@@ -28,6 +29,7 @@ RSYNC_EXCLUDES=(
     --exclude 'noctalia.css'
     --exclude 'noctalia.conf'
     --exclude 'noctalia.jsonc'
+    --exclude 'noctalia.kdl'
     --exclude 'noctalia.theme'
     --exclude 'noctalia'
     --exclude 'matugen.conf'

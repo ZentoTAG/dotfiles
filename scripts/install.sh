@@ -16,6 +16,7 @@ RSYNC_EXCLUDES=(
     --exclude 'noctalia.css'
     --exclude 'noctalia.conf'
     --exclude 'noctalia.jsonc'
+    --exclude 'noctalia.kdl'
     --exclude 'noctalia.theme'
     --exclude 'noctalia'
     --exclude 'matugen.conf'
@@ -57,6 +58,10 @@ for dir in "$DOTFILES_DIR/config/"*/; do
     rsync -a "${RSYNC_EXCLUDES[@]}" "$dir" "$CONFIG_DIR/$name/"
 done
 
+# Niri is installed alongside Hyprland, so both sessions remain selectable.
+# Noctalia's generated niri.kdl is intentionally not tracked; templates-apply
+# creates it and adds the include to ~/.config/niri/config.kdl.
+
 # Восстанавливаем конфиги оболочек
 for shell_file in .bashrc .bash_profile .zshrc .zprofile; do
     if [[ -f "$DOTFILES_DIR/config/$shell_file" ]]; then
@@ -87,6 +92,10 @@ systemctl --user enable --now noctalia-folder-icons.path
 
 if command -v hyprctl >/dev/null 2>&1 && hyprctl version >/dev/null 2>&1; then
     hyprctl reload || true
+fi
+
+if command -v niri >/dev/null 2>&1; then
+    niri validate -c "$CONFIG_DIR/niri/config.kdl" || true
 fi
 
 echo "Готово!"

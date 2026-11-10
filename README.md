@@ -1,12 +1,13 @@
 # Dotfiles
 
-Hyprland · Noctalia · Kitty · Fish · Neovim
+Hyprland / Niri · Noctalia · Kitty · Fish · Neovim
 
 ## Состав
 
 | Компонент | Описание |
 |-----------|----------|
 | Hyprland | Wayland-композитор, конфиг на Lua |
+| Niri | Альтернативный scrollable-tiling Wayland-композитор, конфиг в KDL |
 | Noctalia | Панель, лаунчер, уведомления, lock/idle, обои и темы |
 | Kitty | Терминал |
 | Fish | Оболочка |
@@ -50,7 +51,7 @@ sudo ./scripts/cleanup_packages.sh       # удалить после прове�
 ```text
 ~/data/dotfiles/
 ├── assets/backgrounds/   # обои
-├── config/               # конфиги для ~/.config/
+├── config/               # конфиги для ~/.config/ (включая niri/)
 ├── docs/                 # шпаргалка
 └── scripts/              # setup.sh, install.sh, pull.sh, auto_push.sh
 ```
@@ -58,7 +59,7 @@ sudo ./scripts/cleanup_packages.sh       # удалить после прове�
 ## Система
 
 - OS: CachyOS (Arch)
-- WM: Hyprland
+- WM: Hyprland или Niri
 - Shell: Noctalia
 - GPU: NVIDIA GTX 1660 Ti
 - CPU: Intel Xeon E5-2640 v0

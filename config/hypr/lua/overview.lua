@@ -1,19 +1,21 @@
--- Hyprspace: обзор воркспейсов
-hl.config({
-    plugin = {
-        overview = {
-            panelColor = "#11131a",
-            panelBorderColor = "#adc6ff",
-            workspaceActiveBorder = "#adc6ff",
-            onBottom = false,
-            autoDrag = true,
-            showNewWorkspace = true,
+-- scrolloverview: обзор в стиле niri
+hl.on("config.reloaded", function()
+    -- при старте плагин ещё не загружен, пропускаем
+    if not (hl.plugin and hl.plugin.scrolloverview) then return end
+
+    hl.config({
+        plugin = {
+            scrolloverview = {
+                gesture_distance = 300,
+                scale = 0.5,
+                workspace_gap = 0,
+            },
         },
-    },
-})
+    })
+
+    hl.plugin.scrolloverview.gesture({ fingers = 3, direction = "vertical" })
+end)
 
 hl.bind("SUPER + O", function()
-    if hl.plugin and hl.plugin.overview then
-        hl.plugin.overview.toggle()
-    end
-end, { description = "Обзор воркспейсов (Hyprspace)" })
+    hl.plugin.scrolloverview.overview("toggle")
+end)
