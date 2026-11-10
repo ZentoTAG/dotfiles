@@ -5,11 +5,23 @@
 	<name>Open Terminal Here</name>
 	<submenu></submenu>
 	<unique-id>1710575157271461-1</unique-id>
-	<command>kitty --directory "%f"</command>
+	<command>kitty --directory &quot;%f&quot;</command>
 	<description>Open the current directory in Kitty</description>
 	<range></range>
 	<patterns>*</patterns>
 	<startup-notify/>
 	<directories/>
+</action>
+<action>
+	<icon></icon>
+	<name>Сделать исполняемым</name>
+	<submenu></submenu>
+	<unique-id>1794336525872432-1</unique-id>
+	<command>chmod +x %f</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<other-files/>
+	<text-files/>
 </action>
 </actions>
