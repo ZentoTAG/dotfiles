@@ -73,6 +73,18 @@ if [[ -d "$DOTFILES_DIR/config/applications" ]]; then
     update-desktop-database "$HOME/.local/share/applications" || true
 fi
 
+# Настройка синхронизации иконок папок с палитрой Noctalia
+SYSTEMD_USER_DIR="$HOME/.config/systemd/user"
+mkdir -p "$SYSTEMD_USER_DIR"
+install -m 0644 "$DOTFILES_DIR/scripts/systemd/user/noctalia-folder-icons.service" \
+    "$SYSTEMD_USER_DIR/noctalia-folder-icons.service"
+install -m 0644 "$DOTFILES_DIR/scripts/systemd/user/noctalia-folder-icons.path" \
+    "$SYSTEMD_USER_DIR/noctalia-folder-icons.path"
+chmod +x "$DOTFILES_DIR/scripts/noctalia-folder-icons"
+systemctl --user daemon-reload
+"$DOTFILES_DIR/scripts/noctalia-folder-icons"
+systemctl --user enable --now noctalia-folder-icons.path
+
 if command -v hyprctl >/dev/null 2>&1 && hyprctl version >/dev/null 2>&1; then
     hyprctl reload || true
 fi

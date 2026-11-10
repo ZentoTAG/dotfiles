@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch the Noctalia-generated GTK palette for wallpaper color changes
+
+[Path]
+PathChanged=%h/.config/gtk-3.0/noctalia.css
+Unit=noctalia-folder-icons.service
+
+[Install]
+WantedBy=default.target

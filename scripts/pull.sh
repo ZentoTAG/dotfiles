@@ -55,6 +55,16 @@ for folder in "${FOLDERS[@]}"; do
     fi
 done
 
+# Обновляем пользовательские systemd units для иконок Noctalia
+SYSTEMD_USER_DIR="$HOME/.config/systemd/user"
+mkdir -p "$SYSTEMD_USER_DIR"
+cp -a "$DOTFILES_DIR/scripts/systemd/user/noctalia-folder-icons.service" \
+    "$SYSTEMD_USER_DIR/noctalia-folder-icons.service"
+cp -a "$DOTFILES_DIR/scripts/systemd/user/noctalia-folder-icons.path" \
+    "$SYSTEMD_USER_DIR/noctalia-folder-icons.path"
+systemctl --user daemon-reload
+systemctl --user restart noctalia-folder-icons.path
+
 if [[ -f "$CONFIG_DIR/mimeapps.list" ]]; then
     echo "  Копирую mimeapps.list"
     cp -a "$CONFIG_DIR/mimeapps.list" "$DOTFILES_DIR/config/mimeapps.list"
