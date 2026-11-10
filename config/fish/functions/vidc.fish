@@ -1,4 +1,14 @@
 function vidc --description "Интерактивная оптимизация видео (H.264/H.265)"
+    # Необязательный режим для запуска из Thunar; без него остаётся меню.
+    set -l requested_mode
+    if test "$argv[1]" = --mode
+        if not contains -- "$argv[2]" 1 2 3 4 5
+            printf 'Использование: vidc [--mode 1..5] <файл|папка>...\n' >&2
+            return 1
+        end
+        set requested_mode "$argv[2]"
+        set -e argv[1..2]
+    end
     # ------------------------------------------------------------------
     # Вспомогательные функции
     # ------------------------------------------------------------------
@@ -146,18 +156,23 @@ function vidc --description "Интерактивная оптимизация �
     printf 'Найдено видео: %s\n' (count $sources)
     set_color normal
 
-    set -l choice (gum choose --header "Что сделать с видео?" \
-        --cursor "▶ " \
+    set -l choices \
         "1. Сжать бережно (H.264, CRF 20)" \
         "2. Сжать сильнее (H.264, CRF 26)" \
         "3. Сжать в H.265/HEVC (меньше размер, хуже совместимость)" \
         "4. Уменьшить до 1080p и сжать (H.264)" \
-        "5. Просто показать размеры файлов (без изменений)")
-    set -l gum_status $status
-
-    if test $gum_status -ne 0; or test -z "$choice"
-        printf '\nОтменено.\n'
-        return 130
+        "5. Просто показать размеры файлов (без изменений)"
+    set -l choice
+    if test -n "$requested_mode"
+        set choice "$choices[$requested_mode]"
+    else
+        set choice (gum choose --header "Что сделать с видео?" \
+        --cursor "▶ " \
+        $choices)
+        if test $status -ne 0; or test -z "$choice"
+            printf '\nОтменено.\n'
+            return 130
+        end
     end
 
     set -l action (string sub -l 1 -- "$choice")

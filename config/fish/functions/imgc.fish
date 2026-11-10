@@ -1,4 +1,14 @@
 function imgc --description "Интерактивная оптимизация изображений (JPG/PNG/WebP)"
+    # Необязательный режим для запуска из Thunar; без него остаётся меню.
+    set -l requested_mode
+    if test "$argv[1]" = --mode
+        if not contains -- "$argv[2]" 1 2 3 4 5
+            printf 'Использование: imgc [--mode 1..5] <файл|папка>...\n' >&2
+            return 1
+        end
+        set requested_mode "$argv[2]"
+        set -e argv[1..2]
+    end
     # ------------------------------------------------------------------
     # Вспомогательные функции
     # ------------------------------------------------------------------
@@ -139,18 +149,23 @@ function imgc --description "Интерактивная оптимизация �
     printf 'Найдено изображений: %s\n' (count $sources)
     set_color normal
 
-    set -l choice (gum choose --header "Что сделать с изображениями?" \
-        --cursor "▶ " \
+    set -l choices \
         "1. Сжать бережно (JPG 92%, PNG без потерь)" \
         "2. Сжать сильнее (JPG 85%)" \
         "3. Конвертировать в WebP (качество 90)" \
         "4. Уменьшить разрешение и конвертировать в WebP (макс. ширина 2560px)" \
-        "5. Просто показать размеры файлов (без изменений)")
-    set -l gum_status $status
-
-    if test $gum_status -ne 0 -o -z "$choice"
-        printf '\nОтменено.\n'
-        return 130
+        "5. Просто показать размеры файлов (без изменений)"
+    set -l choice
+    if test -n "$requested_mode"
+        set choice "$choices[$requested_mode]"
+    else
+        set choice (gum choose --header "Что сделать с изображениями?" \
+        --cursor "▶ " \
+        $choices)
+        if test $status -ne 0; or test -z "$choice"
+            printf '\nОтменено.\n'
+            return 130
+        end
     end
 
     set -l action (string sub -l 1 -- "$choice")

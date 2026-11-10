@@ -24,4 +24,114 @@
 	<other-files/>
 	<text-files/>
 </action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать бережно</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-1</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 1 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать бережно</description>
+	<range>*</range>
+	<patterns>*.[jJ][pP][gG];*.[jJ][pP][eE][gG];*.[pP][nN][gG];*.[wW][eE][bB][pP]</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать сильнее</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-2</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 2 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать сильнее</description>
+	<range>*</range>
+	<patterns>*.[jJ][pP][gG];*.[jJ][pP][eE][gG];*.[pP][nN][gG];*.[wW][eE][bB][pP]</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Конвертировать в WebP</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-3</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 3 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Конвертировать в WebP</description>
+	<range>*</range>
+	<patterns>*.[jJ][pP][gG];*.[jJ][pP][eE][gG];*.[pP][nN][gG];*.[wW][eE][bB][pP]</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>WebP до 2560 px</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-4</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 4 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>WebP до 2560 px</description>
+	<range>*</range>
+	<patterns>*.[jJ][pP][gG];*.[jJ][pP][eE][gG];*.[pP][nN][gG];*.[wW][eE][bB][pP]</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Показать размеры</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-5</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 5 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Показать размеры</description>
+	<range>*</range>
+	<patterns>*.[jJ][pP][gG];*.[jJ][pP][eE][gG];*.[pP][nN][gG];*.[wW][eE][bB][pP]</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать бережно (H.264)</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-1</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 1 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать бережно (H.264)</description>
+	<range>*</range>
+	<patterns>*.[mM][pP]4;*.[mM]4[vV];*.[mM][oO][vV];*.[mM][kK][vV];*.[wW][eE][bB][mM];*.[aA][vV][iI];*.[wW][mM][vV];*.[fF][lL][vV];*.[mM][pP][eE][gG];*.[mM][pP][gG];*.[tT][sS];*.[mM][tT][sS];*.[mM]2[tT][sS];*.3[gG][pP];*.[oO][gG][vV];*.[gG][iI][fF]</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать сильнее (H.264)</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-2</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 2 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать сильнее (H.264)</description>
+	<range>*</range>
+	<patterns>*.[mM][pP]4;*.[mM]4[vV];*.[mM][oO][vV];*.[mM][kK][vV];*.[wW][eE][bB][mM];*.[aA][vV][iI];*.[wW][mM][vV];*.[fF][lL][vV];*.[mM][pP][eE][gG];*.[mM][pP][gG];*.[tT][sS];*.[mM][tT][sS];*.[mM]2[tT][sS];*.3[gG][pP];*.[oO][gG][vV];*.[gG][iI][fF]</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать в H.265 / HEVC</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-3</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 3 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать в H.265 / HEVC</description>
+	<range>*</range>
+	<patterns>*.[mM][pP]4;*.[mM]4[vV];*.[mM][oO][vV];*.[mM][kK][vV];*.[wW][eE][bB][mM];*.[aA][vV][iI];*.[wW][mM][vV];*.[fF][lL][vV];*.[mM][pP][eE][gG];*.[mM][pP][gG];*.[tT][sS];*.[mM][tT][sS];*.[mM]2[tT][sS];*.3[gG][pP];*.[oO][gG][vV];*.[gG][iI][fF]</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Уменьшить до 1080p</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-4</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 4 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Уменьшить до 1080p</description>
+	<range>*</range>
+	<patterns>*.[mM][pP]4;*.[mM]4[vV];*.[mM][oO][vV];*.[mM][kK][vV];*.[wW][eE][bB][mM];*.[aA][vV][iI];*.[wW][mM][vV];*.[fF][lL][vV];*.[mM][pP][eE][gG];*.[mM][pP][gG];*.[tT][sS];*.[mM][tT][sS];*.[mM]2[tT][sS];*.3[gG][pP];*.[oO][gG][vV];*.[gG][iI][fF]</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Показать размеры</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-5</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 5 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Показать размеры</description>
+	<range>*</range>
+	<patterns>*.[mM][pP]4;*.[mM]4[vV];*.[mM][oO][vV];*.[mM][kK][vV];*.[wW][eE][bB][mM];*.[aA][vV][iI];*.[wW][mM][vV];*.[fF][lL][vV];*.[mM][pP][eE][gG];*.[mM][pP][gG];*.[tT][sS];*.[mM][tT][sS];*.[mM]2[tT][sS];*.3[gG][pP];*.[oO][gG][vV];*.[gG][iI][fF]</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
 </actions>
