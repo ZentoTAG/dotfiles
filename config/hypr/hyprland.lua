@@ -8,5 +8,8 @@ require("lua.rules")
 require("lua.decoration")
 require("lua.animations")
 
+
+
+
 -- For Noctalia Color templates
 require("noctalia").apply_theme()

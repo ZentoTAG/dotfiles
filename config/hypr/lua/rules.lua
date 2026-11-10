@@ -229,7 +229,7 @@ hl.window_rule({
 hl.window_rule({
     name = "thunar-rename-float",
     match = { 
-        class = "^(thunar)$", 
+        class = "^(Thunar|thunar)$", 
         initial_title = "^(Переименовать.*|Rename.*|Массовое переименование.*|Bulk Rename.*)$" 
     },
     float = true,
@@ -240,7 +240,7 @@ hl.window_rule({
 hl.window_rule({
     name = "thunar-main-tile",
     match = { 
-        class = "^(thunar)$", 
+        class = "^(Thunar|thunar)$", 
         initial_title = ".*Thunar$" -- Совпадает с вашим "zento - Thunar"
     },
     float = false,
@@ -253,4 +253,3 @@ hl.window_rule({
     center = true,
     size = "800 600", -- размер окна (можно подогнать)
 })
-
