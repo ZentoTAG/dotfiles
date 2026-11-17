@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=FlClash
+NoDisplay=true
+Exec="/usr/lib/flclash/FlClash" %u
+MimeType=x-scheme-handler/clash;x-scheme-handler/clashmeta;x-scheme-handler/flclash;

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Micro (Kitty)
+Exec=kitty micro %F
+MimeType=text/plain;
+Icon=kitty
+Terminal=false
+NoDisplay=true

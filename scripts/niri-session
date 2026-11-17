@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Launch Niri with the same environment that Hyprland sets in lua/env.lua.
+# Use this on a TTY or select a session that runs this script from a display
+# manager. For a nested test session use plain `niri` instead.
+set -euo pipefail
+
+export LC_TIME=ru_RU.UTF-8
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+export QT_QPA_PLATFORMTHEME=qt6ct
+
+# NVIDIA: only set these when the driver is loaded, like the Hyprland config.
+if [[ -r /proc/driver/nvidia/version ]]; then
+    export GBM_BACKEND=nvidia-drm
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export NVD_BACKEND=direct
+    export LIBVA_DRIVER_NAME=nvidia
+fi
+
+# Keep the same local proxy setup as Hyprland.
+export http_proxy=http://127.0.0.1:10808
+export https_proxy="$http_proxy"
+export all_proxy=socks5://127.0.0.1:10808
+
+exec niri --session "$@"

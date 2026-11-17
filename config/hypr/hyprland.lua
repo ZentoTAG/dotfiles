@@ -1,0 +1,15 @@
+require("lua.env")
+require("lua.monitors")
+require("lua.input")
+require("lua.autostart")
+require("lua.binds")
+require("lua.rules")
+require("lua.overview")
+require("lua.decoration")
+require("lua.animations")
+
+
+
+
+-- For Noctalia Color templates
+require("noctalia").apply_theme()

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Zapret (Авто)
+Comment=Включить Zapret через systemd
+Exec=systemctl --user start zapret.service
+Icon=network-wired
+Terminal=false
+Categories=Network;

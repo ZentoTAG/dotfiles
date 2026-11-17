@@ -1,0 +1,6 @@
+[Unit]
+Description=Refresh folder icons from the current Noctalia accent color
+
+[Service]
+Type=oneshot
+ExecStart=%h/data/dotfiles/scripts/noctalia-folder-icons

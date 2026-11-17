@@ -1,0 +1,13 @@
+[mgr]
+prepend_keymap = [
+    { on = "v", run = "toggle_all --state=on", desc = "Select all files" },
+    { on = "V", run = "visual_mode", desc = "Enter visual selection mode" },
+    { on = "<C-a>", run = "escape --select", desc = "Clear selection" },
+
+    # Custom actions: Ctrl+g, then a key.
+    { on = [ "<C-g>", "i" ], run = '''shell --block -- fish -c 'imgc $argv; set -l result $status; read -l -P "Нажмите Enter для возврата в Yazi..."; exit $result' -- %s''', desc = "Compress images (imgc)" },
+    { on = [ "<C-g>", "v" ], run = '''shell --block -- fish -c 'vidc $argv; set -l result $status; read -l -P "Нажмите Enter для возврата в Yazi..."; exit $result' -- %s''', desc = "Compress videos (vidc)" },
+    { on = [ "<C-g>", "x" ], run = '''shell --block -- fish -c 'chmod +x -- $argv; set -l result $status; if test $result -eq 0; printf "Файлы сделаны исполняемыми.\n"; end; read -l -P "Нажмите Enter для возврата в Yazi..."; exit $result' -- %s''', desc = "Make selected files executable" },
+    { on = [ "<C-g>", "p" ], run = '''shell --block -- fish -c 'set -l repo (git rev-parse --show-toplevel 2>/dev/null); if test $status -ne 0; echo "Текущая папка не находится в Git-репозитории."; read -l -P "Нажмите Enter для возврата в Yazi..."; exit 1; end; printf "Репозиторий: %s\nБудут добавлены все изменения, создан коммит и выполнен push.\n" "$repo"; read -l -P "Продолжить? [y/N] " answer; if test "$answer" != y; and test "$answer" != Y; echo "Отменено."; exit 0; end; "$HOME/data/dotfiles/scripts/auto_push.sh" "$repo"; set -l result $status; read -l -P "Нажмите Enter для возврата в Yazi..."; exit $result' ''', desc = "Git auto push (current repository)" },
+    { on = [ "<C-g>", "l" ], run = '''shell --block -- fish -c 'set -l repo (git rev-parse --show-toplevel 2>/dev/null); if test $status -ne 0; echo "Текущая папка не находится в Git-репозитории."; read -l -P "Нажмите Enter для возврата в Yazi..."; exit 1; end; printf "Репозиторий: %s\nБудет выполнен git pull.\n" "$repo"; read -l -P "Продолжить? [y/N] " answer; if test "$answer" != y; and test "$answer" != Y; echo "Отменено."; exit 0; end; cd "$repo"; and "$HOME/data/dotfiles/scripts/auto_pull.sh"; set -l result $status; read -l -P "Нажмите Enter для возврата в Yazi..."; exit $result' ''', desc = "Git pull (current repository)" },
+]

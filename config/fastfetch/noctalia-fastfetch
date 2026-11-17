@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -u
+
+# Noctalia regenerates this file when its color scheme changes.
+noctalia_css="${NOCTALIA_COLORS_FILE:-${HOME}/.config/gtk-4.0/noctalia.css}"
+accent_color=""
+
+if [[ -r "$noctalia_css" ]]; then
+    accent_color=$(sed -nE \
+        's/^[[:space:]]*@define-color[[:space:]]+accent_color[[:space:]]+(#[0-9A-Fa-f]{6});[[:space:]]*$/\1/p' \
+        "$noctalia_css" | head -n 1)
+fi
+
+# Keep fastfetch usable if Noctalia's generated file is unavailable.
+accent_color="${accent_color:-#ffc09d}"
+
+exec fastfetch \
+    --logo-color-1 "$accent_color" \
+    --logo-color-2 "$accent_color" \
+    "$@"

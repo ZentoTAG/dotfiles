@@ -1,0 +1,41 @@
+[mgr]
+show_hidden = true
+sort_by = "natural"
+sort_reverse = false
+
+[opener]
+edit = [
+    { run = 'micro %s', block = true, for = "unix" },
+]
+open = [
+    { run = 'xdg-open %s1', desc = "Open", for = "linux" },
+]
+play = [
+    { run = 'mpv %s', orphan = true, for = "unix" },
+]
+archive = [
+    { run = 'ark %s', desc = "Open in Ark", orphan = true, for = "linux" },
+]
+extract = [
+    { run = 'ark %s1', desc = "Open archive in Ark", orphan = true, for = "linux" },
+]
+
+[open]
+prepend_rules = [
+    { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "archive", "open", "extract" ] },
+    { url = "*.{zip,rar,7z,tar,gz,tgz,xz,bz2,zst}", use = [ "archive", "open", "extract" ] },
+    { url = "*.json", use = "edit" },
+    { url = "*.toml", use = "edit" },
+    { url = "*.yaml", use = "edit" },
+    { url = "*.yml", use = "edit" },
+    { url = "*.conf", use = "edit" },
+    { url = "*.sh", use = "edit" },
+    { url = "*.py", use = "edit" },
+    { url = "*.rs", use = "edit" },
+    { url = "*.css", use = "edit" },
+    { url = "*.html", use = "edit" },
+    { url = "*.xml", use = "edit" },
+    { url = "*.md", use = "edit" },
+    { url = "*.txt", use = "edit" },
+    { url = "*.csv", use = "edit" },
+]

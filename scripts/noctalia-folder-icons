@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""Generate a small Adwaita-derived folder icon theme using Noctalia's accent."""
+
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+HOME = Path.home()
+CSS = HOME / ".config/gtk-3.0/noctalia.css"
+SOURCE = Path("/usr/share/icons/Adwaita/scalable/places")
+THEME = HOME / ".local/share/icons/Noctalia-Folders"
+
+# 1. Проверяем наличие исходных иконок Adwaita
+if not SOURCE.exists():
+    sys.exit(f"Adwaita icon source not found at {SOURCE}. Is adwaita-icon-theme installed?")
+
+# 2. Читаем CSS
+try:
+    css = CSS.read_text()
+except OSError as exc:
+    sys.exit(f"Cannot read Noctalia GTK palette at {CSS}: {exc}")
+
+# 3. Ищем акцентный цвет
+match = re.search(r"@define-color\s+accent_color\s+#([0-9a-fA-F]{6})\s*;", css)
+if not match:
+    sys.exit(f"No accent_color found in {CSS}; keeping the existing icon theme")
+
+accent = tuple(int(match.group(1)[i:i + 2], 16) for i in (0, 2, 4))
+
+def shade(amount: float) -> str:
+    rgb = tuple(round(channel + (255 - channel) * amount) for channel in accent)
+    return "#" + "".join(f"{channel:02x}" for channel in rgb)
+
+replacements = {
+    "#438de6": "#" + match.group(1).lower(),
+    "#62a0ea": shade(0.12),
+    "#afd4ff": shade(0.58),
+    "#c0d5ea": shade(0.68),
+    "#a4caee": shade(0.42),
+}
+
+# 4. Генерируем тему
+folder_icons = list(SOURCE.glob("folder*.svg"))
+if not folder_icons:
+    sys.exit(f"No folder SVG icons found in {SOURCE}; keeping the existing icon theme")
+
+places = THEME / "scalable" / "places"
+places.mkdir(parents=True, exist_ok=True)
+for source in folder_icons:
+    svg = source.read_text()
+    for old, new in replacements.items():
+        svg = re.sub(re.escape(old), new, svg, flags=re.IGNORECASE)
+    (places / source.name).write_text(svg)
+
+# 5. Создаем index.theme
+(THEME / "index.theme").write_text("""[Icon Theme]
+Name=Noctalia-Folders
+Comment=Adwaita icons with folder colors from Noctalia
+Inherits=Adwaita,hicolor
+Directories=scalable/places
+
+[scalable/places]
+Context=Places
+Size=128
+Type=Scalable
+MinSize=16
+MaxSize=512
+Threshold=2
+""")
+
+# 6. Обновляем кэш
+subprocess.run(["gtk-update-icon-cache", "-f", "-t", str(THEME)], check=False)
+
+# 7. Применяем тему через gsettings (с безопасным фоллбэком)
+try:
+    # Получаем текущую тему, чтобы не дергать gsettings зря
+    current_theme = subprocess.check_output(
+        ["gsettings", "get", "org.gnome.desktop.interface", "icon-theme"],
+        text=True,
+        stderr=subprocess.DEVNULL,
+    ).strip().strip("'")
+
+    if current_theme != "Noctalia-Folders":
+        subprocess.run(
+            ["gsettings", "set", "org.gnome.desktop.interface", "icon-theme", "Noctalia-Folders"],
+            check=False,
+            stderr=subprocess.DEVNULL,
+        )
+except (FileNotFoundError, subprocess.CalledProcessError):
+    # Без D-Bus иконки перекрасятся; тема применится при следующем входе.
+    pass

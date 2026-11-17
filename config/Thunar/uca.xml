@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>preferences-desktop-wallpaper</icon>
+	<name>Сделать фоном рабочего стола (Noctalia)</name>
+	<submenu></submenu>
+	<unique-id>noctalia-set-wallpaper</unique-id>
+	<command>noctalia msg wallpaper-set %f</command>
+	<description>Установить изображение как обои через Noctalia на всех мониторах</description>
+	<range>1-1</range>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1710575157271461-1</unique-id>
+	<command>kitty --directory &quot;%f&quot;</command>
+	<description>Open the current directory in Kitty</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon></icon>
+	<name>Сделать исполняемым</name>
+	<submenu></submenu>
+	<unique-id>1794336525872432-1</unique-id>
+	<command>chmod +x %f</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<other-files/>
+	<text-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать бережно</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-1</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 1 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать бережно</description>
+	<range>*</range>
+	<patterns>*.jpg;*.jpG;*.jPg;*.jPG;*.Jpg;*.JpG;*.JPg;*.JPG;*.jpeg;*.jpeG;*.jpEg;*.jpEG;*.jPeg;*.jPeG;*.jPEg;*.jPEG;*.Jpeg;*.JpeG;*.JpEg;*.JpEG;*.JPeg;*.JPeG;*.JPEg;*.JPEG;*.png;*.pnG;*.pNg;*.pNG;*.Png;*.PnG;*.PNg;*.PNG;*.webp;*.webP;*.weBp;*.weBP;*.wEbp;*.wEbP;*.wEBp;*.wEBP;*.Webp;*.WebP;*.WeBp;*.WeBP;*.WEbp;*.WEbP;*.WEBp;*.WEBP</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать сильнее</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-2</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 2 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать сильнее</description>
+	<range>*</range>
+	<patterns>*.jpg;*.jpG;*.jPg;*.jPG;*.Jpg;*.JpG;*.JPg;*.JPG;*.jpeg;*.jpeG;*.jpEg;*.jpEG;*.jPeg;*.jPeG;*.jPEg;*.jPEG;*.Jpeg;*.JpeG;*.JpEg;*.JpEG;*.JPeg;*.JPeG;*.JPEg;*.JPEG;*.png;*.pnG;*.pNg;*.pNG;*.Png;*.PnG;*.PNg;*.PNG;*.webp;*.webP;*.weBp;*.weBP;*.wEbp;*.wEbP;*.wEBp;*.wEBP;*.Webp;*.WebP;*.WeBp;*.WeBP;*.WEbp;*.WEbP;*.WEBp;*.WEBP</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Конвертировать в WebP</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-3</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 3 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Конвертировать в WebP</description>
+	<range>*</range>
+	<patterns>*.jpg;*.jpG;*.jPg;*.jPG;*.Jpg;*.JpG;*.JPg;*.JPG;*.jpeg;*.jpeG;*.jpEg;*.jpEG;*.jPeg;*.jPeG;*.jPEg;*.jPEG;*.Jpeg;*.JpeG;*.JpEg;*.JpEG;*.JPeg;*.JPeG;*.JPEg;*.JPEG;*.png;*.pnG;*.pNg;*.pNG;*.Png;*.PnG;*.PNg;*.PNG;*.webp;*.webP;*.weBp;*.weBP;*.wEbp;*.wEbP;*.wEBp;*.wEBP;*.Webp;*.WebP;*.WeBp;*.WeBP;*.WEbp;*.WEbP;*.WEBp;*.WEBP</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>WebP до 2560 px</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-4</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 4 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>WebP до 2560 px</description>
+	<range>*</range>
+	<patterns>*.jpg;*.jpG;*.jPg;*.jPG;*.Jpg;*.JpG;*.JPg;*.JPG;*.jpeg;*.jpeG;*.jpEg;*.jpEG;*.jPeg;*.jPeG;*.jPEg;*.jPEG;*.Jpeg;*.JpeG;*.JpEg;*.JpEG;*.JPeg;*.JPeG;*.JPEg;*.JPEG;*.png;*.pnG;*.pNg;*.pNG;*.Png;*.PnG;*.PNg;*.PNG;*.webp;*.webP;*.weBp;*.weBP;*.wEbp;*.wEbP;*.wEBp;*.wEBP;*.Webp;*.WebP;*.WeBp;*.WeBP;*.WEbp;*.WEbP;*.WEBp;*.WEBP</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Показать размеры</name>
+	<submenu>Сжать изображение</submenu>
+	<unique-id>thunar-imgc-mode-5</unique-id>
+	<command>kitty --class kitty-float fish -c 'imgc --mode 5 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Показать размеры</description>
+	<range>*</range>
+	<patterns>*.jpg;*.jpG;*.jPg;*.jPG;*.Jpg;*.JpG;*.JPg;*.JPG;*.jpeg;*.jpeG;*.jpEg;*.jpEG;*.jPeg;*.jPeG;*.jPEg;*.jPEG;*.Jpeg;*.JpeG;*.JpEg;*.JpEG;*.JPeg;*.JPeG;*.JPEg;*.JPEG;*.png;*.pnG;*.pNg;*.pNG;*.Png;*.PnG;*.PNg;*.PNG;*.webp;*.webP;*.weBp;*.weBP;*.wEbp;*.wEbP;*.wEBp;*.wEBP;*.Webp;*.WebP;*.WeBp;*.WeBP;*.WEbp;*.WEbP;*.WEBp;*.WEBP</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать бережно (H.264)</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-1</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 1 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать бережно (H.264)</description>
+	<range>*</range>
+	<patterns>*.mp4;*.mP4;*.Mp4;*.MP4;*.m4v;*.m4V;*.M4v;*.M4V;*.mov;*.moV;*.mOv;*.mOV;*.Mov;*.MoV;*.MOv;*.MOV;*.mkv;*.mkV;*.mKv;*.mKV;*.Mkv;*.MkV;*.MKv;*.MKV;*.webm;*.webM;*.weBm;*.weBM;*.wEbm;*.wEbM;*.wEBm;*.wEBM;*.Webm;*.WebM;*.WeBm;*.WeBM;*.WEbm;*.WEbM;*.WEBm;*.WEBM;*.avi;*.avI;*.aVi;*.aVI;*.Avi;*.AvI;*.AVi;*.AVI;*.wmv;*.wmV;*.wMv;*.wMV;*.Wmv;*.WmV;*.WMv;*.WMV;*.flv;*.flV;*.fLv;*.fLV;*.Flv;*.FlV;*.FLv;*.FLV;*.mpeg;*.mpeG;*.mpEg;*.mpEG;*.mPeg;*.mPeG;*.mPEg;*.mPEG;*.Mpeg;*.MpeG;*.MpEg;*.MpEG;*.MPeg;*.MPeG;*.MPEg;*.MPEG;*.mpg;*.mpG;*.mPg;*.mPG;*.Mpg;*.MpG;*.MPg;*.MPG;*.ts;*.tS;*.Ts;*.TS;*.mts;*.mtS;*.mTs;*.mTS;*.Mts;*.MtS;*.MTs;*.MTS;*.m2ts;*.m2tS;*.m2Ts;*.m2TS;*.M2ts;*.M2tS;*.M2Ts;*.M2TS;*.3gp;*.3gP;*.3Gp;*.3GP;*.ogv;*.ogV;*.oGv;*.oGV;*.Ogv;*.OgV;*.OGv;*.OGV;*.gif;*.giF;*.gIf;*.gIF;*.Gif;*.GiF;*.GIf;*.GIF</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать сильнее (H.264)</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-2</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 2 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать сильнее (H.264)</description>
+	<range>*</range>
+	<patterns>*.mp4;*.mP4;*.Mp4;*.MP4;*.m4v;*.m4V;*.M4v;*.M4V;*.mov;*.moV;*.mOv;*.mOV;*.Mov;*.MoV;*.MOv;*.MOV;*.mkv;*.mkV;*.mKv;*.mKV;*.Mkv;*.MkV;*.MKv;*.MKV;*.webm;*.webM;*.weBm;*.weBM;*.wEbm;*.wEbM;*.wEBm;*.wEBM;*.Webm;*.WebM;*.WeBm;*.WeBM;*.WEbm;*.WEbM;*.WEBm;*.WEBM;*.avi;*.avI;*.aVi;*.aVI;*.Avi;*.AvI;*.AVi;*.AVI;*.wmv;*.wmV;*.wMv;*.wMV;*.Wmv;*.WmV;*.WMv;*.WMV;*.flv;*.flV;*.fLv;*.fLV;*.Flv;*.FlV;*.FLv;*.FLV;*.mpeg;*.mpeG;*.mpEg;*.mpEG;*.mPeg;*.mPeG;*.mPEg;*.mPEG;*.Mpeg;*.MpeG;*.MpEg;*.MpEG;*.MPeg;*.MPeG;*.MPEg;*.MPEG;*.mpg;*.mpG;*.mPg;*.mPG;*.Mpg;*.MpG;*.MPg;*.MPG;*.ts;*.tS;*.Ts;*.TS;*.mts;*.mtS;*.mTs;*.mTS;*.Mts;*.MtS;*.MTs;*.MTS;*.m2ts;*.m2tS;*.m2Ts;*.m2TS;*.M2ts;*.M2tS;*.M2Ts;*.M2TS;*.3gp;*.3gP;*.3Gp;*.3GP;*.ogv;*.ogV;*.oGv;*.oGV;*.Ogv;*.OgV;*.OGv;*.OGV;*.gif;*.giF;*.gIf;*.gIF;*.Gif;*.GiF;*.GIf;*.GIF</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Сжать в H.265 / HEVC</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-3</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 3 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Сжать в H.265 / HEVC</description>
+	<range>*</range>
+	<patterns>*.mp4;*.mP4;*.Mp4;*.MP4;*.m4v;*.m4V;*.M4v;*.M4V;*.mov;*.moV;*.mOv;*.mOV;*.Mov;*.MoV;*.MOv;*.MOV;*.mkv;*.mkV;*.mKv;*.mKV;*.Mkv;*.MkV;*.MKv;*.MKV;*.webm;*.webM;*.weBm;*.weBM;*.wEbm;*.wEbM;*.wEBm;*.wEBM;*.Webm;*.WebM;*.WeBm;*.WeBM;*.WEbm;*.WEbM;*.WEBm;*.WEBM;*.avi;*.avI;*.aVi;*.aVI;*.Avi;*.AvI;*.AVi;*.AVI;*.wmv;*.wmV;*.wMv;*.wMV;*.Wmv;*.WmV;*.WMv;*.WMV;*.flv;*.flV;*.fLv;*.fLV;*.Flv;*.FlV;*.FLv;*.FLV;*.mpeg;*.mpeG;*.mpEg;*.mpEG;*.mPeg;*.mPeG;*.mPEg;*.mPEG;*.Mpeg;*.MpeG;*.MpEg;*.MpEG;*.MPeg;*.MPeG;*.MPEg;*.MPEG;*.mpg;*.mpG;*.mPg;*.mPG;*.Mpg;*.MpG;*.MPg;*.MPG;*.ts;*.tS;*.Ts;*.TS;*.mts;*.mtS;*.mTs;*.mTS;*.Mts;*.MtS;*.MTs;*.MTS;*.m2ts;*.m2tS;*.m2Ts;*.m2TS;*.M2ts;*.M2tS;*.M2Ts;*.M2TS;*.3gp;*.3gP;*.3Gp;*.3GP;*.ogv;*.ogV;*.oGv;*.oGV;*.Ogv;*.OgV;*.OGv;*.OGV;*.gif;*.giF;*.gIf;*.gIF;*.Gif;*.GiF;*.GIf;*.GIF</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Уменьшить до 1080p</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-4</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 4 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Уменьшить до 1080p</description>
+	<range>*</range>
+	<patterns>*.mp4;*.mP4;*.Mp4;*.MP4;*.m4v;*.m4V;*.M4v;*.M4V;*.mov;*.moV;*.mOv;*.mOV;*.Mov;*.MoV;*.MOv;*.MOV;*.mkv;*.mkV;*.mKv;*.mKV;*.Mkv;*.MkV;*.MKv;*.MKV;*.webm;*.webM;*.weBm;*.weBM;*.wEbm;*.wEbM;*.wEBm;*.wEBM;*.Webm;*.WebM;*.WeBm;*.WeBM;*.WEbm;*.WEbM;*.WEBm;*.WEBM;*.avi;*.avI;*.aVi;*.aVI;*.Avi;*.AvI;*.AVi;*.AVI;*.wmv;*.wmV;*.wMv;*.wMV;*.Wmv;*.WmV;*.WMv;*.WMV;*.flv;*.flV;*.fLv;*.fLV;*.Flv;*.FlV;*.FLv;*.FLV;*.mpeg;*.mpeG;*.mpEg;*.mpEG;*.mPeg;*.mPeG;*.mPEg;*.mPEG;*.Mpeg;*.MpeG;*.MpEg;*.MpEG;*.MPeg;*.MPeG;*.MPEg;*.MPEG;*.mpg;*.mpG;*.mPg;*.mPG;*.Mpg;*.MpG;*.MPg;*.MPG;*.ts;*.tS;*.Ts;*.TS;*.mts;*.mtS;*.mTs;*.mTS;*.Mts;*.MtS;*.MTs;*.MTS;*.m2ts;*.m2tS;*.m2Ts;*.m2TS;*.M2ts;*.M2tS;*.M2Ts;*.M2TS;*.3gp;*.3gP;*.3Gp;*.3GP;*.ogv;*.ogV;*.oGv;*.oGV;*.Ogv;*.OgV;*.OGv;*.OGV;*.gif;*.giF;*.gIf;*.gIF;*.Gif;*.GiF;*.GIf;*.GIF</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>applications-multimedia</icon>
+	<name>Показать размеры</name>
+	<submenu>Сжать видео</submenu>
+	<unique-id>thunar-vidc-mode-5</unique-id>
+	<command>kitty --class kitty-float fish -c 'vidc --mode 5 $argv; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %F</command>
+	<description>Показать размеры</description>
+	<range>*</range>
+	<patterns>*.mp4;*.mP4;*.Mp4;*.MP4;*.m4v;*.m4V;*.M4v;*.M4V;*.mov;*.moV;*.mOv;*.mOV;*.Mov;*.MoV;*.MOv;*.MOV;*.mkv;*.mkV;*.mKv;*.mKV;*.Mkv;*.MkV;*.MKv;*.MKV;*.webm;*.webM;*.weBm;*.weBM;*.wEbm;*.wEbM;*.wEBm;*.wEBM;*.Webm;*.WebM;*.WeBm;*.WeBM;*.WEbm;*.WEbM;*.WEBm;*.WEBM;*.avi;*.avI;*.aVi;*.aVI;*.Avi;*.AvI;*.AVi;*.AVI;*.wmv;*.wmV;*.wMv;*.wMV;*.Wmv;*.WmV;*.WMv;*.WMV;*.flv;*.flV;*.fLv;*.fLV;*.Flv;*.FlV;*.FLv;*.FLV;*.mpeg;*.mpeG;*.mpEg;*.mpEG;*.mPeg;*.mPeG;*.mPEg;*.mPEG;*.Mpeg;*.MpeG;*.MpEg;*.MpEG;*.MPeg;*.MPeG;*.MPEg;*.MPEG;*.mpg;*.mpG;*.mPg;*.mPG;*.Mpg;*.MpG;*.MPg;*.MPG;*.ts;*.tS;*.Ts;*.TS;*.mts;*.mtS;*.mTs;*.mTS;*.Mts;*.MtS;*.MTs;*.MTS;*.m2ts;*.m2tS;*.m2Ts;*.m2TS;*.M2ts;*.M2tS;*.M2Ts;*.M2TS;*.3gp;*.3gP;*.3Gp;*.3GP;*.ogv;*.ogV;*.oGv;*.oGV;*.Ogv;*.OgV;*.OGv;*.OGV;*.gif;*.giF;*.gIf;*.gIF;*.Gif;*.GiF;*.GIf;*.GIF</patterns>
+	<video-files/><image-files/><other-files/>
+</action>
+<action>
+	<icon>vcs-push</icon>
+	<name>Автопуш</name>
+	<submenu></submenu>
+	<unique-id>thunar-git-auto-push</unique-id>
+	<command>kitty --class kitty-float fish -c 'set -l repo (path dirname -- $argv[1]); "$HOME/data/dotfiles/scripts/auto_push.sh" "$repo"; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %f</command>
+	<description>Создать коммит и отправить изменения репозитория</description>
+	<range>1-1</range>
+	<patterns>.git</patterns>
+	<directories/><other-files/><text-files/>
+</action>
+<action>
+	<icon>vcs-update</icon>
+	<name>Стянуть с git</name>
+	<submenu></submenu>
+	<unique-id>thunar-git-auto-pull</unique-id>
+	<command>kitty --class kitty-float fish -c 'cd (path dirname -- $argv[1]); and "$HOME/data/dotfiles/scripts/auto_pull.sh"; set -l result $status; printf "\nНажмите Enter, чтобы закрыть окно..."; read -l; exit $result' -- %f</command>
+	<description>Получить изменения в репозиторий через git pull</description>
+	<range>1-1</range>
+	<patterns>.git</patterns>
+	<directories/><other-files/><text-files/>
+</action>
+</actions>
