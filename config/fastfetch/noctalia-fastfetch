@@ -15,7 +15,27 @@ fi
 # Keep fastfetch usable if Noctalia's generated file is unavailable.
 accent_color="${accent_color:-#ffc09d}"
 
+# Keep long module values beside the logo only when there is room for both.
+logo_options=()
+logo_file="${HOME}/.config/fastfetch/ascii/active.txt"
+if [[ -t 1 && -r "$logo_file" ]]; then
+    columns=$(stty size 2>/dev/null | awk '{print $2}')
+    logo_width=$(wc -L < "$logo_file")
+    if [[ "$columns" =~ ^[0-9]+$ ]] && (( columns > 0 )); then
+        if (( logo_width + 60 > columns )); then
+            logo_options+=(--logo "${HOME}/.config/fastfetch/ascii/berserk.txt")
+            logo_width=$(wc -L < "${HOME}/.config/fastfetch/ascii/berserk.txt")
+        fi
+        if (( logo_width + 60 > columns )); then
+            logo_options+=(--logo-type none)
+        else
+            logo_options+=(--logo-position left)
+        fi
+    fi
+fi
+
 exec fastfetch \
     --logo-color-1 "$accent_color" \
     --logo-color-2 "$accent_color" \
+    "${logo_options[@]}" \
     "$@"
