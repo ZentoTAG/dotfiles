@@ -5,20 +5,20 @@
     "source": "/home/zento/.config/fastfetch/ascii/ohayou.txt",
     "height": 20,
     "color": {
-      "1": "#63c4ff",
-      "2": "#63c5e6"
+      "1": "#ff63d0",
+      "2": "#ff63d0"
     }
   },
   "display": {
     "separator": " ➜  ",
     "color": {
-      "keys": "#b7c4ff",
-      "title": "#bfc5e6"
+      "keys": "#ffafd0",
+      "title": "#ffafd0"
     },
     "percent": {
       "color": {
-        "green": "#f3b0f3",
-        "yellow": "#b7c4ff",
+        "green": "#ffb4a7",
+        "yellow": "#ffafd0",
         "red": "#ffb4ab"
       }
     }

@@ -4,7 +4,7 @@
 
 hl.config({
     decoration = {
-        rounding = 10,
+        rounding = 0,
         blur = { enabled = false },
         -- blur = { enabled = true, size=6 },
         shadow = { enabled = false },
@@ -13,7 +13,7 @@ hl.config({
         -- border_size = 0,
         -- gaps_in = 0,
         -- gaps_out = 0
-        border_size = 1,
+        border_size = 3,
         -- gaps_in = 2,
         -- gaps_out = 2                              -- толщина
         -- col = {
