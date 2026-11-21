@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 # =============================================================================
 # powermode.sh — управление энергопотреблением и производительностью ноутбука
-# CachyOS · AMD Ryzen 7 5700U · Hyprland · gum
+# CachyOS · AMD Ryzen 7 5700U · Hyprland · Noctalia · gum
 #
 # Режимы: Максимальная экономия / Обычный / Максимальная производительность
 # + пункт «Показать статус».
+#
+# Профиль питания переключается через power-profiles-daemon — тот же backend,
+# которым пользуется Noctalia. Скрипт не запускает TLP и не перетирает профиль
+# настройками governor/EPP/частоты CPU.
 #
 # Установка:  ~/data/dotfiles/scripts/powermode.sh  (chmod +x)
 # Запуск:     powermode.sh           (от обычного пользователя, sudo — по мере нужды)
@@ -18,24 +22,12 @@
 set -euo pipefail
 
 # ─────────────────────────── НАСТРОЙКИ (меняйте здесь) ────────────────────────
-ECO_MAX_KHZ=1800000        # лимит частоты в экономии (1.8 ГГц)
-ECO_BRIGHTNESS=30          # яркость, %
+ECO_BRIGHTNESS=60         # яркость, %
 NORMAL_BRIGHTNESS=60
 PERF_BRIGHTNESS=100
 
 CHARGE_LIMIT=80            # порог зарядки, %, если поддерживается
 
-SWAPPINESS_ECO=10
-SWAPPINESS_NORMAL=60
-SWAPPINESS_PERF=60
-
-NMI_ECO=0                  # NMI watchdog: 0 — выкл (экономия), 1 — вкл
-NMI_NORMAL=1
-NMI_PERF=1
-
-EPP_ECO="power"
-EPP_NORMAL="balance_power"
-EPP_PERF="performance"
 # ──────────────────────────────────────────────────────────────────────────────
 
 CPU_SYS=/sys/devices/system/cpu
@@ -54,8 +46,6 @@ trap 'echo; exit 130' INT
 
 # ─────────────────────────── Вспомогательные функции ─────────────────────────
 have() { command -v "$1" >/dev/null 2>&1; }
-
-has_word() { [[ " $1 " == *" $2 "* ]]; }
 
 # read_file <путь> [значение_по_умолчанию]
 read_file() {
@@ -108,14 +98,6 @@ write_sys() {
     printf '%s' "$1" | $SUDO tee "$2" >/dev/null 2>&1
 }
 
-# set_cpu_attr <атрибут cpufreq> <значение> — для всех ядер сразу
-set_cpu_attr() {
-    local attr=$1 value=$2
-    local files=("$CPU_SYS"/cpu[0-9]*/cpufreq/"$attr")
-    [[ -e ${files[0]} ]] || return 2
-    printf '%s' "$value" | $SUDO tee "${files[@]}" >/dev/null 2>&1
-}
-
 # ─────────────────────────── Диалог да/нет ───────────────────────────────────
 # ask_yn "Вопрос" [no]   — второй аргумент "no" делает ответ по умолчанию «Нет»
 ask_yn() {
@@ -134,17 +116,20 @@ ask_yn() {
 
 # ─────────────────────────── Проверка зависимостей ───────────────────────────
 check_deps() {
-    local cmd
-    # gum — обязателен, остальное — по желанию (соответствующие шаги будут пропущены)
-    local -a all=(gum tlp cpupower brightnessctl)
+    local cmd pkg
+    # gum нужен для меню, powerprofilesctl — для переключения профиля,
+    # остальные команды используются дополнительными шагами.
+    local -a all=(gum powerprofilesctl brightnessctl)
     for cmd in "${all[@]}"; do
         have "$cmd" && continue
         warn "Не найдена утилита: $cmd"
-        if have pacman && ask_yn "Установить '$cmd' через pacman?"; then
-            if $SUDO pacman -S --needed --noconfirm "$cmd"; then
-                ok "$cmd установлен"
+        pkg=$cmd
+        [[ $cmd == powerprofilesctl ]] && pkg=power-profiles-daemon
+        if have pacman && ask_yn "Установить '$pkg' через pacman?"; then
+            if $SUDO pacman -S --needed --noconfirm "$pkg"; then
+                ok "$pkg установлен"
             else
-                fail "Не удалось установить $cmd"
+                fail "Не удалось установить $pkg"
             fi
         fi
         if [[ $cmd == gum ]] && ! have gum; then
@@ -157,157 +142,40 @@ check_deps() {
 }
 
 check_conflicts() {
-    if systemctl is-active --quiet power-profiles-daemon.service 2>/dev/null; then
-        warn "Активен power-profiles-daemon — он конфликтует с TLP и может перебивать настройки."
-        info "Рекомендация: sudo systemctl disable --now power-profiles-daemon && sudo systemctl enable --now tlp"
+    if ! have powerprofilesctl; then
+        warn "powerprofilesctl не найден — профили Noctalia переключать не получится."
     fi
-    if have tlp && ! systemctl is-enabled --quiet tlp.service 2>/dev/null; then
-        warn "Служба tlp.service не включена (sudo systemctl enable --now tlp)."
+    if systemctl is-active --quiet tlp.service 2>/dev/null; then
+        warn "Активен TLP — он может перетирать профиль, выбранный в Noctalia."
     fi
 }
 
-# ─────────────────────────── 1. ПРОЦЕССОР ────────────────────────────────────
-set_governor() {
-    local avail g
-    avail=$(read_file "$CPU0/scaling_available_governors" "")
-    for g in "$@"; do
-        has_word "$avail" "$g" || continue
-        if set_cpu_attr scaling_governor "$g"; then
-            ok "Governor: $g"
-            return 0
-        fi
-        fail "Не удалось выставить governor '$g'"
+# ─────────────────────────── 1. ПРОФИЛЬ ПИТАНИЯ ──────────────────────────────
+profile_apply() {
+    local mode=$1 profile label
+    case $mode in
+        eco)    profile=power-saver; label="экономия" ;;
+        normal) profile=balanced;    label="баланс" ;;
+        perf)   profile=performance; label="производительность" ;;
+        *)      warn "Неизвестный режим: $mode"; return 1 ;;
+    esac
+
+    if ! have powerprofilesctl; then
+        warn "powerprofilesctl не установлен — профиль питания не изменён"
+        return 0
+    fi
+    if ! run_user powerprofilesctl set "$profile" >/dev/null 2>&1; then
+        fail "Не удалось выбрать профиль power-profiles-daemon: $profile"
         return 1
-    done
-    warn "Подходящий governor не найден (доступны: ${avail:-нет данных})"
-    return 1
-}
-
-set_epp() {
-    local avail p
-    avail=$(read_file "$CPU0/energy_performance_available_preferences" "")
-    if [[ -z $avail ]]; then
-        warn "EPP не поддерживается текущим драйвером — пропущено"
+    fi
+    if [[ $(run_user powerprofilesctl get 2>/dev/null || true) != "$profile" ]]; then
+        warn "powerprofilesctl не подтвердил профиль '$profile'"
         return 0
     fi
-    for p in "$@"; do
-        has_word "$avail" "$p" || continue
-        if set_cpu_attr energy_performance_preference "$p"; then
-            ok "EPP (energy_performance_preference): $p"
-        else
-            warn "EPP '$p' не применился (при governor=performance это нормально — он зафиксирован)"
-        fi
-        return 0
-    done
-    warn "Нужное значение EPP недоступно (есть: $avail)"
+    ok "Профиль питания: $label ($profile)"
 }
 
-set_boost() {
-    local f=$CPU_SYS/cpufreq/boost label
-    label=$([[ $1 == 1 ]] && echo "включён" || echo "выключен")
-    if [[ ! -e $f ]]; then
-        warn "CPU Boost: управление не поддерживается ($f отсутствует)"
-        return 0
-    fi
-    if write_sys "$1" "$f"; then
-        ok "CPU Boost $label"
-    else
-        fail "CPU Boost: не удалось записать в $f"
-    fi
-}
-
-# set_max_freq <kHz | max>
-set_max_freq() {
-    local target=$1 hw done_=0
-    hw=$(read_file "$CPU0/cpuinfo_max_freq" "")
-    [[ $target == max ]] && target=$hw
-    if [[ -z $target ]]; then
-        warn "Не удалось определить максимальную частоту — лимит не изменён"
-        return 0
-    fi
-    if have cpupower; then
-        if $SUDO cpupower frequency-set -u "${target}kHz" >/dev/null 2>&1; then
-            done_=1
-        else
-            warn "cpupower не справился, пишу напрямую в sysfs"
-        fi
-    fi
-    if (( done_ == 0 )); then
-        if set_cpu_attr scaling_max_freq "$target"; then
-            done_=1
-        fi
-    fi
-    if (( done_ == 1 )); then
-        ok "Максимальная частота: $(khz_to_ghz "$target")"
-    else
-        fail "Не удалось установить лимит частоты"
-    fi
-}
-
-cpu_apply() {
-    local mode=$1 driver epp_driver=0
-    if [[ ! -d $CPU0 ]]; then
-        warn "cpufreq недоступен — настройки CPU пропущены"
-        return 0
-    fi
-    driver=$(read_file "$CPU0/scaling_driver" "unknown")
-    info "Драйвер CPU: $driver"
-    case $driver in
-        amd-pstate-epp) epp_driver=1 ;;
-        acpi-cpufreq|amd-pstate|amd-pstate-guided) ;;
-        *) warn "Нестандартный драйвер '$driver' — применяю настройки по возможности" ;;
-    esac
-    [[ -e $CPU0/energy_performance_preference ]] && epp_driver=1
-
-    case $mode in
-        eco)
-            set_governor powersave schedutil || true
-            (( epp_driver )) && { set_epp "$EPP_ECO" powersave || true; }
-            set_max_freq "$ECO_MAX_KHZ" || true
-            set_boost 0 || true
-            ;;
-        perf)
-            # Сначала Boost, потом снимаем лимит — иначе cpuinfo_max_freq может быть занижен
-            set_boost 1 || true
-            set_max_freq max || true
-            set_governor performance || true
-            (( epp_driver )) && { set_epp "$EPP_PERF" || true; }
-            ;;
-        normal)
-            set_boost 1 || true
-            set_max_freq max || true
-            if (( epp_driver )); then
-                # В режиме EPP доступны только performance/powersave
-                set_governor powersave || true
-                set_epp "$EPP_NORMAL" balance_performance || true
-            else
-                set_governor schedutil ondemand powersave || true
-            fi
-            ;;
-    esac
-}
-
-# ─────────────────────────── 2. TLP ──────────────────────────────────────────
-tlp_apply() {
-    local mode=$1 label
-    local -a cmd
-    if ! have tlp; then
-        warn "TLP не установлен — шаг пропущен"
-        return 0
-    fi
-    case $mode in
-        eco)    cmd=(tlp bat);                label="профиль BAT (tlp bat)" ;;
-        perf)   cmd=(tlp ac);                 label="профиль AC (tlp ac)" ;;
-        normal) cmd=(systemctl restart tlp);  label="перезапуск, профиль по источнику питания" ;;
-    esac
-    if $SUDO "${cmd[@]}" >/dev/null 2>&1; then
-        ok "TLP: $label"
-    else
-        fail "TLP: команда '${cmd[*]}' завершилась ошибкой"
-    fi
-}
-
-# ─────────────────────────── 3. ЭКРАН, HYPRLAND, BLUETOOTH, NVIDIA ───────────
+# ─────────────────────────── 2. ЭКРАН, HYPRLAND, BLUETOOTH, NVIDIA ───────────
 hypr_ok() { have hyprctl && run_user hyprctl version >/dev/null 2>&1; }
 
 # hypr_set <ключ> <значение> <описание>
@@ -437,7 +305,7 @@ nvidia_apply() {
     done
 }
 
-# ─────────────────────────── 4. ПОРОГ ЗАРЯДКИ ────────────────────────────────
+# ─────────────────────────── 3. ПОРОГ ЗАРЯДКИ ────────────────────────────────
 charge_apply() {
     local bat f found=0
     for bat in /sys/class/power_supply/BAT*; do
@@ -451,54 +319,7 @@ charge_apply() {
         fi
     done
     if (( found == 0 )); then
-        warn "Порог зарядки: не поддерживается этим ноутбуком/ядром — пропущено"
-    fi
-}
-
-# ─────────────────────────── 5. СИСТЕМНЫЕ НАСТРОЙКИ ──────────────────────────
-sys_apply() {
-    local mode=$1 swap nmi
-    case $mode in
-        eco)    swap=$SWAPPINESS_ECO;    nmi=$NMI_ECO ;;
-        perf)   swap=$SWAPPINESS_PERF;   nmi=$NMI_PERF ;;
-        normal) swap=$SWAPPINESS_NORMAL; nmi=$NMI_NORMAL ;;
-    esac
-
-    if [[ -e /proc/sys/vm/swappiness ]]; then
-        if $SUDO sysctl -qw "vm.swappiness=$swap" >/dev/null 2>&1; then
-            ok "vm.swappiness = $swap"
-        else
-            fail "Не удалось установить vm.swappiness"
-        fi
-    else
-        warn "vm.swappiness не поддерживается"
-    fi
-
-    if [[ -e /proc/sys/kernel/nmi_watchdog ]]; then
-        if $SUDO sysctl -qw "kernel.nmi_watchdog=$nmi" >/dev/null 2>&1; then
-            ok "NMI watchdog = $nmi"
-        else
-            fail "Не удалось изменить NMI watchdog"
-        fi
-    else
-        warn "NMI watchdog: не поддерживается (отключён при загрузке ядра)"
-    fi
-
-    if [[ $mode == eco ]]; then
-        if have powertop; then
-            warn "powertop --auto-tune включает autosuspend для USB: возможны лаги мыши/клавиатуры."
-            if ask_yn "Всё же применить powertop --auto-tune?" no; then
-                if $SUDO powertop --auto-tune >/dev/null 2>&1; then
-                    ok "powertop --auto-tune применён (до перезагрузки)"
-                else
-                    fail "powertop --auto-tune завершился ошибкой"
-                fi
-            else
-                info "powertop --auto-tune пропущен"
-            fi
-        else
-            info "powertop не установлен — автонастройка USB пропущена (TLP и так управляет USB autosuspend)"
-        fi
+        info "Порог зарядки этим ноутбуком/ядром не поддерживается — пропущено"
     fi
 }
 
@@ -519,10 +340,7 @@ apply_mode() {
     gum style --foreground 212 --bold "Применяю режим: $(mode_title "$mode")"
     echo
 
-    # Порядок важен: TLP первым, чтобы наши настройки CPU его не перебили
-    tlp_apply     "$mode" || true
-    cpu_apply     "$mode" || true
-    sys_apply     "$mode" || true
+    profile_apply "$mode" || true
     charge_apply          || true
     display_apply "$mode" || true
     nvidia_apply  "$mode" || true
@@ -531,21 +349,17 @@ apply_mode() {
     if (( WARN_COUNT == 0 )); then
         gum style --foreground 42 --bold "✔ Режим применён без замечаний."
     else
-        gum style --foreground 214 --bold "✔ Режим применён, замечаний: $WARN_COUNT (см. выше)."
+        gum style --foreground 214 --bold "⚠ Режим применён не полностью или с замечаниями: $WARN_COUNT (см. выше)."
     fi
-    info "Часть настроек (sysctl, sysfs) сбросится после перезагрузки."
+    info "Дополнительные настройки могут сброситься после перезагрузки."
 }
 
-# ─────────────────────────── 6. СТАТУС ───────────────────────────────────────
+# ─────────────────────────── 4. СТАТУС ───────────────────────────────────────
 row() { printf '%-24s %s\n' "$1" "$2"; }
 
-status_tlp() {
-    have tlp-stat || { echo "TLP не установлен"; return; }
-    local out state mode
-    out=$($SUDO tlp-stat -s 2>/dev/null) || out=""
-    state=$(grep -m1 -E '^State' <<<"$out" | sed -E 's/^State *= *//' || true)
-    mode=$(grep -m1 -E '^(Mode|Power source)' <<<"$out" | sed -E 's/^[A-Za-z ]+= *//' || true)
-    echo "${mode:-н/д}${state:+ (служба: $state)}"
+status_profile() {
+    have powerprofilesctl || { echo "powerprofilesctl не установлен"; return; }
+    run_user powerprofilesctl get 2>/dev/null || echo "н/д"
 }
 
 status_cpu_freq() {
@@ -611,7 +425,7 @@ status_nvidia() {
 
 status_text() {
     local boost bt br anim
-    row "Профиль TLP:" "$(status_tlp)"
+    row "Профиль питания:" "$(status_profile)"
     echo
     row "Драйвер CPU:" "$(read_file "$CPU0/scaling_driver" "н/д")"
     row "Governor:" "$(read_file "$CPU0/scaling_governor" "н/д")"
@@ -654,7 +468,6 @@ status_text() {
 
 show_status() {
     local text
-    ensure_sudo
     text=$(status_text)
     echo
     gum style --border rounded --padding "1 2" --border-foreground 212 "$text"

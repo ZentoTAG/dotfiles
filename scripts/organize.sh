@@ -1,143 +1,102 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-# Цвета для красивого вывода
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+# organize.sh — раскладывает файлы из ~/data/downloads по папкам.
+#
+#   organize.sh            — разложить (файлы старше MIN_AGE минут)
+#   organize.sh -n         — только показать, что будет перемещено
+#   organize.sh --now      — не ждать MIN_AGE (взять и свежие файлы)
+#
+# Недокачанные файлы (.part, .crdownload, .tmp) и подпапки не трогает.
+# Файлы неизвестных типов остаются на месте, но скрипт их перечислит в конце.
+set -uo pipefail          # без -e: одна ошибка не должна обрывать сортировку остальных
 
 SRC_DIR="$HOME/data/downloads"
 LOG_FILE="$HOME/.local/share/organize.log"
+MIN_AGE=15                # минут: не трогаем свежие, возможно ещё качаются
 
-# Папки назначения
 DIR_PICS="$HOME/data/media/pictures"
 DIR_VIDS="$HOME/data/media/videos"
-DIR_DOCS="$HOME/data/docs"
 DIR_MUSIC="$HOME/data/media/music"
+DIR_DOCS="$HOME/data/docs"
 DIR_ARCH="$HOME/data/archives"
-DIR_SCRIPTS="$HOME/data/dev/scripts"
+DIR_CODE="$HOME/data/dev/scripts"
 DIR_INST="$HOME/data/tools/installers"
 
-# Минимальный возраст файла в минутах (чтобы не трогать недокачанные)
-MIN_AGE=15
+# расширение (строчными) -> папка. Дописывай свои сюда.
+declare -A MAP=()
+add() { local dir=$1; shift; local e; for e in "$@"; do MAP[$e]=$dir; done; }
+add "$DIR_PICS"  jpg jpeg png webp gif svg avif bmp tiff heic ico
+add "$DIR_VIDS"  mp4 mkv avi webm mov flv wmv m4v
+add "$DIR_MUSIC" mp3 flac ogg wav m4a opus aac
+add "$DIR_DOCS"  pdf doc docx odt rtf txt md tex epub fb2 djvu xls xlsx ods csv ppt pptx odp
+add "$DIR_ARCH"  zip tar gz tgz bz2 xz rar 7z
+add "$DIR_CODE"  sh py js ts lua fish cpp c h hpp rs go java json yaml yml toml xml html css sql
+add "$DIR_INST"  exe msi appimage deb rpm pkg zst iso img apk
 
-# Счетчик
-MOVED_COUNT=0
-DRY_RUN=false
+DRY=false
+for a in "$@"; do
+    case $a in
+        -n|--dry-run) DRY=true ;;
+        --now)        MIN_AGE=0 ;;
+        -h|--help)    sed -n '2,9p' "$0"; exit 0 ;;
+        *) echo "Неизвестный аргумент: $a"; exit 1 ;;
+    esac
+done
 
-# Проверка аргументов
-if [[ "${1:-}" == "--dry-run" || "${1:-}" == "-n" ]]; then
-    DRY_RUN=true
-    echo -e "${YELLOW}РЕЖИМ ПРОСМОТРА (ничего не перемещается)${NC}"
-fi
-
-# Проверка, что папка существует
-if [[ ! -d "$SRC_DIR" ]]; then
-    echo -e "${RED}Ошибка: папка $SRC_DIR не найдена.${NC}"
-    exit 1
-fi
-
-# Создаем папки, если их нет
-mkdir -p "$DIR_PICS" "$DIR_VIDS" "$DIR_DOCS" "$DIR_MUSIC" "$DIR_ARCH" "$DIR_SCRIPTS" "$DIR_INST"
+[[ -d $SRC_DIR ]] || { echo "Нет папки $SRC_DIR"; exit 1; }
 mkdir -p "$(dirname "$LOG_FILE")"
 
-log_action() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+moved=0 failed=0
+declare -A unknown=()
+
+unique_path() {    # <папка> <имя> -> свободный путь (name_1.ext, name_2.ext ...)
+    local dir=$1 name=$2 base ext n=1 cand
+    cand="$dir/$name"
+    [[ -e $cand ]] || { echo "$cand"; return; }
+    if [[ $name == *.* && $name != .* ]]; then base=${name%.*}; ext=".${name##*.}"; else base=$name; ext=""; fi
+    while [[ -e "$dir/${base}_$n$ext" ]]; do n=$((n + 1)); done
+    echo "$dir/${base}_$n$ext"
 }
 
-# Функция для перемещения
-move_file() {
-    local file="$1"
-    local dest_dir="$2"
-    local filename
-    filename="$(basename "$file")"
-    local dest_path="$dest_dir/$filename"
-
-    # Если файл с таким именем уже есть, добавляем суффикс
-    if [[ -e "$dest_path" ]]; then
-        local base="${filename%.*}"
-        local ext="${filename##*.}"
-        # Если расширения нет, ext будет равен filename, а base пустым
-        if [[ "$base" == "$filename" ]]; then
-            base="$filename"
-            ext=""
-            local counter=1
-            while [[ -e "$dest_dir/${base}_${counter}" ]]; do
-                ((counter++))
-            done
-            dest_path="$dest_dir/${base}_${counter}"
-        else
-            local counter=1
-            while [[ -e "$dest_dir/${base}_${counter}.${ext}" ]]; do
-                ((counter++))
-            done
-            dest_path="$dest_dir/${base}_${counter}.${ext}"
-        fi
-    fi
-
-    if $DRY_RUN; then
-        echo -e "  ${YELLOW}[DRY-RUN]${NC} $filename -> $dest_dir/"
-    else
-        mv -n "$file" "$dest_path"
-        echo -e "  ${GREEN}✓${NC} $filename -> $(basename "$dest_dir")/"
-        log_action "Moved: $filename -> $dest_path"
-        ((MOVED_COUNT++))
-    fi
-}
-
-echo "Сканирую $SRC_DIR..."
-echo "Игнорирую файлы младше $MIN_AGE минут и временные файлы."
-echo "----------------------------------------------------"
-
-# Ищем файлы, исключаем скрытые, временные и слишком новые
-# -mmin +15 означает "измененные более 15 минут назад"
 while IFS= read -r -d '' file; do
-    filename="$(basename "$file")"
+    name=${file##*/}
+    case ${name,,} in *.part|*.crdownload|*.tmp|*.download|*.aria2) continue ;; esac
 
-    # Игнорируем временные файлы браузеров
-    if [[ "$filename" == *.crdownload || "$filename" == *.part || "$filename" == *.tmp ]]; then
+    if [[ $name == *.* ]]; then ext=${name##*.}; ext=${ext,,}; else ext=""; fi
+    dest=""
+    [[ -n $ext ]] && dest=${MAP[$ext]:-}
+
+    if [[ -z $dest ]]; then
+        unknown[${ext:-"(без расширения)"}]=$(( ${unknown[${ext:-"(без расширения)"}]:-0} + 1 ))
         continue
     fi
 
-    # Приводим расширение к нижнему регистру для сравнения
-    ext="${filename##*.}"
-    ext="${ext,,}"
+    if $DRY; then
+        printf '  [dry] %s -> %s/\n' "$name" "${dest/#$HOME/\~}"
+        moved=$((moved + 1))
+        continue
+    fi
 
-    case "$ext" in
-        jpg|jpeg|png|webp|gif|svg|avif)
-            move_file "$file" "$DIR_PICS"
-            ;;
-        mp4|mkv|avi|webm|mov)
-            move_file "$file" "$DIR_VIDS"
-            ;;
-        pdf|docx|doc|xlsx|pptx|txt|md|odt|ods)
-            move_file "$file" "$DIR_DOCS"
-            ;;
-        mp3|flac|ogg|wav|m4a)
-            move_file "$file" "$DIR_MUSIC"
-            ;;
-        zip|tar|gz|rar|7z|xz)
-            move_file "$file" "$DIR_ARCH"
-            ;;
-        sh|py|js|lua|fish|cpp|c|h|rs)
-            move_file "$file" "$DIR_SCRIPTS"
-            ;;
-        exe|msi|appimage|deb|pkg|zst)
-            move_file "$file" "$DIR_INST"
-            ;;
-        *)
-            # Неизвестные файлы оставляем на месте
-            ;;
-    esac
-done < <(find "$SRC_DIR" -maxdepth 1 -type f -mmin +$MIN_AGE -print0)
+    mkdir -p "$dest"
+    target=$(unique_path "$dest" "$name")
+    if mv -n -- "$file" "$target"; then
+        printf '  ✓ %s -> %s/\n' "$name" "${dest/#$HOME/\~}"
+        echo "[$(date '+%F %T')] $file -> $target" >> "$LOG_FILE"
+        moved=$((moved + 1))
+    else
+        printf '  ✗ не удалось переместить: %s\n' "$name" >&2
+        failed=$((failed + 1))
+    fi
+done < <(find "$SRC_DIR" -maxdepth 1 -type f ! -name '.*' -mmin +"$MIN_AGE" -print0)
 
-echo "----------------------------------------------------"
-if $DRY_RUN; then
-    echo -e "${YELLOW}Это был режим просмотра. Запусти без --dry-run, чтобы переместить файлы.${NC}"
-elif [[ $MOVED_COUNT -eq 0 ]]; then
-    echo "Нет файлов для перемещения (все либо новые, либо уже отсортированы)."
-else
-    echo -e "${GREEN}Готово! Перемещено файлов: $MOVED_COUNT${NC}"
-    echo "Лог: $LOG_FILE"
+echo "----------------------------------------"
+if $DRY; then echo "Показ: было бы перемещено $moved. Запусти без -n."; else echo "Перемещено: $moved$( ((failed)) && echo ", ошибок: $failed" )"; fi
+if (( ${#unknown[@]} > 0 )); then
+    printf 'Остались (тип неизвестен):'
+    for e in "${!unknown[@]}"; do printf ' %s×%s' "$e" "${unknown[$e]}"; done; echo
 fi
+
+# Если запущено не из терминала (по таймеру) — короткое уведомление
+if ! $DRY && (( moved > 0 )) && [[ ! -t 1 ]] && command -v notify-send >/dev/null; then
+    notify-send -a organize "Загрузки отсортированы" "Перемещено файлов: $moved"
+fi
+[[ $failed -eq 0 ]]

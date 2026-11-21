@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# note — быстрый захват мыслей в ~/data/notes/inbox.md
+#
+#   note текст заметки          записать (кавычки не обязательны)
+#   note                        без аргументов — спросит текст (gum или read)
+#   echo "текст" | note         записать из stdin
+#   note -c [комментарий]       записать выделенный текст (или буфер обмена)
+#   note -l [N]                 последние N заметок (по умолчанию 10)
+#   note -s слово               поиск по всем заметкам (rg, без учёта регистра)
+#   note -d [слово]             удалить заметку (выбор из списка; со словом — только подходящие)
+#   note -e                     открыть inbox.md в редакторе
+#   note -p                     напечатать путь к inbox.md
+#
+# Формат строки:  - 2026-11-22 14:05 — текст   (теги вида #идея просто часть текста)
+# Папку можно сменить: NOTES_DIR=/другой/путь note ...
+set -u
+
+NOTES_DIR=${NOTES_DIR:-$HOME/data/notes}
+INBOX=$NOTES_DIR/inbox.md
+mkdir -p "$NOTES_DIR"
+[[ -f $INBOX ]] || printf '# Inbox\n\n' > "$INBOX"
+
+add() {
+    local text=$1
+    text=${text//$'\r'/}
+    text=${text//$'\n'/ ↵ }                              # одна заметка = одна строка
+    text=$(printf '%s' "$text" | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')
+    [[ -n $text ]] || { echo "Пустая заметка — не записываю." >&2; return 1; }
+    printf -- '- %s — %s\n' "$(date '+%F %H:%M')" "$text" >> "$INBOX" || return 1
+    echo "✓ записано: $text"
+    if [[ ! -t 1 ]] && command -v notify-send >/dev/null; then notify-send -a note "📝 Записано" "$text"; fi
+}
+
+case ${1:-} in
+    -h|--help) sed -n '2,14p' "$0" ;;
+    -p) echo "$INBOX" ;;
+    -e) exec "${EDITOR:-${VISUAL:-micro}}" "$INBOX" ;;
+    -l) n=${2:-10}; [[ $n =~ ^[0-9]+$ ]] || n=10; grep '^- ' "$INBOX" | tail -n "$n" ;;
+    -s)
+        shift; pat="$*"
+        [[ -n $pat ]] || { echo "Использование: note -s слово" >&2; exit 1; }
+        if command -v rg >/dev/null; then rg -n -S --no-heading -g '*.md' -- "$pat" "$NOTES_DIR"
+        else grep -rniE --include='*.md' -- "$pat" "$NOTES_DIR"; fi
+        ;;
+    -d)
+        shift; pat="$*"
+        mapfile -t lines < <(grep -n '^- ' "$INBOX" | { if [[ -n $pat ]]; then grep -i -- "$pat" || true; else cat; fi; } | tac)
+        (( ${#lines[@]} > 0 )) || { echo "Нечего удалять."; exit 0; }
+        if (( ${#lines[@]} == 1 )); then sel=${lines[0]}
+        elif command -v gum >/dev/null; then
+            sel=$(printf '%s\n' "${lines[@]}" | gum filter --placeholder "Какую заметку удалить?" --height 15) || exit 0
+        else
+            i=1; for l in "${lines[@]}"; do printf '%3d) %s\n' "$i" "${l#*:}"; i=$((i+1)); done
+            read -r -p "Номер для удаления: " k; [[ $k =~ ^[0-9]+$ ]] && sel=${lines[k-1]:-}
+            [[ -n ${sel:-} ]] || { echo "Отмена."; exit 0; }
+        fi
+        [[ -n $sel ]] || exit 0
+        ln=${sel%%:*}; txt=${sel#*:}
+        echo "Удалить: $txt"
+        if command -v gum >/dev/null; then gum confirm "Точно удалить?" --default=false || { echo "Отмена."; exit 0; }
+        else read -r -p "Точно? [y/N] " a; [[ $a =~ ^[YyДд] ]] || { echo "Отмена."; exit 0; }; fi
+        cp -- "$INBOX" "$INBOX.bak" && sed -i "${ln}d" "$INBOX" && echo "✓ удалено (копия до удаления: inbox.md.bak)"
+        ;;
+    -c)
+        shift
+        sel=$(wl-paste -p 2>/dev/null || true)
+        [[ -n $sel ]] || sel=$(wl-paste 2>/dev/null || true)
+        [[ -n $sel ]] || { echo "Нет выделенного текста и буфер пуст." >&2; exit 1; }
+        if (( $# > 0 )); then add "$*: $sel"; else add "$sel"; fi
+        ;;
+    "")
+        if [[ ! -t 0 ]]; then add "$(cat)"
+        else
+            if command -v gum >/dev/null; then text=$(gum input --placeholder "Что записать?" --width 70) || exit 0
+            else read -r -p "📝 " text || exit 0; fi
+            add "$text" && sleep 0.6
+        fi
+        ;;
+    *) add "$*" ;;
+esac
