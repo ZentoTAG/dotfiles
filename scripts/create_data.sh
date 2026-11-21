@@ -19,6 +19,7 @@ mkdir -p ~/data/games
 mkdir -p ~/data/media/{music,pictures,screenshots,videos,wallpapers}
 mkdir -p ~/data/tools
 mkdir -p ~/data/external
+mkdir -p ~/data/notes
 
 # ============================================================
 # ПОДПАПКИ ВНУТРИ dotfiles/config

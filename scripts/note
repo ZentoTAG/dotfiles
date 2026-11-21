@@ -56,10 +56,7 @@ case ${1:-} in
         fi
         [[ -n $sel ]] || exit 0
         ln=${sel%%:*}; txt=${sel#*:}
-        echo "Удалить: $txt"
-        if command -v gum >/dev/null; then gum confirm "Точно удалить?" --default=false || { echo "Отмена."; exit 0; }
-        else read -r -p "Точно? [y/N] " a; [[ $a =~ ^[YyДд] ]] || { echo "Отмена."; exit 0; }; fi
-        cp -- "$INBOX" "$INBOX.bak" && sed -i "${ln}d" "$INBOX" && echo "✓ удалено (копия до удаления: inbox.md.bak)"
+        cp -- "$INBOX" "$INBOX.bak" && sed -i "${ln}d" "$INBOX" && echo "✓ удалено: ${txt#- }"
         ;;
     -c)
         shift
