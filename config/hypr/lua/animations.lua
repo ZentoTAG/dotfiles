@@ -8,7 +8,7 @@ hl.curve("overshot", { type = "bezier", points = {{0.13, 0.99}, {0.29, 1.1}} })
 hl.curve("wind", { type = "bezier", points = {{0.00, 0.06}, {0.00, 1.03}} })
 hl.curve("easeOutQuart", { type = "bezier", points = {{0.25, 1}, {0.5, 1}} })
 
--- Анимации (у каждой указан bezier)
+-- Анимации
 hl.animation({ leaf = "global", enabled = true, speed = 10, bezier = "fast" })
 hl.animation({ leaf = "windows", enabled = true, speed = 2, bezier = "fast", style = "popin" })
 hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "easeOutQuart", style = "slide" })
@@ -28,9 +28,9 @@ hl.config({
     misc = { animate_manual_resizes = true },
     dwindle = { preserve_split = true },
     scrolling = {
-        column_width = 0.5,              -- ширина колонки (0.5 = половина экрана)
-        fullscreen_on_one_column = true, -- не разворачивать одно окно на весь экран
-        focus_fit_method = 1,            -- 1 = вписывать активное окно в экран
+        column_width = 0.5,              
+        fullscreen_on_one_column = true,
+        focus_fit_method = 1,  -- 1 = вписывать активное окно в экран
         follow_focus = true,
         direction = "right"             -- прокручивать ленту при смене фокуса
     },

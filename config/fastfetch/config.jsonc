@@ -4,22 +4,26 @@
     "type": "file",
     "source": "/home/zento/.config/fastfetch/ascii/active.txt",
     "position": "left",
-    "padding": { "left": 1, "right": 2, "bottom": 1 },
+    "padding": {
+      "left": 1,
+      "right": 2,
+      "bottom": 1
+    },
     "color": {
-      "1": "#ff63d0",
-      "2": "#ff63d0"
+      "1": "#ffb663",
+      "2": "#e5be63"
     }
   },
   "display": {
     "separator": " ➜  ",
     "color": {
-      "keys": "#ffafd0",
-      "title": "#ffafd0"
+      "keys": "#ffb68d",
+      "title": "#e5beaa"
     },
     "percent": {
       "color": {
-        "green": "#ffb4a7",
-        "yellow": "#ffafd0",
+        "green": "#cdc991",
+        "yellow": "#ffb68d",
         "red": "#ffb4ab"
       }
     }
