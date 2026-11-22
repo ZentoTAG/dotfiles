@@ -7,7 +7,7 @@
 #   note -c [комментарий]       записать выделенный текст (или буфер обмена)
 #   note -l [N]                 последние N заметок (по умолчанию 10)
 #   note -s слово               поиск по всем заметкам (rg, без учёта регистра)
-#   note -d [слово]             удалить заметку (выбор из списка; со словом — только подходящие)
+#   note -d [слово]             удалить: отметить нужные (Tab), Enter — удалить отмеченные
 #   note -e                     открыть inbox.md в редакторе
 #   note -p                     напечатать путь к inbox.md
 #
@@ -44,19 +44,30 @@ case ${1:-} in
         ;;
     -d)
         shift; pat="$*"
-        mapfile -t lines < <(grep -n '^- ' "$INBOX" | { if [[ -n $pat ]]; then grep -i -- "$pat" || true; else cat; fi; } | tac)
+        mapfile -t lines < <(grep '^- ' "$INBOX" | { if [[ -n $pat ]]; then grep -i -- "$pat" || true; else cat; fi; } | tac)
         (( ${#lines[@]} > 0 )) || { echo "Нечего удалять."; exit 0; }
-        if (( ${#lines[@]} == 1 )); then sel=${lines[0]}
+        picked=()
+        if (( ${#lines[@]} == 1 )); then
+            picked=("${lines[0]}")
         elif command -v gum >/dev/null; then
-            sel=$(printf '%s\n' "${lines[@]}" | gum filter --placeholder "Какую заметку удалить?" --height 15) || exit 0
+            mapfile -t picked < <(printf '%s\n' "${lines[@]}" | gum filter --no-limit --height 20 \
+                --placeholder "фильтр…" --header "Tab — отметить, Enter — удалить отмеченные, Esc — отмена")
         else
-            i=1; for l in "${lines[@]}"; do printf '%3d) %s\n' "$i" "${l#*:}"; i=$((i+1)); done
-            read -r -p "Номер для удаления: " k; [[ $k =~ ^[0-9]+$ ]] && sel=${lines[k-1]:-}
-            [[ -n ${sel:-} ]] || { echo "Отмена."; exit 0; }
+            i=1; for l in "${lines[@]}"; do printf '%3d) %s\n' "$i" "$l"; i=$((i + 1)); done
+            read -r -p "Номера для удаления (через пробел): " ks
+            for k in ${ks//,/ }; do [[ $k =~ ^[0-9]+$ && -n ${lines[k-1]:-} ]] && picked+=("${lines[k-1]}"); done
         fi
-        [[ -n $sel ]] || exit 0
-        ln=${sel%%:*}; txt=${sel#*:}
-        cp -- "$INBOX" "$INBOX.bak" && sed -i "${ln}d" "$INBOX" && echo "✓ удалено: ${txt#- }"
+        (( ${#picked[@]} > 0 )) || { echo "Ничего не выбрано."; exit 0; }
+
+        nums=()
+        for l in "${picked[@]}"; do
+            while IFS=: read -r n _; do nums+=("$n"); done < <(grep -nxF -- "$l" "$INBOX")
+        done
+        (( ${#nums[@]} > 0 )) || { echo "Не нашёл выбранные строки в файле."; exit 1; }
+        expr=$(printf '%sd;' $(printf '%s\n' "${nums[@]}" | sort -un))
+        cp -- "$INBOX" "$INBOX.bak" && sed -i "$expr" "$INBOX" || exit 1
+        echo "✓ удалено: ${#picked[@]}"
+        for l in "${picked[@]}"; do echo "  ${l#- }"; done
         ;;
     -c)
         shift
