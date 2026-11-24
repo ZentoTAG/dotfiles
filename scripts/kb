@@ -1,0 +1,220 @@
+#!/usr/bin/env bash
+# kb — поиск по конспектам, отчётам и лабам (md, txt, код, а также PDF, DOCX, ODT).
+#
+#   kb слово или фраза      найти (регулярка, регистр не важен; -F — искать как есть)
+#   kb -n 60 запрос         показать до 60 результатов (по умолчанию 30)
+#   kb -s запрос            поиск ПО СМЫСЛУ без материалов из LABS и лабораторных файлов
+#   kb -o 3                 открыть результат №3 из последнего поиска
+#   kb --status             что проиндексировано и какие PDF без текста (сканы)
+#   kb --rebuild            пересоздать индекс с нуля
+#
+# Где ищет:  ~/data/dev/LABS  ~/data/notes  ~/data/docs
+# Свои папки:  KB_ROOTS="/путь/один:/путь/два" kb запрос
+#
+# Как работает: PDF/DOCX/ODT один раз превращаются в текст и кладутся в ~/.cache/kb
+# (обновляются сами, когда файл изменился); обычные файлы (md, txt, код) ищутся напрямую.
+# Зависимости: ripgrep (или grep), poppler (pdftotext), unzip. Для -o: редактор/просмотрщик PDF.
+# Для -s: uv и файл kb_sem.py рядом с этим скриптом (модель скачается при первом запуске).
+set -u
+
+CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/kb
+TXT=$CACHE/text
+LAST=$CACHE/last
+mkdir -p "$TXT"
+
+if [[ -n ${KB_ROOTS:-} ]]; then IFS=: read -ra ROOTS_ALL <<<"$KB_ROOTS"
+else ROOTS_ALL=("$HOME/data/dev/LABS" "$HOME/data/notes" "$HOME/data/docs"); fi
+ROOTS=(); for r in "${ROOTS_ALL[@]}"; do [[ -d $r ]] && ROOTS+=("$r"); done
+
+TEXT_EXT=(md txt tex csv sql php py cpp c h hpp rs lua sh)
+SKIP_DIRS=(.git node_modules __pycache__ build dist .venv venv _templates)
+
+die() { echo "❌ $*" >&2; exit 1; }
+have() { command -v "$1" >/dev/null 2>&1; }
+
+# ---------------------------------------------------------------- извлечение текста
+xml_text() {   # stdin: XML; $1 — regex тегов, которые означают перевод строки
+    sed -E "s#($1)#\n#g; s#<[^>]+>##g; s/&lt;/</g; s/&gt;/>/g; s/&quot;/\"/g; s/&apos;/'/g; s/&amp;/\&/g" \
+        | sed '/^[[:space:]]*$/d'
+}
+
+extract() {
+    local f=$1 ext=${1##*.}; ext=${ext,,}
+    case $ext in
+        pdf)  have pdftotext && pdftotext -q -- "$f" - 2>/dev/null |
+                  awk 'BEGIN{RS="\f"} NR==1 || length($0)>0 {printf "<<PAGE %d>>\n%s\n", NR, $0}' ;;
+        docx) unzip -p -- "$f" word/document.xml 2>/dev/null | xml_text '</w:p>|<w:br/>|<w:tab/>' ;;
+        odt)  unzip -p -- "$f" content.xml 2>/dev/null | xml_text '</text:p>|</text:h>|<text:line-break/>' ;;
+    esac
+}
+
+find_docs() {   # NUL-список конвертируемых файлов
+    ((${#ROOTS[@]})) || return
+    local prune=() d
+    for d in "${SKIP_DIRS[@]}"; do prune+=(-name "$d" -prune -o); done
+    find "${ROOTS[@]}" "${prune[@]}" -type f \( -iname '*.pdf' -o -iname '*.docx' -o -iname '*.odt' \) -print0 2>/dev/null
+}
+
+update_index() {
+    local f key out n=0 live=$CACHE/live.list
+    : > "$live"
+    while IFS= read -r -d '' f; do
+        key=$(printf '%s' "$f" | sha1sum | cut -c1-16)
+        out=$TXT/$key.txt
+        echo "$key.txt" >> "$live"
+        if [[ ! -f $out || $f -nt $out ]]; then
+            (( n == 0 )) && echo "📚 индексирую документы…" >&2
+            { printf '#SRC\t%s\n' "$f"; extract "$f"; } > "$out.tmp" && mv -f "$out.tmp" "$out"
+            n=$((n + 1))
+        fi
+    done < <(find_docs)
+    # удаляем кэш файлов, которых больше нет
+    comm -23 <(ls "$TXT" | grep '\.txt$' | sort) <(sort "$live") | while read -r x; do rm -f "$TXT/$x"; done
+}
+
+# ---------------------------------------------------------------- поиск
+run_text_search() {   # печатает  путь:строка:текст  для обычных файлов
+    ((${#ROOTS[@]})) || return
+    local g=() d
+    if have rg; then
+        local opt=(-n --no-heading --color never)
+        (( FIXED )) && opt+=(-F); (( FIXED )) || opt+=(-S)
+        (( FIXED )) && opt+=(-i)
+        for d in "${TEXT_EXT[@]}"; do g+=(-g "*.$d"); done
+        for d in "${SKIP_DIRS[@]}"; do g+=(-g "!$d"); done
+        rg "${opt[@]}" "${g[@]}" -- "$PAT" "${ROOTS[@]}" 2>/dev/null
+    else
+        local opt=(-rnIi); (( FIXED )) && opt+=(-F) || opt+=(-E)
+        for d in "${TEXT_EXT[@]}"; do g+=(--include="*.$d"); done
+        for d in "${SKIP_DIRS[@]}"; do g+=(--exclude-dir="$d"); done
+        grep "${opt[@]}" "${g[@]}" -- "$PAT" "${ROOTS[@]}" 2>/dev/null
+    fi
+}
+
+run_doc_search() {    # печатает  кэш-файл:строка:текст  для PDF/DOCX/ODT
+    if have rg; then
+        local opt=(-n --no-heading --color never -g '*.txt'); (( FIXED )) && opt+=(-F -i) || opt+=(-S)
+        rg "${opt[@]}" -- "$PAT" "$TXT" 2>/dev/null
+    else
+        local opt=(-rnIi --include='*.txt'); (( FIXED )) && opt+=(-F) || opt+=(-E)
+        grep "${opt[@]}" -- "$PAT" "$TXT" 2>/dev/null
+    fi
+}
+
+trim_cut() { local t=$1; t=${t#"${t%%[![:space:]]*}"}; t=${t%"${t##*[![:space:]]}"}; printf '%s' "${t:0:150}"; }
+
+cmd_search() {
+    local line cf rest ln txt src ext loc val kind i=0 extra=0 short
+    declare -A srccache=()
+    : > "$LAST"
+    update_index
+
+    show() {   # <src> <kind> <val> <loc> <txt>
+        i=$((i + 1))
+        if (( i > MAX )); then extra=$((extra + 1)); i=$((i - 1)); return; fi
+        printf '%s\t%s\t%s\n' "$1" "$2" "$3" >> "$LAST"
+        short=${1/#$HOME/\~}
+        printf '\033[1;36m[%d]\033[0m \033[1m%s\033[0m  \033[2m%s\033[0m\n      %s\n' "$i" "$short" "$4" "$(trim_cut "$5")"
+    }
+
+    # 1) PDF / DOCX / ODT (из текстового кэша)
+    while IFS= read -r line; do
+        cf=${line%%:*}; rest=${line#*:}; ln=${rest%%:*}; txt=${rest#*:}
+        (( ln == 1 )) && continue                         # первая строка кэша — служебная
+        [[ $txt == "<<PAGE "* ]] && continue
+        src=${srccache[$cf]:-}
+        if [[ -z $src ]]; then src=$(sed -n '1s/^#SRC\t//p' "$cf"); srccache[$cf]=$src; fi
+        ext=${src##*.}; ext=${ext,,}
+        if [[ $ext == pdf ]]; then
+            val=$(awk -v L="$ln" 'NR<=L && /^<<PAGE /{p=$2} NR==L{gsub(">>","",p); print p; exit}' "$cf")
+            show "$src" page "$val" "стр. $val" "$txt"
+        else
+            show "$src" para "$((ln - 1))" "абз. $((ln - 1))" "$txt"
+        fi
+    done < <(run_doc_search | sort -t: -k1,1 -k2,2n)
+
+    # 2) обычные файлы
+    while IFS= read -r line; do
+        src=${line%%:*}; rest=${line#*:}; ln=${rest%%:*}; txt=${rest#*:}
+        [[ $ln =~ ^[0-9]+$ ]] || continue
+        show "$src" line "$ln" "строка $ln" "$txt"
+    done < <(run_text_search | sort -t: -k1,1 -k2,2n)
+
+    if (( i == 0 )); then echo "Ничего не найдено по «$PAT»."; return 1; fi
+    echo
+    (( extra > 0 )) && echo "…ещё $extra (уточни запрос или добавь -n 100)."
+    echo "Открыть: kb -o <номер>"
+}
+
+# ---------------------------------------------------------------- открыть результат
+cmd_open() {
+    local n=$1 row src kind val
+    [[ $n =~ ^[0-9]+$ ]] || die "Нужен номер результата: kb -o 3"
+    row=$(sed -n "${n}p" "$LAST" 2>/dev/null); [[ -n $row ]] || die "Нет результата №$n (сначала выполни поиск)"
+    IFS=$'\t' read -r src kind val <<<"$row"
+    [[ -e $src ]] || die "Файл исчез: $src"
+    case $kind in
+        line) exec "${EDITOR:-${VISUAL:-micro}}" "+$val" "$src" ;;
+        page)
+            echo "Открываю $src, страница $val"
+            if   have zathura; then nohup zathura -P "$val" "$src" >/dev/null 2>&1 &
+            elif have okular;  then nohup okular -p "$val" "$src" >/dev/null 2>&1 &
+            elif have evince;  then nohup evince -p "$val" "$src" >/dev/null 2>&1 &
+            else nohup xdg-open "$src" >/dev/null 2>&1 & echo "(просмотрщик не умеет открывать по номеру — перейди на стр. $val сам)"; fi
+            ;;
+        para) echo "Открываю $src (абзац $val)"; nohup xdg-open "$src" >/dev/null 2>&1 & ;;
+    esac
+}
+
+cmd_status() {
+    update_index
+    local total scanned=() c src
+    total=$(ls "$TXT" | grep -c '\.txt$')
+    echo "Папки: ${ROOTS[*]:-(нет существующих!)}"
+    echo "Проиндексировано документов (PDF/DOCX/ODT): $total"
+    for c in "$TXT"/*.txt; do
+        [[ -e $c ]] || continue
+        if ! grep -v -e '^#SRC' -e '^<<PAGE' "$c" | grep -q '[[:alnum:]]'; then
+            src=$(sed -n '1s/^#SRC\t//p' "$c"); scanned+=("$src")
+        fi
+    done
+    if ((${#scanned[@]})); then
+        echo "Без текста (похоже на сканы, их не найти поиском): ${#scanned[@]}"
+        printf '  %s\n' "${scanned[@]/#$HOME/\~}"
+    fi
+    have rg || echo "ℹ️  ripgrep не установлен — используется grep (медленнее): sudo pacman -S ripgrep"
+    have pdftotext || echo "⚠️  нет pdftotext — PDF не индексируются: sudo pacman -S poppler"
+}
+
+# ---------------------------------------------------------------- аргументы
+FIXED=0 MAX=30 MAXSET=0 SEM=0
+while (( $# > 0 )); do
+    case $1 in
+        -h|--help) sed -n '2,17p' "$0"; exit 0 ;;
+        -F) FIXED=1; shift ;;
+        -n) MAX=${2:-30}; MAXSET=1; [[ $MAX =~ ^[0-9]+$ ]] || die "-n ожидает число"; shift 2 ;;
+        -s) SEM=1; shift ;;
+        -o) cmd_open "${2:-}"; exit $? ;;
+        --status)  cmd_status; exit 0 ;;
+        --rebuild) rm -rf "$TXT"; mkdir -p "$TXT"; update_index; echo "Готово."; exit 0 ;;
+        --) shift; break ;;
+        -*) die "Неизвестный флаг: $1" ;;
+        *) break ;;
+    esac
+done
+(( $# > 0 )) || { sed -n '2,17p' "$0"; exit 1; }
+((${#ROOTS[@]})) || die "Нет папок для поиска. Задай KB_ROOTS или создай ~/data/notes"
+PAT="$*"
+
+if (( SEM )); then
+    update_index
+    here=$(dirname "$(readlink -f "$0")")
+    [[ -f $here/kb_sem.py ]] || die "Не найден kb_sem.py рядом со скриптом ($here)"
+    if [[ -z ${KB_SEM_CMD:-} ]] && ! have uv; then die "Для поиска по смыслу нужен uv: sudo pacman -S uv"; fi
+    top=10; (( MAXSET )) && top=$MAX
+    roots_joined=$(IFS=:; echo "${ROOTS[*]}")
+    # shellcheck disable=SC2086
+    exec ${KB_SEM_CMD:-uv run --script} "$here/kb_sem.py" --cache "$CACHE" --roots "$roots_joined" --top "$top" -- "$PAT"
+fi
+
+cmd_search

@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+# lab — заготовки для новых лабораторных.
+#
+#   lab new <предмет> [N]   создать папку лабы из шаблонов (N по умолчанию = следующий номер)
+#   lab ls                  показать предметы и последние лабы
+#   lab init                создать стартовые шаблоны в LABS/_templates (существующие не трогает)
+#   lab                     без аргументов — выбрать предмет через gum
+#
+# Предметы: cs, db, dm, shvars
+# Шаблоны лежат в  ~/data/dev/LABS/_templates/<предмет>/  — это обычные файлы.
+# Любой файл или папка копируется в labN, а {N} в именах и в тексте (py, sql, php, cpp, md ...)
+# заменяется на номер лабы. Хочешь другой шаблон — просто положи/замени файл в этой папке.
+set -u
+
+LABS_DIR=${LABS_DIR:-$HOME/data/dev/LABS}
+TPL_DIR=$LABS_DIR/_templates
+ROOT_REPORT="$LABS_DIR/отчёт_шаблон.odt"
+
+# предмет -> папка и префикс имени (везде «lab1», «lab2», ...)
+declare -A SUBJ_DIR=( [cs]=LABS_CS [db]=LABS_DB [dm]=LABS_DM [shvars]=LABS_shvars )
+declare -A SUBJ_PREFIX=( [cs]=lab [db]=lab [dm]=lab [shvars]=lab )
+SUBJECTS=(cs db dm shvars)
+
+TEXT_EXT_RE='^(py|sql|php|cpp|c|h|hpp|md|txt|toml|json|html|css|js|sh)$'
+
+die() { echo "❌ $*" >&2; exit 1; }
+
+norm_subject() {
+    local s=${1,,}
+    [[ -n ${SUBJ_DIR[$s]:-} ]] || die "Неизвестный предмет «$1». Доступно: ${SUBJECTS[*]}"
+    echo "$s"
+}
+
+last_number() {   # <предмет> -> максимальный номер существующей лабы (0 если нет)
+    local s=$1 dir=$LABS_DIR/${SUBJ_DIR[$1]} prefix=${SUBJ_PREFIX[$1]} d n max=0
+    [[ -d $dir ]] || { echo 0; return; }
+    for d in "$dir"/*/; do
+        d=${d%/}; d=${d##*/}
+        if [[ $d =~ ^${prefix}([0-9]+)$ ]]; then n=$((10#${BASH_REMATCH[1]})); (( n > max )) && max=$n; fi
+    done
+    echo "$max"
+}
+
+cmd_ls() {
+    local s
+    for s in "${SUBJECTS[@]}"; do
+        printf '  %-7s %-12s последняя: %s   шаблонов: %s\n' "$s" "${SUBJ_DIR[$s]}" \
+            "$( n=$(last_number "$s"); (( n > 0 )) && echo "${SUBJ_PREFIX[$s]}$n" || echo '—' )" \
+            "$( [[ -d $TPL_DIR/$s ]] && find "$TPL_DIR/$s" -type f | wc -l || echo 0 )"
+    done
+}
+
+write_tpl() {   # <предмет> <файл> — содержимое со stdin; не перезаписывает существующее
+    local f=$TPL_DIR/$1/$2
+    mkdir -p "$(dirname "$f")"
+    [[ -e $f ]] && { echo "  • уже есть: $1/$2"; cat >/dev/null; return; }
+    cat > "$f" && echo "  ✓ создан шаблон: $1/$2"
+}
+
+cmd_init() {
+    mkdir -p "$TPL_DIR"
+    local s
+    for s in "${SUBJECTS[@]}"; do mkdir -p "$TPL_DIR/$s"; done
+
+    write_tpl dm main.py <<'T'
+#!/usr/bin/env python3
+"""Лабораторная работа {N}. Дискретная математика."""
+
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+    main()
+T
+    write_tpl db 'lab{N}.sql' <<'T'
+-- Лабораторная работа {N}. Базы данных
+T
+    write_tpl db 'lab{N}.php' <<'T'
+<?php
+// Лабораторная работа {N}. Базы данных
+T
+    write_tpl shvars main.cpp <<'T'
+// Лабораторная работа {N}
+#include <iostream>
+
+int main() {
+    return 0;
+}
+T
+    # шаблон отчёта берём из корня LABS (если там лежит)
+    if [[ -f $ROOT_REPORT ]]; then
+        for s in dm db shvars; do
+            if [[ -e "$TPL_DIR/$s/отчёт_лаб{N}.odt" ]]; then echo "  • уже есть: $s/отчёт_лаб{N}.odt"
+            else cp -- "$ROOT_REPORT" "$TPL_DIR/$s/отчёт_лаб{N}.odt" && echo "  ✓ отчёт: $s/отчёт_лаб{N}.odt"; fi
+        done
+    else
+        echo "  ⚠ нет $ROOT_REPORT — шаблоны отчётов положи вручную в _templates/<предмет>/"
+    fi
+    echo "  • cs: шаблонов нет (положи файлы в $TPL_DIR/cs/, когда придумаешь, что там нужно)"
+}
+
+cmd_new() {
+    local s n target tdir rel dest ext count=0
+    s=$(norm_subject "${1:-}") || exit 1
+    n=${2:-}
+    if [[ -z $n ]]; then n=$(( $(last_number "$s") + 1 ))
+    elif [[ ! $n =~ ^[0-9]+$ ]]; then die "Номер лабы должен быть числом, а не «$n»"
+    fi
+    n=$((10#$n))
+
+    target=$LABS_DIR/${SUBJ_DIR[$s]}/${SUBJ_PREFIX[$s]}$n
+    [[ -e $target ]] && die "Уже существует: $target"
+    mkdir -p "$target" || die "Не удалось создать $target"
+
+    tdir=$TPL_DIR/$s
+    if [[ -d $tdir ]]; then
+        while IFS= read -r -d '' f; do
+            rel=${f#"$tdir"/}
+            dest=$target/${rel//\{N\}/$n}
+            mkdir -p "$(dirname "$dest")"
+            cp -- "$f" "$dest"
+            ext=${dest##*.}; ext=${ext,,}
+            if [[ $ext =~ $TEXT_EXT_RE ]]; then sed -i "s/{N}/$n/g" "$dest"; fi
+            count=$((count + 1))
+        done < <(find "$tdir" -type f -print0)
+    fi
+
+    echo "✅ ${SUBJ_DIR[$s]}/${SUBJ_PREFIX[$s]}$n создана ($count файл(ов) из шаблона)"
+    echo "   cd ${target/#$HOME/\~}"
+}
+
+pick_subject() {
+    command -v gum >/dev/null || die "Использование: lab new <предмет> [N]  (предметы: ${SUBJECTS[*]})"
+    gum choose --header "Для какого предмета лаба?" "${SUBJECTS[@]}"
+}
+
+case ${1:-} in
+    new)  shift; cmd_new "${1:-}" "${2:-}" ;;
+    ls)   cmd_ls ;;
+    init) cmd_init ;;
+    "")   s=$(pick_subject) || exit 0; cmd_new "$s" "" ;;
+    -h|--help) sed -n '2,12p' "$0" ;;
+    *)    die "Неизвестная команда «$1». Попробуй: lab new|ls|init" ;;
+esac

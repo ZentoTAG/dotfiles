@@ -16,7 +16,7 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher")
 hl.bind("ALT + 4", hl.dsp.send_shortcut({ mods = "CTRL", key = "F2", window = "class:^(com\\.obsproject\\.Studio)$" }))
 hl.bind("ALT + 3", hl.dsp.send_shortcut({ mods = "CTRL", key = "F1", window = "class:^(com\\.obsproject\\.Studio)$" }))
 
-
+hl.bind(mainMod .. " + ALT + C", hl.dsp.exec_cmd("/home/zento/data/dotfiles/scripts/ocr"))
 hl.bind(mainMod .. " + ALT + T", hl.dsp.exec_cmd("kitty --class kitty-float --directory " .. os.getenv("HOME") .. " -e /home/zento/data/dotfiles/scripts/timer.sh"))
 
 -- Путь к скрипту
@@ -28,7 +28,7 @@ hl.bind(mainMod .. " + ALT + Y", hl.dsp.exec_cmd(
 ))
 
 -- Отмена таймера на SUPER + ALT + C (Cancel)
-hl.bind(mainMod .. " + ALT + C", hl.dsp.exec_cmd(
+hl.bind(mainMod .. " + ALT + S", hl.dsp.exec_cmd(
     "kitty --class kitty-float -e sh -c '" .. timer .. " cancel; echo; read -n 1 -s -r -p \"Нажми любую клавишу для выхода...\"'"
 ))
 

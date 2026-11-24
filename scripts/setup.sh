@@ -28,6 +28,11 @@ echo
 echo "Установка официальных пакетов..."
 # Устаревшие пакеты (до Noctalia) закомментированы, но оставлены для истории.
 PACMAN_PACKAGES=(
+    grim
+    slurp
+    tesseract
+    tesseract-data-rus
+    tesseract-data-eng
     cmake
     meson
     cpio

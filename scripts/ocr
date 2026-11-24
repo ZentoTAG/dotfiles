@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# ocr.sh — выделяешь область экрана, текст с неё попадает в буфер обмена.
+#
+#   ocr.sh            русский + английский (rus+eng)
+#   ocr.sh eng        только указанные языки (формат tesseract: rus, eng, rus+eng ...)
+#
+# Зависимости: grim slurp tesseract tesseract-data-rus tesseract-data-eng wl-clipboard libnotify
+# Необязательно: imagemagick — увеличивает мелкий текст перед распознаванием (точнее).
+set -u
+
+LANGS=${1:-rus+eng}
+
+notify() { notify-send -a ocr "🔎 OCR" "$1" 2>/dev/null; }
+
+missing=()
+for c in grim slurp tesseract wl-copy; do command -v "$c" >/dev/null || missing+=("$c"); done
+if (( ${#missing[@]} )); then
+    notify "Не хватает: ${missing[*]}. sudo pacman -S grim slurp tesseract tesseract-data-rus tesseract-data-eng wl-clipboard"
+    echo "Не хватает: ${missing[*]}" >&2; exit 1
+fi
+
+# проверка языковых пакетов
+have_langs=$(tesseract --list-langs 2>/dev/null)
+for l in ${LANGS//+/ }; do
+    grep -qx "$l" <<<"$have_langs" || { notify "Нет языка «$l». sudo pacman -S tesseract-data-$l"; echo "Нет языка $l" >&2; exit 1; }
+done
+
+region=$(slurp) || exit 0          # Esc при выделении — тихо выходим
+
+if command -v magick >/dev/null; then
+    text=$(grim -g "$region" - | magick png:- -resize 200% -colorspace Gray png:- | tesseract - - -l "$LANGS" 2>/dev/null)
+else
+    text=$(grim -g "$region" - | tesseract - - -l "$LANGS" 2>/dev/null)
+fi
+
+text=${text//$'\f'/}                                       # убираем разрыв страницы от tesseract
+text=$(printf '%s' "$text" | sed -e 's/[[:space:]]*$//' | cat -s)   # хвостовые пробелы, лишние пустые строки
+text=$(printf '%s' "$text" | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}')   # пустые строки в конце
+
+if [[ -z ${text//[[:space:]]/} ]]; then
+    notify "Текст не распознан"; exit 1
+fi
+
+printf '%s' "$text" | wl-copy
+preview=$(printf '%s' "$text" | tr '\n' ' ' | cut -c1-120)
+notify "Скопировано: $preview"
+printf '%s\n' "$text"
