@@ -1,0 +1,305 @@
+#!/usr/bin/env bash
+# app2desktop — создать ярлык .desktop для локального приложения/AppImage.
+#
+#   app2desktop ./Obsidian.AppImage ./obsidian.png
+#   app2desktop ./Obsidian.AppImage --name "Obsidian" --icon ./obsidian.png
+#   app2desktop --remove obsidian
+#
+# Ярлык иконку/программу не копирует: в .desktop записываются абсолютные пути.
+set -euo pipefail
+
+APPLICATIONS_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+
+die() {
+    echo "❌ $*" >&2
+    exit 1
+}
+
+usage() {
+    cat <<'EOF'
+Использование:
+  app2desktop <программа/AppImage> [иконка]
+  app2desktop <id/название> <программа/AppImage> [иконка]
+  app2desktop <программа/AppImage> [опции]
+  app2desktop --remove <id>
+  app2desktop --list
+
+Примеры:
+  app2desktop ~/Apps/Obsidian.AppImage ~/Apps/obsidian.png
+  app2desktop ./myapp --name "My App" --icon ./icon.svg
+  app2desktop ./myapp --terminal --categories "Utility;Development;"
+
+Опции:
+  -n, --name NAME          название в меню (по умолчанию из имени файла)
+  -i, --icon FILE          путь к иконке PNG/SVG/любого поддерживаемого формата
+  -I, --id ID              имя .desktop-файла (по умолчанию из имени программы)
+  -c, --categories LIST    категории с точкой с запятой (по умолчанию: Utility;)
+      --comment TEXT       описание приложения
+      --terminal           запускать приложение в терминале
+      --no-terminal        не запускать в терминале (по умолчанию)
+  -f, --force              заменить существующий ярлык
+      --dry-run             показать, что будет записано, но ничего не менять
+      --remove ID           удалить ярлык с таким ID
+      --list                показать созданные пользовательские ярлыки
+  -h, --help                показать эту справку
+
+Важно: программа и иконка остаются на своих местах. Если потом переместить их,
+ярлык перестанет работать. Для AppImage сначала сделай файл исполняемым:
+  chmod +x ./myapp.AppImage
+EOF
+}
+
+desktop_value() {
+    # Экранируем обратные слэши и запрещаем переносы строк в значениях .desktop.
+    local value=$1
+    value=${value//\\/\\\\}
+    value=${value//$'\n'/ }
+    value=${value//$'\r'/ }
+    printf '%s' "$value"
+}
+
+desktop_exec_arg() {
+    # В Exec путь должен быть одним аргументом даже если в нём есть пробелы.
+    # Внутри двойных кавычек Desktop Entry также требуют экранировать $, ` и \\.
+    printf '%s' "$1" | sed 's/[\\"]/\\&/g; s/[$`]/\\&/g'
+}
+
+valid_id() {
+    [[ $1 =~ ^[A-Za-z0-9._-]+$ ]]
+}
+
+absolute_path() {
+    local path=$1
+    [[ $path = /* ]] || path="$PWD/$path"
+    realpath -- "$path"
+}
+
+infer_name() {
+    local name
+    name=$(basename -- "$1")
+    if [[ ${name,,} == *.appimage ]]; then
+        name=${name:0:${#name}-9}
+    else
+        name=${name%.*}
+    fi
+    name=${name//_/ }
+    name=${name//-/ }
+    printf '%s' "$name"
+}
+
+infer_id() {
+    local id
+    id=$(basename -- "$1")
+    id=${id,,}
+    id=${id%.appimage}
+    id=${id//[^a-z0-9._-]/-}
+    id=$(printf '%s' "$id" | sed -E 's/-+/-/g; s/^-+//; s/-+$//')
+    [[ -n $id ]] || id=local-app
+    printf '%s' "$id"
+}
+
+update_database() {
+    if command -v update-desktop-database >/dev/null 2>&1; then
+        update-desktop-database "$APPLICATIONS_DIR" >/dev/null 2>&1 || true
+    fi
+}
+
+list_entries() {
+    if [[ ! -d $APPLICATIONS_DIR ]]; then
+        echo "Пользовательских .desktop-файлов пока нет."
+        return
+    fi
+    find "$APPLICATIONS_DIR" -maxdepth 1 -type f -name '*.desktop' -printf '%f\n' | sort
+}
+
+remove_entry() {
+    local id=$1
+    valid_id "$id" || die "Некорректный ID: «$id»"
+    local desktop="$APPLICATIONS_DIR/$id.desktop"
+    [[ -f $desktop ]] || die "Ярлык не найден: $desktop"
+    rm -- "$desktop"
+    update_database
+    echo "✅ Удалён ярлык: $desktop"
+}
+
+app=
+icon=
+name=
+id=
+positional=()
+positional_name=false
+categories='Utility;'
+comment=
+terminal=false
+force=false
+dry_run=false
+
+if (( $# == 0 )); then
+    usage
+    exit 0
+fi
+
+while (( $# > 0 )); do
+    case $1 in
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        --list)
+            (( $# == 1 )) || die "--list не принимает другие аргументы"
+            list_entries
+            exit 0
+            ;;
+        --remove)
+            (( $# >= 2 )) || die "После --remove нужен ID"
+            (( $# == 2 )) || die "--remove не принимает другие аргументы"
+            remove_entry "$2"
+            exit 0
+            ;;
+        --name|-n)
+            (( $# >= 2 )) || die "После $1 нужно название"
+            name=$2
+            shift 2
+            ;;
+        --icon|-i)
+            (( $# >= 2 )) || die "После $1 нужен путь к иконке"
+            [[ -z $icon ]] || die "Иконка указана дважды"
+            icon=$2
+            shift 2
+            ;;
+        --id|-I)
+            (( $# >= 2 )) || die "После $1 нужен ID"
+            id=$2
+            shift 2
+            ;;
+        --categories|-c)
+            (( $# >= 2 )) || die "После $1 нужны категории"
+            categories=$2
+            shift 2
+            ;;
+        --comment)
+            (( $# >= 2 )) || die "После --comment нужно описание"
+            comment=$2
+            shift 2
+            ;;
+        --terminal)
+            terminal=true
+            shift
+            ;;
+        --no-terminal)
+            terminal=false
+            shift
+            ;;
+        --force|-f)
+            force=true
+            shift
+            ;;
+        --dry-run)
+            dry_run=true
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            die "Неизвестная опция «$1». Используй --help"
+            ;;
+        *)
+            positional+=("$1")
+            shift
+            ;;
+    esac
+done
+
+if (( ${#positional[@]} == 0 )); then
+    die "Не указана программа/AppImage"
+elif (( ${#positional[@]} == 1 )); then
+    app=${positional[0]}
+elif (( ${#positional[@]} == 2 )); then
+    if [[ -f ${positional[0]} ]]; then
+        app=${positional[0]}
+        [[ -z $icon ]] || die "Иконка указана дважды"
+        icon=${positional[1]}
+    else
+        name=${name:-${positional[0]}}
+        positional_name=true
+        app=${positional[1]}
+    fi
+elif (( ${#positional[@]} == 3 )); then
+    [[ -z $icon ]] || die "Иконка указана дважды"
+    name=${name:-${positional[0]}}
+    positional_name=true
+    app=${positional[1]}
+    icon=${positional[2]}
+else
+    die "Слишком много позиционных аргументов"
+fi
+
+[[ -n $app ]] || die "Не указана программа/AppImage"
+[[ -f $app ]] || die "Файл не найден: $app"
+[[ -x $app ]] || die "Файл не исполняемый: $app (исправь: chmod +x -- '$app')"
+
+app=$(absolute_path "$app")
+if [[ -n $icon ]]; then
+    [[ -f $icon ]] || die "Иконка не найдена: $icon"
+    icon=$(absolute_path "$icon")
+fi
+
+name=${name:-$(infer_name "$app")}
+[[ -n $name ]] || die "Название не может быть пустым"
+if [[ -z $id ]]; then
+    if [[ $positional_name == true ]]; then
+        id=$(infer_id "$name")
+    else
+        id=$(infer_id "$app")
+    fi
+fi
+valid_id "$id" || die "Некорректный ID «$id»: разрешены латинские буквы, цифры, ., _ и -"
+
+mkdir -p "$APPLICATIONS_DIR"
+desktop="$APPLICATIONS_DIR/$id.desktop"
+if [[ -e $desktop && $force != true ]]; then
+    die "Ярлык уже существует: $desktop (используй --force для замены)"
+fi
+
+# Временный файл тоже заканчивается на .desktop: desktop-file-validate
+# проверяет расширение имени, а не только содержимое.
+tmp=$(mktemp "$APPLICATIONS_DIR/.$id.XXXXXX.desktop")
+cleanup() { rm -f -- "$tmp"; }
+trap cleanup EXIT
+
+{
+    printf '%s\n' '[Desktop Entry]'
+    printf 'Version=1.0\n'
+    printf 'Type=Application\n'
+    printf 'Name=%s\n' "$(desktop_value "$name")"
+    [[ -n $comment ]] && printf 'Comment=%s\n' "$(desktop_value "$comment")"
+    printf 'Exec="%s"\n' "$(desktop_exec_arg "$app")"
+    printf 'Icon=%s\n' "$(desktop_value "${icon:-application-x-executable}")"
+    printf 'Terminal=%s\n' "$terminal"
+    printf 'Categories=%s\n' "$(desktop_value "$categories")"
+    printf 'StartupNotify=true\n'
+} > "$tmp"
+
+if command -v desktop-file-validate >/dev/null 2>&1; then
+    desktop-file-validate "$tmp" || die "Сгенерированный .desktop-файл не прошёл проверку"
+fi
+
+if [[ $dry_run == true ]]; then
+    echo "# $desktop"
+    cat "$tmp"
+    exit 0
+fi
+
+chmod 0644 "$tmp"
+mv -f -- "$tmp" "$desktop"
+trap - EXIT
+update_database
+
+echo "✅ Ярлык создан: $desktop"
+echo "   Название: $name"
+echo "   Запуск:   $app"
+if [[ -n $icon ]]; then
+    echo "   Иконка:   $icon"
+fi

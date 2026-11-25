@@ -46,6 +46,23 @@ cd ~/data/dotfiles
 sudo ./scripts/cleanup_packages.sh       # удалить после проверки
 ```
 
+## Ярлыки для AppImage и локальных программ
+
+Команда `app2desktop` создаёт пользовательский `.desktop`-ярлык в
+`~/.local/share/applications`:
+
+```bash
+app2desktop ~/Apps/MyApp.AppImage ~/Apps/myapp.png
+app2desktop ~/Apps/MyApp.AppImage --name "My App" --icon ~/Apps/myapp.svg
+app2desktop --list
+app2desktop --remove myapp
+```
+
+Скрипт добавляется в `PATH` из `scripts/` через `config/fish/conf.d/env.fish`.
+Программа и иконка не копируются, поэтому после их перемещения ярлык нужно
+пересоздать или обновить с `--force`. AppImage перед добавлением должен быть
+исполняемым (`chmod +x файл.AppImage`).
+
 ## Структура
 
 ```text
