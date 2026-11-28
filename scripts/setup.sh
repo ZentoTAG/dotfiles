@@ -28,6 +28,7 @@ echo
 echo "Установка официальных пакетов..."
 # Устаревшие пакеты (до Noctalia) закомментированы, но оставлены для истории.
 PACMAN_PACKAGES=(
+    luciole
     grim
     slurp
     tesseract
