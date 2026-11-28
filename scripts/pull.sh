@@ -5,6 +5,7 @@ DOTFILES_DIR="$HOME/data/dotfiles"
 CONFIG_DIR="$HOME/.config"
 
 FOLDERS=(
+    luciole
     btop
     cava
     fastfetch
