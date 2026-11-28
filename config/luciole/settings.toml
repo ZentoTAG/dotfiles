@@ -1,0 +1,7 @@
+schema_version = 1
+
+[browser]
+color_scheme = "auto"
+show_hidden = true
+sidebar_width = 160
+view_mode = "grid"
